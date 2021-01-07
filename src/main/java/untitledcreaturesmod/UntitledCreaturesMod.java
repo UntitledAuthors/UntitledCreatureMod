@@ -1,4 +1,4 @@
-package UntitledCreaturesMod;
+package untitledcreaturesmod;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
