@@ -6,14 +6,12 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import software.bernie.example.GeckoLibMod;
+import software.bernie.geckolib3.GeckoLib;
 
-// The value here should match an entry in the META-INF/mods.toml file
 @Mod(UntitledCreatureMod.MODID)
 public class UntitledCreatureMod {
     public final static String MODID = "untitledcreaturemod";
-    private static final Logger LOGGER = LogManager.getLogger();
 
     public UntitledCreatureMod() {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
@@ -21,11 +19,16 @@ public class UntitledCreatureMod {
 
         MinecraftForge.EVENT_BUS.register(this);
         Registration.init();
+
+        GeckoLibMod.DISABLE_IN_DEV = true;
+        GeckoLib.initialize();
     }
 
     private void setup(final FMLCommonSetupEvent event) {
+        Registration.setupCreatures();
     }
 
     private void clientSetup(final FMLClientSetupEvent event) {
+        Registration.setupCreatureRenderers();
     }
 }
