@@ -12,7 +12,7 @@ import java.util.List;
 
 public class ToadMobEggItem extends Item{
 
-    public ToadMobEggItem(Properties properties) {
+    public ToadMobEggItem() {
         //complete constructor
         super(new Item.Properties().maxStackSize(1));
     }
