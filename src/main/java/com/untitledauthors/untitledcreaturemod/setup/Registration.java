@@ -6,10 +6,8 @@ import com.untitledauthors.untitledcreaturemod.items.ToadMobEggItem;
 import net.minecraft.item.Item;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.ai.attributes.GlobalEntityTypeAttributes;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.RegistryObject;
-import net.minecraftforge.fml.client.registry.RenderingRegistry;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -31,13 +29,5 @@ public class Registration {
     public static void init() {
         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
         ENTITIES.register(bus);
-    }
-
-    public static void setupCreatures() {
-        GlobalEntityTypeAttributes.put(TOAD.get(), ToadEntity.getDefaultAttributes().create());
-    }
-
-    public static void setupCreatureRenderers() {
-        RenderingRegistry.registerEntityRenderingHandler(TOAD.get(), ToadEntityRenderer::new);
     }
 }

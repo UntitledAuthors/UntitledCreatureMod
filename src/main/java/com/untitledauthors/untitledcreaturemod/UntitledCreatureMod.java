@@ -1,5 +1,7 @@
 package com.untitledauthors.untitledcreaturemod;
 
+import com.untitledauthors.untitledcreaturemod.setup.ClientSetup;
+import com.untitledauthors.untitledcreaturemod.setup.CommonSetup;
 import com.untitledauthors.untitledcreaturemod.setup.Registration;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
@@ -25,10 +27,10 @@ public class UntitledCreatureMod {
     }
 
     private void setup(final FMLCommonSetupEvent event) {
-        Registration.setupCreatures();
+        CommonSetup.setupCreatures();
     }
 
     private void clientSetup(final FMLClientSetupEvent event) {
-        Registration.setupCreatureRenderers();
+        ClientSetup.setupCreatureRenderers();
     }
 }
