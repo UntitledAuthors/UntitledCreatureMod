@@ -18,7 +18,6 @@ import static com.untitledauthors.untitledcreaturemod.UntitledCreatureMod.MODID;
 public class Registration {
     private static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITIES, MODID);
     private static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MODID);
-
     public static final RegistryObject<ToadMobEggItem> TOAD_EGG = ITEMS.register("toad_egg", ToadMobEggItem::new);
 
     public static final RegistryObject<EntityType<ToadEntity>> TOAD = ENTITIES.register("toad", () -> EntityType.Builder.create(ToadEntity::new, EntityClassification.CREATURE)
@@ -29,5 +28,6 @@ public class Registration {
     public static void init() {
         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
         ENTITIES.register(bus);
+        ITEMS.register(bus);
     }
 }

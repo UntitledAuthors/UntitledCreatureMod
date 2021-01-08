@@ -1,6 +1,7 @@
 package com.untitledauthors.untitledcreaturemod.items;
 
 
+import com.untitledauthors.untitledcreaturemod.setup.CommonSetup;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -14,7 +15,7 @@ public class ToadMobEggItem extends Item{
 
     public ToadMobEggItem() {
         //complete constructor
-        super(new Item.Properties().maxStackSize(1));
+        super(new Item.Properties().maxStackSize(1).group(CommonSetup.ITEM_GROUP));
     }
 
     @Override
