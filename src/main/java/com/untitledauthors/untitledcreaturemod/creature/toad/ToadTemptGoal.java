@@ -55,7 +55,7 @@ public class ToadTemptGoal extends Goal {
     }
 
     public void tick() {
-        this.turtle.getLookController().setLookPositionWithEntity(this.tempter, (float)(this.turtle.getHorizontalFaceSpeed() + 20), (float)this.turtle.getVerticalFaceSpeed());
+        this.turtle.getLookController().setLookPositionWithEntity(this.tempter, (float) (this.turtle.getHorizontalFaceSpeed() + 20), (float) this.turtle.getVerticalFaceSpeed());
         if (this.turtle.getDistanceSq(this.tempter) < 6.25D) {
             this.turtle.getNavigator().clearPath();
         } else {

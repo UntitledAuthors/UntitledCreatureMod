@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:campfire_cooking",
+  "ingredient": {
+    "item": "untitledcreaturemod:raw_toad_legs"
+  },
+  "result": "untitledcreaturemod:cooked_toad_legs",
+  "experience": 0.35,
+  "cookingtime": 600
+}

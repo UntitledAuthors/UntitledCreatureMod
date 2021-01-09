@@ -11,7 +11,7 @@ import net.minecraft.world.World;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class ToadMobEggItem extends Item{
+public class ToadMobEggItem extends Item {
 
     public ToadMobEggItem() {
         //complete constructor

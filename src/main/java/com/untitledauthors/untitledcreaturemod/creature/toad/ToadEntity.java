@@ -126,7 +126,7 @@ public class ToadEntity extends AnimalEntity implements IAnimatable {
 
     // TODO: Exchange these once we got sounds, even though the cod ones sound kinda appropriate
     protected SoundEvent getAmbientSound() {
-        return SoundEvents.ENTITY_COD_AMBIENT;
+        return Registration.TOAD_AMBIENT.get();
     }
 
     protected SoundEvent getHurtSound(DamageSource damageSourceIn) {

@@ -1,3 +1,6 @@
 {
-  "entity.untitledcreaturemod.toad": "Toad"
+  "entity.untitledcreaturemod.toad": "Toad",
+  "item.untitledcreaturemod.raw_toad_legs": "Raw Toad Legs",
+  "item.untitledcreaturemod.cooked_toad_legs": "Cooked Toad Legs",
+  "untitledcreaturemod.subtitle.toad_ambient": "Toad noises"
 }

@@ -1,0 +1,10 @@
+{
+  "toad_ambient": {
+    "category": "neutral",
+    "subtitle": "untitledcreaturemod.subtitle.toad_ambient",
+    "sounds": [
+      "untitledcreaturemod:entity/toad_ambient1",
+      "untitledcreaturemod:entity/toad_ambient2"
+    ]
+  }
+}

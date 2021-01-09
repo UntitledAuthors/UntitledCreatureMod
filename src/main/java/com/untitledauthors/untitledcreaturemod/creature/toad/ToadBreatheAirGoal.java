@@ -45,7 +45,7 @@ public class ToadBreatheAirGoal extends Goal {
                 MathHelper.floor(this.creature.getPosZ() + 1.0D));
         BlockPos blockpos = null;
 
-        for(BlockPos blockpos1 : iterable) {
+        for (BlockPos blockpos1 : iterable) {
             if (this.canBreatheAt(this.creature.world, blockpos1)) {
                 blockpos = blockpos1;
                 break;
@@ -70,7 +70,6 @@ public class ToadBreatheAirGoal extends Goal {
 
     @Override
     public void resetTask() {
-        super.resetTask();
         this.creature.getNavigator().clearPath();
         this.creature.moveVertical = 0.0f;
     }

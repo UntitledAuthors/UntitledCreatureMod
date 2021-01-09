@@ -31,7 +31,7 @@ logoFile="UCMlogo.png" #optional
 # A text field displayed in the mod UI
 credits="Thanks for this example mod goes to Java" #optional
 # A text field displayed in the mod UI
-authors="Love, Cheese and small house plants" #optional
+authors="The untitled authors" #optional
 # The description text for the mod (multi line!) (#mandatory)
 description='''
 This mod is full of new interesting creatures from froggo-bois to jelly-bois, all the bois are included with their own items, drops and more!'''
@@ -51,7 +51,12 @@ This mod is full of new interesting creatures from froggo-bois to jelly-bois, al
 [[dependencies.untitledcreaturemod]]
     modId="minecraft"
     mandatory=true
-# This version range declares a minimum of the current minecraft version up to but not including the next major version
     versionRange="[1.16.4,1.17)"
+    ordering="NONE"
+    side="BOTH"
+[[dependencies.untitledcreaturemod]]
+    modId="geckolib3"
+    mandatory=true
+    versionRange="[3.0.0,)"
     ordering="NONE"
     side="BOTH"

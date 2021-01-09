@@ -1,7 +1,6 @@
 package com.untitledauthors.untitledcreaturemod.setup;
 
 import com.untitledauthors.untitledcreaturemod.creature.toad.ToadEntity;
-import com.untitledauthors.untitledcreaturemod.items.ToadMobEggItem;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntitySpawnPlacementRegistry;
 import net.minecraft.entity.EntityType;
@@ -25,7 +24,7 @@ public class CommonSetup {
         @Override
         public ItemStack createIcon() {
             //FIX THIS USING REGISTRY INSTEAD OF MESSY FIX
-            return new ItemStack(ToadMobEggItem::new);
+            return new ItemStack(Registration.COOKED_TOAD_LEGS.get());
         }
     };
 
@@ -38,7 +37,7 @@ public class CommonSetup {
     public static void setupCreatures() {
         EntityType<ToadEntity> toad = Registration.TOAD.get();
         GlobalEntityTypeAttributes.put(toad, ToadEntity.getDefaultAttributes().create());
-        EntitySpawnPlacementRegistry.register(toad, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND,Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, ToadEntity::canAnimalSpawn);
+        EntitySpawnPlacementRegistry.register(toad, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, ToadEntity::canAnimalSpawn);
         MinecraftForge.EVENT_BUS.addListener(CommonSetup::onBiomeLoading);
     }
 
