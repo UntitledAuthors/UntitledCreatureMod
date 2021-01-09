@@ -1,5 +1,6 @@
 package com.untitledauthors.untitledcreaturemod.setup;
 
+import com.untitledauthors.untitledcreaturemod.creature.rock_antelope.RockAntelopeEntity;
 import com.untitledauthors.untitledcreaturemod.creature.toad.ToadEntity;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntitySpawnPlacementRegistry;
@@ -36,6 +37,7 @@ public class CommonSetup {
     public static void setupCreatures() {
         EntityType<ToadEntity> toad = Registration.TOAD.get();
         GlobalEntityTypeAttributes.put(toad, ToadEntity.getDefaultAttributes().create());
+        GlobalEntityTypeAttributes.put(Registration.ROCK_ANTELOPE.get(), RockAntelopeEntity.getDefaultAttributes().create());
         EntitySpawnPlacementRegistry.register(toad, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND, Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, ToadEntity::canAnimalSpawn);
         MinecraftForge.EVENT_BUS.addListener(CommonSetup::onBiomeLoading);
     }
