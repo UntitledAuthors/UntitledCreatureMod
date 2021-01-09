@@ -1,0 +1,21 @@
+{
+  "display": {
+    "icon": {
+      "item": "untitledcreaturemod:toad_bucket"
+    },
+    "title": {
+      "translate": "itemGroup.untitledcreaturemod"
+    },
+    "description": {
+      "translate": "untitledcreaturemod.desc"
+    },
+    "background": "minecraft:textures/gui/advancements/backgrounds/stone.png",
+    "show_toast": false,
+    "announce_to_chat": false
+  },
+  "criteria": {
+    "start": {
+      "trigger": "minecraft:tick"
+    }
+  }
+}

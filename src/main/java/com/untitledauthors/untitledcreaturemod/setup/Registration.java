@@ -1,9 +1,12 @@
 package com.untitledauthors.untitledcreaturemod.setup;
 
+import com.untitledauthors.untitledcreaturemod.creature.toad.ToadBucket;
 import com.untitledauthors.untitledcreaturemod.creature.toad.ToadEntity;
 import com.untitledauthors.untitledcreaturemod.items.ToadMobEggItem;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
+import net.minecraft.fluid.Fluids;
+import net.minecraft.item.FishBucketItem;
 import net.minecraft.item.Food;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
@@ -22,14 +25,6 @@ public class Registration {
     private static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MODID);
     private static final DeferredRegister<SoundEvent> SOUNDS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, MODID);
 
-    // Items
-    public static final RegistryObject<ToadMobEggItem> TOAD_EGG = ITEMS.register("toad_egg", ToadMobEggItem::new);
-    public static final RegistryObject<Item> RAW_TOAD_LEGS = ITEMS.register("raw_toad_legs",
-            () -> new Item(((new Item.Properties()).group(ItemGroup.FOOD)
-                    .food((new Food.Builder()).hunger(2).saturation(0.3F).meat().build()))));
-    public static final RegistryObject<Item> COOKED_TOAD_LEGS = ITEMS.register("cooked_toad_legs",
-            () -> new Item(((new Item.Properties()).group(ItemGroup.FOOD)
-                    .food((new Food.Builder()).hunger(6).saturation(0.6F).meat().build()))));
 
     // Mobs/Entities
     public static final RegistryObject<EntityType<ToadEntity>> TOAD = ENTITIES.register("toad",
@@ -37,6 +32,18 @@ public class Registration {
                     .size(.8f, .4f)
                     .setShouldReceiveVelocityUpdates(false)
                     .build("toad"));
+
+    // Items
+    public static final RegistryObject<ToadMobEggItem> TOAD_EGG = ITEMS.register("toad_egg", ToadMobEggItem::new);
+
+    public static final RegistryObject<Item> RAW_TOAD_LEGS = ITEMS.register("raw_toad_legs",
+            () -> new Item(((new Item.Properties()).group(ItemGroup.FOOD)
+                    .food((new Food.Builder()).hunger(2).saturation(0.3F).meat().build()))));
+    public static final RegistryObject<Item> COOKED_TOAD_LEGS = ITEMS.register("cooked_toad_legs",
+            () -> new Item(((new Item.Properties()).group(ItemGroup.FOOD)
+                    .food((new Food.Builder()).hunger(6).saturation(0.6F).meat().build()))));
+    public static final RegistryObject<Item> TOAD_BUCKET = ITEMS.register("toad_bucket",
+            () -> new ToadBucket(TOAD, new Item.Properties().maxStackSize(1).group(CommonSetup.ITEM_GROUP)));
 
     // Sounds
     public static final RegistryObject<SoundEvent> TOAD_AMBIENT = SOUNDS.register("toad_ambient",

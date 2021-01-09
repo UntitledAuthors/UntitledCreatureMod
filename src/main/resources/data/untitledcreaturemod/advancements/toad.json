@@ -1,0 +1,26 @@
+{
+  "display": {
+    "icon": {
+      "item": "untitledcreaturemod:toad_bucket"
+    },
+    "title": {
+      "translate": "advancement.untitledcreaturemod:toadCatched"
+    },
+    "description": {
+      "translate": "advancement.untitledcreaturemod:toadCatched.desc"
+    }
+  },
+  "parent": "untitledcreaturemod:root",
+  "criteria": {
+    "toad": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "item": "untitledcreaturemod:toad_bucket"
+          }
+        ]
+      }
+    }
+  }
+}

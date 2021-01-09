@@ -1,6 +1,14 @@
 {
   "entity.untitledcreaturemod.toad": "Toad",
+  "itemGroup.untitledcreaturemod": "Untitled Creature Mod",
+
   "item.untitledcreaturemod.raw_toad_legs": "Raw Toad Legs",
   "item.untitledcreaturemod.cooked_toad_legs": "Cooked Toad Legs",
-  "untitledcreaturemod.subtitle.toad_ambient": "Toad noises"
+  "item.untitledcreaturemod.toad_bucket": "Bucket of Toad",
+
+  "advancement.untitledcreaturemod:toadCatched": "Tactical Toading",
+  "advancement.untitledcreaturemod:toadCatched.desc": "Catch a toad in a bucket. Or is it a frog?",
+
+  "untitledcreaturemod.subtitle.toad_ambient": "Toad noises",
+  "untitledcreaturemod.desc": "All the bois in one mod!"
 }

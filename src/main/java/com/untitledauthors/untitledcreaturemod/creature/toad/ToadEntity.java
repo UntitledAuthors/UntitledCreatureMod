@@ -1,6 +1,7 @@
 package com.untitledauthors.untitledcreaturemod.creature.toad;
 
 import com.untitledauthors.untitledcreaturemod.setup.Registration;
+import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.entity.AgeableEntity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.MobEntity;
@@ -9,13 +10,12 @@ import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.pathfinding.*;
-import net.minecraft.util.DamageSource;
-import net.minecraft.util.SoundEvent;
-import net.minecraft.util.SoundEvents;
+import net.minecraft.util.*;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import software.bernie.geckolib3.core.IAnimatable;
@@ -106,6 +106,30 @@ public class ToadEntity extends AnimalEntity implements IAnimatable {
         }
     }
 
+    // Called on right clicking the toad/entity
+    // Mostly copied from AbstractFishEntity
+    public ActionResultType func_230254_b_(PlayerEntity heldItem, Hand hand) {
+        ItemStack itemstack = heldItem.getHeldItem(hand);
+        if (itemstack.getItem() == Items.BUCKET && this.isAlive()) {
+            this.playSound(SoundEvents.ITEM_BUCKET_FILL_FISH, 1.0F, 1.0F);
+            itemstack.shrink(1);
+            ItemStack itemstack1 = new ItemStack(Registration.TOAD_BUCKET.get());
+            if (!this.world.isRemote) {
+                CriteriaTriggers.FILLED_BUCKET.trigger((ServerPlayerEntity)heldItem, itemstack1);
+            }
+
+            if (itemstack.isEmpty()) {
+                heldItem.setHeldItem(hand, itemstack1);
+            } else if (!heldItem.inventory.addItemStackToInventory(itemstack1)) {
+                heldItem.dropItem(itemstack1, false);
+            }
+
+            this.remove();
+            return ActionResultType.func_233537_a_(this.world.isRemote);
+        } else {
+            return super.func_230254_b_(heldItem, hand);
+        }
+    }
 
     @Override
     public boolean isBreedingItem(ItemStack stack) {

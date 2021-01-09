@@ -23,8 +23,7 @@ public class CommonSetup {
     public static final ItemGroup ITEM_GROUP = new ItemGroup("untitledcreaturemod") {
         @Override
         public ItemStack createIcon() {
-            //FIX THIS USING REGISTRY INSTEAD OF MESSY FIX
-            return new ItemStack(Registration.COOKED_TOAD_LEGS.get());
+            return new ItemStack(Registration.TOAD_BUCKET.get());
         }
     };
 
