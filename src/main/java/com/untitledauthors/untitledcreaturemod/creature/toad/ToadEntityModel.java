@@ -19,7 +19,7 @@ public class ToadEntityModel extends AnimatedGeoModel<ToadEntity> {
 
     @Override
     public ResourceLocation getTextureLocation(ToadEntity toadEntity) {
-        return new ResourceLocation(MODID, "textures/entity/toad.png");
+        return new ResourceLocation(MODID, "textures/entity/toad/toad.png");
     }
 
     @Override

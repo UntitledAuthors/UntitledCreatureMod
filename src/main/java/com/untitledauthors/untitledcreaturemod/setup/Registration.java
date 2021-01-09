@@ -1,7 +1,6 @@
 package com.untitledauthors.untitledcreaturemod.setup;
 
 import com.untitledauthors.untitledcreaturemod.creature.toad.ToadEntity;
-import com.untitledauthors.untitledcreaturemod.creature.toad.ToadEntityRenderer;
 import com.untitledauthors.untitledcreaturemod.items.ToadMobEggItem;
 import net.minecraft.item.Item;
 import net.minecraft.entity.EntityClassification;

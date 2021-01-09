@@ -12,7 +12,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.pathfinding.*;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
@@ -32,17 +32,29 @@ public class ToadEntity extends AnimalEntity implements IAnimatable {
 
     private final AnimationFactory factory = new AnimationFactory(this);
     public static AnimationBuilder IDLE_ANIM = new AnimationBuilder().addAnimation("idle");
+    public static AnimationBuilder IDLE_SWIM_ANIM = new AnimationBuilder().addAnimation("idle_swim");
     public static AnimationBuilder WALK_ANIM = new AnimationBuilder().addAnimation("walk");
+    public static AnimationBuilder SWIM_ANIM = new AnimationBuilder().addAnimation("swim");
     public static Item BREEDING_ITEM = Items.SPIDER_EYE;
 
 
     public ToadEntity(EntityType<? extends AnimalEntity> type, World worldIn) {
         super(type, worldIn);
+        this.setPathPriority(PathNodeType.WATER, 0.0F);
+    }
+
+    protected PathNavigator createNavigator(World worldIn) {
+        return new ToadEntity.Navigator(this, worldIn);
+    }
+
+    @Override
+    public int getMaxAir() {
+        return 600;
     }
 
     public static AttributeModifierMap.MutableAttribute getDefaultAttributes() {
         return MobEntity.func_233666_p_().createMutableAttribute(Attributes.MAX_HEALTH, 10.0D)
-                .createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.2F)
+                .createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.25F)
                 .createMutableAttribute(Attributes.ATTACK_DAMAGE, 1.0F);
     }
 
@@ -53,22 +65,47 @@ public class ToadEntity extends AnimalEntity implements IAnimatable {
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         AnimationController controller = event.getController();
-        controller.setAnimation(event.isMoving() ? WALK_ANIM : IDLE_ANIM);
+        // TODO: Come up with alternative moving predicate?
+        //       The default one doesn't seen to work with slow movement speeds.
+        boolean isInWater = isInWater();
+        boolean isMoving = isInWater ? !(limbSwingAmount > -0.02) || !(limbSwingAmount < 0.02) : !(limbSwingAmount > -0.10F) || !(limbSwingAmount < 0.10F);
+        AnimationBuilder anim = isInWater ? IDLE_SWIM_ANIM : IDLE_ANIM;
+        if (isMoving) {
+            anim = isInWater ? SWIM_ANIM : WALK_ANIM;
+        }
+        controller.setAnimation(anim);
+
         return PlayState.CONTINUE;
     }
 
     protected void registerGoals() {
-        this.goalSelector.addGoal(0, new SwimGoal(this));
+        this.goalSelector.addGoal(0, new ToadBreatheAirGoal(this));
         this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 1.25D, true));
         this.goalSelector.addGoal(2, new BreedGoal(this, 1.0D));
-        this.goalSelector.addGoal(3, new TemptGoal(this, 1.25D, Ingredient.fromItems(BREEDING_ITEM), false));
+        this.goalSelector.addGoal(3, new ToadTemptGoal(this, 1.1D, BREEDING_ITEM));
         this.goalSelector.addGoal(4, new FollowParentGoal(this, 1.25D));
-        this.goalSelector.addGoal(5, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
+        this.goalSelector.addGoal(5, new RandomWalkingGoal(this, 1.0D));
         this.goalSelector.addGoal(6, new LookAtGoal(this, PlayerEntity.class, 6.0F));
         this.goalSelector.addGoal(7, new LookRandomlyGoal(this));
 
         this.targetSelector.addGoal(0, new HurtByTargetGoal(this));
     }
+
+    static class Navigator extends SwimmerPathNavigator {
+        Navigator(ToadEntity turtle, World worldIn) {
+            super(turtle, worldIn);
+        }
+
+        protected boolean canNavigate() {
+            return true;
+        }
+
+        protected PathFinder getPathFinder(int p_179679_1_) {
+            this.nodeProcessor = new WalkAndSwimNodeProcessor();
+            return new PathFinder(this.nodeProcessor, p_179679_1_);
+        }
+    }
+
 
     @Override
     public boolean isBreedingItem(ItemStack stack) {
