@@ -1,14 +1,11 @@
 package com.untitledauthors.untitledcreaturemod.setup;
 
 import com.untitledauthors.untitledcreaturemod.creature.rock_antelope.RockAntelopeEntity;
-import com.untitledauthors.untitledcreaturemod.creature.rock_antelope.RockAntelopeEntityRenderer;
 import com.untitledauthors.untitledcreaturemod.creature.toad.ToadBucket;
 import com.untitledauthors.untitledcreaturemod.creature.toad.ToadEntity;
-import com.untitledauthors.untitledcreaturemod.items.ToadMobEggItem;
+import com.untitledauthors.untitledcreaturemod.items.UCMSpawnEggItem;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.item.FishBucketItem;
 import net.minecraft.item.Food;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
@@ -17,7 +14,6 @@ import net.minecraft.util.SoundEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.forgespi.Environment;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
@@ -41,7 +37,11 @@ public class Registration {
                     .build("rock_antelope"));
 
     // Items
-    public static final RegistryObject<ToadMobEggItem> TOAD_EGG = ITEMS.register("toad_egg", ToadMobEggItem::new);
+
+        //spawn eggs having both these lines uncommented causes the toad egg to appear white
+    public static final RegistryObject<UCMSpawnEggItem> TOAD_EGG = ITEMS.register("toad_egg",() -> new UCMSpawnEggItem(TOAD, 0x32FF53,0x63FFC1, new Item.Properties().maxStackSize(1).group(CommonSetup.ITEM_GROUP)));
+    public static final RegistryObject<UCMSpawnEggItem> ROCK_ANTELOPE_EGG = ITEMS.register("rock_antelope_egg",() -> new UCMSpawnEggItem(ROCK_ANTELOPE, 0x65391C,0xA1501B, new Item.Properties().maxStackSize(1).group(CommonSetup.ITEM_GROUP)));
+
 
     public static final RegistryObject<Item> RAW_TOAD_LEGS = ITEMS.register("raw_toad_legs",
             () -> new Item(((new Item.Properties()).group(ItemGroup.FOOD)
