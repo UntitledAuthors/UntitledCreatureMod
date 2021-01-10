@@ -10,43 +10,29 @@ import net.minecraft.item.SpawnEggItem;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraftforge.common.util.Lazy;
-import net.minecraftforge.common.util.NonNullSupplier;
-import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
+
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Supplier;
 
-public class UCMSpawnEggItem extends SpawnEggItem {
+public class ModSpawnEggItem extends SpawnEggItem {
+    protected static final List<ModSpawnEggItem> UNADDED_EGGS = new ArrayList<>();
+    private final Supplier<? extends EntityType<?>> entityTypeSupplier;
 
-    protected static final List<UCMSpawnEggItem> UNADDED_EGGS = new ArrayList<>();
-    private final Lazy<? extends EntityType<?>> entityTypeSupplier;
-
-    public UCMSpawnEggItem
+    // This code is mostly taken and adapted from here
+    // https://github.com/Cadiboo/Example-Mod/blob/1.15.2/src/main/java/io/github/cadiboo/examplemod/item/ModdedSpawnEggItem.java
+    // Hope that forge will fix this soon
+    public ModSpawnEggItem
     (
             //constructor args:
-            final NonNullSupplier<? extends EntityType<?>> entityTypeSupplier, //A generic supplier of any generic that extends EntityType
+            final Supplier<? extends EntityType<?>> entityTypeSupplier, //A generic supplier of any generic that extends EntityType
             final int primaryColour, //primary colour to be used for the egg
             final int secondaryColour,  //secondary colour to be used for the egg
             Properties builder
-    )
-    {
-        //complete constructor
-        super(null, primaryColour, secondaryColour, builder);
-        this.entityTypeSupplier = Lazy.of(entityTypeSupplier::get);
-        UNADDED_EGGS.add(this);
-    }
-
-    public UCMSpawnEggItem
-    (
-            //constructor args:
-            final RegistryObject<? extends EntityType<?>> entityTypeSupplier, //A generic supplier of any generic that extends EntityType
-            final int primaryColour, //primary colour to be used for the egg
-            final int secondaryColour,  //secondary colour to be used for the egg
-            Properties builder
-    )
-    {
+    ) {
         //complete constructor
         super(null, primaryColour, secondaryColour, builder);
         this.entityTypeSupplier = Lazy.of(entityTypeSupplier);
@@ -54,11 +40,8 @@ public class UCMSpawnEggItem extends SpawnEggItem {
     }
 
     public static void initUnaddedEggs() {
-
         final Map<EntityType<?>, SpawnEggItem> EGGS = ObfuscationReflectionHelper.getPrivateValue(SpawnEggItem.class, null, "field_195987_b");
-
         DefaultDispenseItemBehavior defaultDispenseItemBehavior = new DefaultDispenseItemBehavior() {
-
             public ItemStack dispenseStack(IBlockSource source, ItemStack stack) {
                 Direction direction = source.getBlockState().get(DispenserBlock.FACING);
                 EntityType<?> entitytype = ((SpawnEggItem) stack.getItem()).getType(stack.getTag());
@@ -67,7 +50,6 @@ public class UCMSpawnEggItem extends SpawnEggItem {
                 return stack;
             }
         };
-
 
         for (final SpawnEggItem egg : UNADDED_EGGS) {
             EGGS.put(egg.getType(null), egg);

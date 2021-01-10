@@ -33,6 +33,4 @@ public class UntitledCreatureMod {
     private void clientSetup(final FMLClientSetupEvent event) {
         ClientSetup.setupCreatureRenderers();
     }
-
-
 }

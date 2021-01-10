@@ -3,7 +3,7 @@ package com.untitledauthors.untitledcreaturemod.setup;
 import com.untitledauthors.untitledcreaturemod.creature.rock_antelope.RockAntelopeEntity;
 import com.untitledauthors.untitledcreaturemod.creature.toad.ToadBucket;
 import com.untitledauthors.untitledcreaturemod.creature.toad.ToadEntity;
-import com.untitledauthors.untitledcreaturemod.items.UCMSpawnEggItem;
+import com.untitledauthors.untitledcreaturemod.items.ModSpawnEggItem;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
 import net.minecraft.item.Food;
@@ -39,8 +39,8 @@ public class Registration {
     // Items
 
         //spawn eggs having both these lines uncommented causes the toad egg to appear white
-    public static final RegistryObject<Item>ANTELOPE_EGG = ITEMS.register("antelope_egg",() -> new UCMSpawnEggItem(ROCK_ANTELOPE, 0x65391C,0xA1501B, new Item.Properties().maxStackSize(1).group(CommonSetup.ITEM_GROUP)));
-    public static final RegistryObject<Item>TOAD_EGG = ITEMS.register("toad_egg",() -> new UCMSpawnEggItem(TOAD, 0x32FF53,0x63FFC1, new Item.Properties().maxStackSize(1).group(CommonSetup.ITEM_GROUP)));
+    public static final RegistryObject<Item>ANTELOPE_EGG = ITEMS.register("antelope_egg",() -> new ModSpawnEggItem(ROCK_ANTELOPE, 0x65391C,0xA1501B, new Item.Properties().maxStackSize(1).group(CommonSetup.ITEM_GROUP)));
+    public static final RegistryObject<Item>TOAD_EGG = ITEMS.register("toad_egg",() -> new ModSpawnEggItem(TOAD, 0x32FF53,0x63FFC1, new Item.Properties().maxStackSize(1).group(CommonSetup.ITEM_GROUP)));
 
 
     public static final RegistryObject<Item> RAW_TOAD_LEGS = ITEMS.register("raw_toad_legs",

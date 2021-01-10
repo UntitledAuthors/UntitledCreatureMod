@@ -5,6 +5,8 @@
   "item.untitledcreaturemod.raw_toad_legs": "Raw Toad Legs",
   "item.untitledcreaturemod.cooked_toad_legs": "Cooked Toad Legs",
   "item.untitledcreaturemod.toad_bucket": "Bucket of Toad",
+  "item.untitledcreaturemod.toad_egg": "Toad Spawn Egg",
+  "item.untitledcreaturemod.antelope_egg": "Antelope Spawn Egg",
 
   "advancement.untitledcreaturemod:toadCatched": "Tactical Toading",
   "advancement.untitledcreaturemod:toadCatched.desc": "Catch a toad in a bucket. Or is it a frog?",
