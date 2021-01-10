@@ -16,6 +16,7 @@ import net.minecraft.pathfinding.*;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.*;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
@@ -112,6 +113,34 @@ public class ToadEntity extends AnimalEntity implements IAnimatable {
         } else {
             return false;
         }
+    }
+
+    @Override
+    protected void damageEntity(DamageSource damageSrc, float damageAmount) {
+        super.damageEntity(damageSrc, damageAmount);
+    }
+
+    @Override
+    public boolean isPotionApplicable(EffectInstance potioneffectIn) {
+        // Toad is immune to poison effect
+        if (potioneffectIn.getPotion() == Effects.POISON) {
+            return false;
+        }
+        return super.isPotionApplicable(potioneffectIn);
+    }
+
+    public boolean isInvulnerableTo(DamageSource source) {
+        if (source.getImmediateSource() instanceof PoisonousSecretionsEntity) {
+            return true;
+        }
+        return super.isInvulnerableTo(source);
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+        // this.setCustomName(new StringTextComponent(String.format("Air: %d", getAir())));
+        // this.setCustomNameVisible(true);
     }
 
     static class Navigator extends SwimmerPathNavigator {

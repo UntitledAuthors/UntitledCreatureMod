@@ -7,6 +7,7 @@
   "item.untitledcreaturemod.toad_bucket": "Bucket of Toad",
   "item.untitledcreaturemod.toad_egg": "Toad Spawn Egg",
   "item.untitledcreaturemod.antelope_egg": "Antelope Spawn Egg",
+  "item.untitledcreaturemod.poisonous_secretions": "Poisonous Secretions",
 
   "advancement.untitledcreaturemod:toadCatched": "Tactical Toading",
   "advancement.untitledcreaturemod:toadCatched.desc": "Catch a toad in a bucket. Or is it a frog?",

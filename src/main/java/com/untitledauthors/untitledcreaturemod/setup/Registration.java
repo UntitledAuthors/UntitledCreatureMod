@@ -1,9 +1,12 @@
 package com.untitledauthors.untitledcreaturemod.setup;
 
 import com.untitledauthors.untitledcreaturemod.creature.rock_antelope.RockAntelopeEntity;
+import com.untitledauthors.untitledcreaturemod.creature.toad.PoisonousSecretionsEntity;
+import com.untitledauthors.untitledcreaturemod.creature.toad.PoisonousSecretionsItem;
 import com.untitledauthors.untitledcreaturemod.creature.toad.ToadBucket;
 import com.untitledauthors.untitledcreaturemod.creature.toad.ToadEntity;
 import com.untitledauthors.untitledcreaturemod.items.ModSpawnEggItem;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
 import net.minecraft.item.Food;
@@ -24,7 +27,7 @@ public class Registration {
     private static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MODID);
     private static final DeferredRegister<SoundEvent> SOUNDS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, MODID);
 
-    // Mobs/Entities
+    // Creature Entities
     public static final RegistryObject<EntityType<ToadEntity>> TOAD = ENTITIES.register("toad",
             () -> EntityType.Builder.create(ToadEntity::new, EntityClassification.CREATURE)
                     .size(.8f, .4f)
@@ -36,12 +39,15 @@ public class Registration {
                     .setShouldReceiveVelocityUpdates(true)
                     .build("rock_antelope"));
 
-    // Items
+    // Misc Entities
+    public static final RegistryObject<EntityType<PoisonousSecretionsEntity>> POISONOUS_SECRETIONS_PROJECTILE =
+            ENTITIES.register("poisonous_secretions_projectile",
+            () -> EntityType.Builder.<PoisonousSecretionsEntity>create(PoisonousSecretionsEntity::new, EntityClassification.MISC)
+                    .size(0.25F, 0.25F).build("poisonous_secretions_entity"));
 
-        //spawn eggs having both these lines uncommented causes the toad egg to appear white
+    // Items
     public static final RegistryObject<Item>ANTELOPE_EGG = ITEMS.register("antelope_egg",() -> new ModSpawnEggItem(ROCK_ANTELOPE, 0x65391C,0xA1501B, new Item.Properties().maxStackSize(1).group(CommonSetup.ITEM_GROUP)));
     public static final RegistryObject<Item>TOAD_EGG = ITEMS.register("toad_egg",() -> new ModSpawnEggItem(TOAD, 0x32FF53,0x63FFC1, new Item.Properties().maxStackSize(1).group(CommonSetup.ITEM_GROUP)));
-
 
     public static final RegistryObject<Item> RAW_TOAD_LEGS = ITEMS.register("raw_toad_legs",
             () -> new Item(((new Item.Properties()).group(ItemGroup.FOOD)
@@ -51,11 +57,12 @@ public class Registration {
                     .food((new Food.Builder()).hunger(6).saturation(0.6F).meat().build()))));
     public static final RegistryObject<Item> TOAD_BUCKET = ITEMS.register("toad_bucket",
             () -> new ToadBucket(TOAD, new Item.Properties().maxStackSize(1).group(CommonSetup.ITEM_GROUP)));
+    public static final RegistryObject<Item> POISONOUS_SECRETIONS_ITEM = ITEMS.register("poisonous_secretions",
+            () -> new PoisonousSecretionsItem(new Item.Properties().maxStackSize(16).group(CommonSetup.ITEM_GROUP)));
 
     // Sounds
     public static final RegistryObject<SoundEvent> TOAD_AMBIENT = SOUNDS.register("toad_ambient",
             () -> new SoundEvent(new ResourceLocation(MODID, "toad_ambient")));
-
 
     public static void init() {
         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();

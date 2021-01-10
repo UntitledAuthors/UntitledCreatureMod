@@ -1,9 +1,6 @@
 package com.untitledauthors.untitledcreaturemod.creature.rock_antelope;
 
-import com.untitledauthors.untitledcreaturemod.creature.toad.ToadBreatheAirGoal;
-import com.untitledauthors.untitledcreaturemod.creature.toad.ToadTemptGoal;
 import com.untitledauthors.untitledcreaturemod.setup.Registration;
-import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.entity.AgeableEntity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.MobEntity;
@@ -12,13 +9,10 @@ import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.goal.*;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.pathfinding.*;
-import net.minecraft.util.*;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import software.bernie.geckolib3.core.IAnimatable;
