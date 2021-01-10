@@ -1,14 +1,11 @@
 package com.untitledauthors.untitledcreaturemod.setup;
 
 import com.untitledauthors.untitledcreaturemod.creature.rock_antelope.RockAntelopeEntity;
-import com.untitledauthors.untitledcreaturemod.creature.rock_antelope.RockAntelopeEntityRenderer;
 import com.untitledauthors.untitledcreaturemod.creature.toad.ToadBucket;
 import com.untitledauthors.untitledcreaturemod.creature.toad.ToadEntity;
 import com.untitledauthors.untitledcreaturemod.items.ToadMobEggItem;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
-import net.minecraft.fluid.Fluids;
-import net.minecraft.item.FishBucketItem;
 import net.minecraft.item.Food;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
@@ -17,7 +14,6 @@ import net.minecraft.util.SoundEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.forgespi.Environment;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
