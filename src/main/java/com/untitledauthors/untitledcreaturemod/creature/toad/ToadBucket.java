@@ -8,10 +8,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
 import net.minecraft.item.Items;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvents;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
@@ -21,9 +18,9 @@ import java.util.function.Supplier;
 public class ToadBucket extends Item {
     private final Supplier<? extends EntityType<?>> toadTypeSupplier;
 
-    public ToadBucket(java.util.function.Supplier<? extends EntityType<?>> fishTypeIn, Item.Properties builder) {
+    public ToadBucket(Supplier<? extends EntityType<?>> toadType, Item.Properties builder) {
         super(builder);
-        this.toadTypeSupplier = fishTypeIn;
+        this.toadTypeSupplier = toadType;
     }
 
     @Override
@@ -32,11 +29,12 @@ public class ToadBucket extends Item {
         BlockPos pos = context.getPos();
         PlayerEntity player = context.getPlayer();
         Hand hand = context.getHand();
+        Direction facing = context.getFace();
 
         if(!world.isRemote) {
             // If executed on server
             // TODO: Save/Load NBT/Attributes from Toad
-            placeToad((ServerWorld) world, context.getItem(), context.getPos());
+            placeToad((ServerWorld) world, context.getItem(), pos.offset(facing));
             player.swingArm(hand);
             if(!player.isCreative()) {
                 player.setHeldItem(hand, new ItemStack(Items.BUCKET));
