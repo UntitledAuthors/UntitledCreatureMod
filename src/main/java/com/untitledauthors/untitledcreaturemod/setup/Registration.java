@@ -47,7 +47,7 @@ public class Registration {
 
     // Items
     public static final RegistryObject<Item>ANTELOPE_EGG = ITEMS.register("antelope_egg",() -> new ModSpawnEggItem(ROCK_ANTELOPE, 0x65391C,0xA1501B, new Item.Properties().maxStackSize(1).group(CommonSetup.ITEM_GROUP)));
-    public static final RegistryObject<Item>TOAD_EGG = ITEMS.register("toad_egg",() -> new ModSpawnEggItem(TOAD, 0x454A11FF,0xDED46AFF, new Item.Properties().maxStackSize(1).group(CommonSetup.ITEM_GROUP)));
+    public static final RegistryObject<Item>TOAD_EGG = ITEMS.register("toad_egg",() -> new ModSpawnEggItem(TOAD, 0x363e0a,0xdfd66b, new Item.Properties().maxStackSize(1).group(CommonSetup.ITEM_GROUP)));
 
     public static final RegistryObject<Item> RAW_TOAD_LEGS = ITEMS.register("raw_toad_legs",
             () -> new Item(((new Item.Properties()).group(ItemGroup.FOOD)
@@ -55,6 +55,16 @@ public class Registration {
     public static final RegistryObject<Item> COOKED_TOAD_LEGS = ITEMS.register("cooked_toad_legs",
             () -> new Item(((new Item.Properties()).group(ItemGroup.FOOD)
                     .food((new Food.Builder()).hunger(6).saturation(0.6F).meat().build()))));
+
+    public static final RegistryObject<Item> RAW_ANTELOPE_MEAT = ITEMS.register("raw_antelope_meat",
+            () -> new Item(((new Item.Properties()).group(ItemGroup.FOOD)
+                    .food((new Food.Builder()).hunger(4).saturation(0.6F).meat().build()))));
+
+    public static final RegistryObject<Item> COOKED_ANTELOPE_MEAT = ITEMS.register("cooked_antelope_meat",
+            () -> new Item(((new Item.Properties()).group(ItemGroup.FOOD)
+                    .food((new Food.Builder()).hunger(8).saturation(0.9F).meat().build()))));
+
+
     public static final RegistryObject<Item> TOAD_BUCKET = ITEMS.register("toad_bucket",
             () -> new ToadBucket(TOAD, new Item.Properties().maxStackSize(1).group(CommonSetup.ITEM_GROUP)));
     public static final RegistryObject<Item> POISONOUS_SECRETIONS_ITEM = ITEMS.register("poisonous_secretions",

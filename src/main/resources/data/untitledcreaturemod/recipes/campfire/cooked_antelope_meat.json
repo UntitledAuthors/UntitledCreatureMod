@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:campfire_cooking",
+  "ingredient": {
+    "item": "untitledcreaturemod:raw_antelope_meat"
+  },
+  "result": "untitledcreaturemod:cooked_antelope_meat",
+  "experience": 0.55,
+  "cookingtime": 600
+}
