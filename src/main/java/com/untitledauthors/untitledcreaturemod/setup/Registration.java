@@ -47,7 +47,7 @@ public class Registration {
 
     // Items
     public static final RegistryObject<Item>ANTELOPE_EGG = ITEMS.register("antelope_egg",() -> new ModSpawnEggItem(ROCK_ANTELOPE, 0x65391C,0xA1501B, new Item.Properties().maxStackSize(1).group(CommonSetup.ITEM_GROUP)));
-    public static final RegistryObject<Item>TOAD_EGG = ITEMS.register("toad_egg",() -> new ModSpawnEggItem(TOAD, 0x32FF53,0x63FFC1, new Item.Properties().maxStackSize(1).group(CommonSetup.ITEM_GROUP)));
+    public static final RegistryObject<Item>TOAD_EGG = ITEMS.register("toad_egg",() -> new ModSpawnEggItem(TOAD, 0x454A11FF,0xDED46AFF, new Item.Properties().maxStackSize(1).group(CommonSetup.ITEM_GROUP)));
 
     public static final RegistryObject<Item> RAW_TOAD_LEGS = ITEMS.register("raw_toad_legs",
             () -> new Item(((new Item.Properties()).group(ItemGroup.FOOD)
