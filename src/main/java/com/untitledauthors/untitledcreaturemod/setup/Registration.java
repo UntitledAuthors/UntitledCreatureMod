@@ -64,6 +64,7 @@ public class Registration {
             () -> new Item(((new Item.Properties()).group(ItemGroup.FOOD)
                     .food((new Food.Builder()).hunger(8).saturation(0.9F).meat().build()))));
 
+    public static final RegistryObject<Item> ANTELOPE_HORN = ITEMS.register("antelope_horn", () -> new Item(new Item.Properties().maxStackSize(64).group(CommonSetup.ITEM_GROUP)));
 
     public static final RegistryObject<Item> TOAD_BUCKET = ITEMS.register("toad_bucket",
             () -> new ToadBucket(TOAD, new Item.Properties().maxStackSize(1).group(CommonSetup.ITEM_GROUP)));
