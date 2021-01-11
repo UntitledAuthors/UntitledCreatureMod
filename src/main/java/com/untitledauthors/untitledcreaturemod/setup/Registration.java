@@ -1,12 +1,12 @@
 package com.untitledauthors.untitledcreaturemod.setup;
 
 import com.untitledauthors.untitledcreaturemod.creature.rock_antelope.RockAntelopeEntity;
-import com.untitledauthors.untitledcreaturemod.creature.toad.PoisonousSecretionsEntity;
-import com.untitledauthors.untitledcreaturemod.creature.toad.PoisonousSecretionsItem;
-import com.untitledauthors.untitledcreaturemod.creature.toad.ToadBucket;
-import com.untitledauthors.untitledcreaturemod.creature.toad.ToadEntity;
+import com.untitledauthors.untitledcreaturemod.creature.toad.*;
 import com.untitledauthors.untitledcreaturemod.items.ModSpawnEggItem;
-import net.minecraft.entity.Entity;
+import net.minecraft.block.AbstractBlock;
+import net.minecraft.block.Block;
+import net.minecraft.block.Blocks;
+import net.minecraft.block.SoundType;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
 import net.minecraft.item.Food;
@@ -14,6 +14,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
+import net.minecraftforge.common.ToolType;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -25,6 +26,7 @@ import static com.untitledauthors.untitledcreaturemod.UntitledCreatureMod.MODID;
 public class Registration {
     private static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITIES, MODID);
     private static final DeferredRegister<Item> ITEMS = DeferredRegister.create(ForgeRegistries.ITEMS, MODID);
+    private static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, MODID);
     private static final DeferredRegister<SoundEvent> SOUNDS = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, MODID);
 
     // Creature Entities
@@ -70,15 +72,19 @@ public class Registration {
             () -> new ToadBucket(TOAD, new Item.Properties().maxStackSize(1).group(CommonSetup.ITEM_GROUP)));
     public static final RegistryObject<Item> POISONOUS_SECRETIONS_ITEM = ITEMS.register("poisonous_secretions",
             () -> new PoisonousSecretionsItem(new Item.Properties().maxStackSize(16).group(CommonSetup.ITEM_GROUP)));
-
     // Sounds
     public static final RegistryObject<SoundEvent> TOAD_AMBIENT = SOUNDS.register("toad_ambient",
             () -> new SoundEvent(new ResourceLocation(MODID, "toad_ambient")));
+
+    // Blocks
+    public static final RegistryObject<Block> POISONOUS_SECRETIONS_CARPET = BLOCKS.register("poisonous_secretions_carpet", () -> new PoisonousSecretionsCarpet(
+            AbstractBlock.Properties.from(Blocks.SNOW).sound(SoundType.SLIME).notSolid().doesNotBlockMovement().harvestTool(ToolType.SHOVEL)));
 
     public static void init() {
         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
         ENTITIES.register(bus);
         ITEMS.register(bus);
+        BLOCKS.register(bus);
         SOUNDS.register(bus);
     }
 }

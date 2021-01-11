@@ -1,6 +1,7 @@
 package com.untitledauthors.untitledcreaturemod.creature.toad;
 
 import com.untitledauthors.untitledcreaturemod.setup.Registration;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -11,6 +12,10 @@ import net.minecraft.network.IPacket;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvents;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.EntityRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.world.World;
@@ -62,8 +67,12 @@ public class PoisonousSecretionsEntity extends ProjectileItemEntity {
         if (!this.world.isRemote) {
             this.world.setEntityState(this, (byte)3);
             if (result.getType() == RayTraceResult.Type.BLOCK) {
-                LOGGER.info("Hit {}", result.getHitVec());
-                // Registration.TOAD.get().spawn(world, null, result.getHitVec())
+                BlockRayTraceResult blockTrace = (BlockRayTraceResult) result;
+                BlockPos placePos = blockTrace.getPos().offset(blockTrace.getFace());
+                if (!world.getBlockState(placePos).isSolid() && world.getBlockState(placePos.down()).isSolid()) {
+                    world.playSound(null, placePos, SoundEvents.BLOCK_SLIME_BLOCK_PLACE, SoundCategory.BLOCKS, 0.8f, 1.2f);
+                    world.setBlockState(placePos, Registration.POISONOUS_SECRETIONS_CARPET.get().getDefaultState());
+                }
             }
         }
         this.remove();
