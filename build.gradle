@@ -107,8 +107,8 @@ dependencies {
     minecraft 'net.minecraftforge:forge:1.16.4-35.1.4'
     compile fg.deobf("software.bernie.geckolib:forge-1.16.4-geckolib:${geckolib_version}")
 
-    compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}:api")
-    runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}")
+    // compileOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}:api")
+    // runtimeOnly fg.deobf("mezz.jei:jei-${minecraft_version}:${jei_version}")
     // You may put jars on which you depend on in ./libs or you may define them like so..
     // compile "some.group:artifact:version:classifier"
     // compile "some.group:artifact:version"
