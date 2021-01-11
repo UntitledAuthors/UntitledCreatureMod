@@ -31,6 +31,12 @@ public class ToadEntityModel extends AnimatedGeoModel<ToadEntity> {
     public void setLivingAnimations(ToadEntity entity, Integer uniqueID, @Nullable AnimationEvent customPredicate) {
         super.setLivingAnimations(entity, uniqueID, customPredicate);
         EntityModelData data = (EntityModelData) customPredicate.getExtraData().get(0);
+        if (entity.isChild()) {
+            IBone root = this.getAnimationProcessor().getBone("bodymain");
+            root.setScaleX(0.7f);
+            root.setScaleY(0.7f);
+            root.setScaleZ(0.7f);
+        }
 
         // Apply head look to model
         IBone head = this.getAnimationProcessor().getBone("head");
