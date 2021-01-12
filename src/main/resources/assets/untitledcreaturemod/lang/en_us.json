@@ -13,6 +13,9 @@
   "item.untitledcreaturemod.raw_antelope_meat": "Raw Antelope Meat",
   "item.untitledcreaturemod.cooked_antelope_meat": "Cooked Antelope Meat",
   "item.untitledcreaturemod.antelope_horn": "Antelope Horn",
+  "item.untitledcreaturemod.stonehorn_dagger": "Stonehorn Dagger",
+
+
 
   "advancement.untitledcreaturemod:toadCatched": "Tactical Toading",
   "advancement.untitledcreaturemod:toadCatched.desc": "Catch a toad in a bucket. Or is it a frog?",
