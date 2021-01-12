@@ -3,6 +3,8 @@ package com.untitledauthors.untitledcreaturemod.setup;
 import com.untitledauthors.untitledcreaturemod.creature.rock_antelope.RockAntelopeEntity;
 import com.untitledauthors.untitledcreaturemod.creature.toad.*;
 import com.untitledauthors.untitledcreaturemod.items.ModSpawnEggItem;
+import com.untitledauthors.untitledcreaturemod.items.tools.CustomTierList;
+import com.untitledauthors.untitledcreaturemod.items.tools.StonehornDaggerItem;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
@@ -67,6 +69,8 @@ public class Registration {
                     .food((new Food.Builder()).hunger(8).saturation(0.9F).meat().build()))));
 
     public static final RegistryObject<Item> ANTELOPE_HORN = ITEMS.register("antelope_horn", () -> new Item(new Item.Properties().maxStackSize(64).group(CommonSetup.ITEM_GROUP)));
+
+    public static final RegistryObject<Item> STONEHORN_DAGGER = ITEMS.register("stonehorn_dagger", () -> new StonehornDaggerItem(CustomTierList.STONEHORN, 1, -2.3f, new Item.Properties().maxStackSize(1).group(ItemGroup.COMBAT)));
 
     public static final RegistryObject<Item> TOAD_BUCKET = ITEMS.register("toad_bucket",
             () -> new ToadBucket(TOAD, new Item.Properties().maxStackSize(1).group(CommonSetup.ITEM_GROUP)));
