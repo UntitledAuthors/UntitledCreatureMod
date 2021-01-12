@@ -70,7 +70,7 @@ public class Registration {
 
     public static final RegistryObject<Item> ANTELOPE_HORN = ITEMS.register("antelope_horn", () -> new Item(new Item.Properties().maxStackSize(64).group(CommonSetup.ITEM_GROUP)));
 
-    public static final RegistryObject<Item> STONEHORN_DAGGER = ITEMS.register("stonehorn_dagger", () -> new StonehornDaggerItem(CustomTierList.STONEHORN, 1, -2.3f, new Item.Properties().maxStackSize(1).group(ItemGroup.COMBAT)));
+    public static final RegistryObject<Item> STONEHORN_DAGGER = ITEMS.register("stonehorn_dagger", () -> new StonehornDaggerItem(CustomTierList.STONEHORN, 1, -2.1f, new Item.Properties().maxStackSize(1).group(ItemGroup.COMBAT)));
 
     public static final RegistryObject<Item> TOAD_BUCKET = ITEMS.register("toad_bucket",
             () -> new ToadBucket(TOAD, new Item.Properties().maxStackSize(1).group(CommonSetup.ITEM_GROUP)));
