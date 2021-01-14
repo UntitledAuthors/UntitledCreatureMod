@@ -1,5 +1,9 @@
 package com.untitledauthors.untitledcreaturemod.creature.toad;
 
+import com.untitledauthors.untitledcreaturemod.creature.toad.ai.AttackOnceGoal;
+import com.untitledauthors.untitledcreaturemod.creature.toad.ai.ToadFleeGoal;
+import com.untitledauthors.untitledcreaturemod.creature.toad.ai.HurtByTargetOnceGoal;
+import com.untitledauthors.untitledcreaturemod.creature.toad.ai.ToadBreatheAirGoal;
 import com.untitledauthors.untitledcreaturemod.setup.Registration;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.entity.*;
@@ -16,7 +20,7 @@ import net.minecraft.pathfinding.*;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
 import net.minecraft.util.*;
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
@@ -29,9 +33,11 @@ import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
 import javax.annotation.Nullable;
+import java.util.List;
 
 public class ToadEntity extends AnimalEntity implements IAnimatable {
 
+    private static final int FLEE_DURATION_S = 30;
     private final AnimationFactory factory = new AnimationFactory(this);
     public static AnimationBuilder IDLE_ANIM = new AnimationBuilder().addAnimation("idle");
     public static AnimationBuilder IDLE_SWIM_ANIM = new AnimationBuilder().addAnimation("idle_swim");
@@ -39,6 +45,9 @@ public class ToadEntity extends AnimalEntity implements IAnimatable {
     public static AnimationBuilder SWIM_ANIM = new AnimationBuilder().addAnimation("swim");
     public static Item BREEDING_ITEM = Items.SPIDER_EYE;
 
+    private LivingEntity fleeTarget;
+    /// Number of ticks since the fleeing started
+    private int fleeTargetTimestamp = 0;
 
     public ToadEntity(EntityType<? extends AnimalEntity> type, World worldIn) {
         super(type, worldIn);
@@ -82,15 +91,16 @@ public class ToadEntity extends AnimalEntity implements IAnimatable {
 
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new ToadBreatheAirGoal(this));
-        this.goalSelector.addGoal(1, new MeleeAttackGoal(this, 1.25D, true));
-        this.goalSelector.addGoal(2, new BreedGoal(this, 1.0D));
+        this.goalSelector.addGoal(1, new AttackOnceGoal(this, 1.25D));
+        this.goalSelector.addGoal(2, new ToadFleeGoal(this, 1.5D));
+        this.goalSelector.addGoal(3, new BreedGoal(this, 1.0D));
         this.goalSelector.addGoal(3, new ToadTemptGoal(this, 1.1D, BREEDING_ITEM));
         this.goalSelector.addGoal(4, new FollowParentGoal(this, 1.25D));
         this.goalSelector.addGoal(5, new RandomWalkingGoal(this, 1.0D));
         this.goalSelector.addGoal(6, new LookAtGoal(this, PlayerEntity.class, 6.0F));
         this.goalSelector.addGoal(7, new LookRandomlyGoal(this));
 
-        this.targetSelector.addGoal(0, new HurtByTargetGoal(this));
+        this.targetSelector.addGoal(0, new HurtByTargetOnceGoal(this));
     }
 
     @Override
@@ -99,15 +109,13 @@ public class ToadEntity extends AnimalEntity implements IAnimatable {
         // TODO: Balance
         if (super.attackEntityAsMob(entityIn)) {
             if (entityIn instanceof LivingEntity) {
-                int poisonDuration = 0;
+                int poisonDuration = 3;
                 if (this.world.getDifficulty() == Difficulty.NORMAL) {
                     poisonDuration = 7;
                 } else if (this.world.getDifficulty() == Difficulty.HARD) {
                     poisonDuration = 15;
                 }
-                if (poisonDuration > 0) {
-                    ((LivingEntity)entityIn).addPotionEffect(new EffectInstance(Effects.POISON, poisonDuration * 20, 0));
-                }
+                ((LivingEntity)entityIn).addPotionEffect(new EffectInstance(Effects.POISON, poisonDuration * 20, 0));
             }
             return true;
         } else {
@@ -137,10 +145,54 @@ public class ToadEntity extends AnimalEntity implements IAnimatable {
     }
 
     @Override
+    public boolean attackEntityFrom(DamageSource source, float amount) {
+        if (world.isRemote) {
+            return super.attackEntityFrom(source, amount);
+        }
+        // TODO: Arrows?
+        if (source instanceof EntityDamageSource) {
+            EntityDamageSource entityDamageSource = (EntityDamageSource) source;
+            Entity attacker = entityDamageSource.getTrueSource();
+
+            // TODO: Clean this up maybe
+            boolean alert = true;
+            if (attacker instanceof PlayerEntity) {
+                if (((PlayerEntity) attacker).isCreative()) {
+                    alert = false;
+                }
+            }
+            if (alert) {
+                alertOthersToFlee((LivingEntity)attacker);
+            }
+        }
+
+        return super.attackEntityFrom(source, amount);
+    }
+
+    @Override
     public void tick() {
         super.tick();
+        // Stop fleeing after short amount of time
+        if (fleeTarget != null) {
+            if ((this.ticksExisted - this.fleeTargetTimestamp) > FLEE_DURATION_S*20) {
+                this.setFleeTarget(null);
+            }
+        }
         // this.setCustomName(new StringTextComponent(String.format("Air: %d", getAir())));
         // this.setCustomNameVisible(true);
+    }
+
+    public LivingEntity getFleeTarget() {
+        return this.fleeTarget;
+    }
+
+    public void setFleeTarget(LivingEntity fleeTarget) {
+        this.fleeTargetTimestamp = this.ticksExisted;
+        this.fleeTarget = fleeTarget;
+    }
+
+    public int getFleeTargetTimestamp() {
+        return fleeTargetTimestamp;
     }
 
     static class Navigator extends SwimmerPathNavigator {
@@ -180,6 +232,15 @@ public class ToadEntity extends AnimalEntity implements IAnimatable {
             return ActionResultType.func_233537_a_(this.world.isRemote);
         } else {
             return super.func_230254_b_(heldItem, hand);
+        }
+    }
+
+    protected void alertOthersToFlee(LivingEntity attacker) {
+        double alertRadius = getAttributeValue(Attributes.FOLLOW_RANGE);
+        AxisAlignedBB alertBox = AxisAlignedBB.fromVector(getPositionVec()).grow(alertRadius, 10.0D, alertRadius);
+        List<ToadEntity> list = world.getLoadedEntitiesWithinAABB(ToadEntity.class, alertBox);
+        for (ToadEntity buddy : list) {
+            buddy.setFleeTarget(attacker);
         }
     }
 

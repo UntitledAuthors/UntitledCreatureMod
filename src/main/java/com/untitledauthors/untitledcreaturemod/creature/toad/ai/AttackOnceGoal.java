@@ -43,8 +43,6 @@ public class AttackOnceGoal extends Goal {
         if (targetDistance < attackDistance) {
             this.creature.attackEntityAsMob(this.target);
             this.creature.setAttackTarget(null);
-            this.creature.setLastAttackedEntity(null);
-            // TODO: Alert fleeing
         }
     }
 }
