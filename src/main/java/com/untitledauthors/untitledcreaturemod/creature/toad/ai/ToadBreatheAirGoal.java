@@ -1,4 +1,4 @@
-package com.untitledauthors.untitledcreaturemod.creature.toad;
+package com.untitledauthors.untitledcreaturemod.creature.toad.ai;
 
 
 import net.minecraft.block.BlockState;
