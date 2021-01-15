@@ -1,9 +1,9 @@
 package com.untitledauthors.untitledcreaturemod.creature.toad;
 
 import com.untitledauthors.untitledcreaturemod.creature.toad.ai.AttackOnceGoal;
-import com.untitledauthors.untitledcreaturemod.creature.toad.ai.ToadFleeGoal;
 import com.untitledauthors.untitledcreaturemod.creature.toad.ai.HurtByTargetOnceGoal;
 import com.untitledauthors.untitledcreaturemod.creature.toad.ai.ToadBreatheAirGoal;
+import com.untitledauthors.untitledcreaturemod.creature.toad.ai.ToadFleeGoal;
 import com.untitledauthors.untitledcreaturemod.setup.Registration;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.entity.*;
@@ -16,6 +16,9 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.pathfinding.*;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.Effects;
@@ -32,11 +35,13 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 
 public class ToadEntity extends AnimalEntity implements IAnimatable {
 
+    private static final DataParameter<Boolean> FROM_BUCKET = EntityDataManager.createKey(ToadEntity.class, DataSerializers.BOOLEAN);
     private static final int FLEE_DURATION_S = 30;
     private final AnimationFactory factory = new AnimationFactory(this);
     public static AnimationBuilder IDLE_ANIM = new AnimationBuilder().addAnimation("idle");
@@ -54,7 +59,29 @@ public class ToadEntity extends AnimalEntity implements IAnimatable {
         this.setPathPriority(PathNodeType.WATER, 0.0F);
     }
 
-    protected PathNavigator createNavigator(World worldIn) {
+    protected void registerData() {
+        super.registerData();
+        this.dataManager.register(FROM_BUCKET, false);
+    }
+
+    public boolean isFromBucket() {
+        return this.dataManager.get(FROM_BUCKET);
+    }
+
+    public void setFromBucket(boolean isFromBucket) {
+        this.dataManager.set(FROM_BUCKET, isFromBucket);
+    }
+
+    public boolean preventDespawn() {
+        return super.preventDespawn() || this.isFromBucket();
+    }
+
+    public boolean canDespawn(double distanceToClosestPlayer) {
+        return !this.isFromBucket() && !this.hasCustomName();
+    }
+
+    @Nonnull
+    protected PathNavigator createNavigator(@Nonnull World worldIn) {
         return new ToadEntity.Navigator(this, worldIn);
     }
 
@@ -71,11 +98,11 @@ public class ToadEntity extends AnimalEntity implements IAnimatable {
 
     @Override
     public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController(this, "controller", 5, this::predicate));
+        data.addAnimationController(new AnimationController<>(this, "controller", 5, this::predicate));
     }
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        AnimationController controller = event.getController();
+        AnimationController<ToadEntity> controller = event.getController();
         // TODO: Come up with alternative moving predicate?
         //       The default one doesn't seen to work with slow movement speeds.
         boolean isInWater = isInWater();
@@ -104,7 +131,7 @@ public class ToadEntity extends AnimalEntity implements IAnimatable {
     }
 
     @Override
-    public boolean attackEntityAsMob(Entity entityIn) {
+    public boolean attackEntityAsMob(@Nonnull Entity entityIn) {
         // Mostly copied from CaveSpider
         if (super.attackEntityAsMob(entityIn)) {
             if (entityIn instanceof LivingEntity) {
@@ -123,7 +150,7 @@ public class ToadEntity extends AnimalEntity implements IAnimatable {
     }
 
     @Override
-    protected void damageEntity(DamageSource damageSrc, float damageAmount) {
+    protected void damageEntity(@Nonnull DamageSource damageSrc, float damageAmount) {
         super.damageEntity(damageSrc, damageAmount);
     }
 
@@ -144,7 +171,7 @@ public class ToadEntity extends AnimalEntity implements IAnimatable {
     }
 
     @Override
-    public boolean attackEntityFrom(DamageSource source, float amount) {
+    public boolean attackEntityFrom(@Nonnull DamageSource source, float amount) {
         if (world.isRemote) {
             return super.attackEntityFrom(source, amount);
         }
@@ -177,7 +204,7 @@ public class ToadEntity extends AnimalEntity implements IAnimatable {
             }
         }
         // this.setCustomName(new StringTextComponent(String.format("Air: %d", getAir())));
-        // this.setCustomNameVisible(true);
+        this.setCustomNameVisible(true);
     }
 
     public LivingEntity getFleeTarget() {
@@ -189,10 +216,6 @@ public class ToadEntity extends AnimalEntity implements IAnimatable {
         this.fleeTarget = fleeTarget;
     }
 
-    public int getFleeTargetTimestamp() {
-        return fleeTargetTimestamp;
-    }
-
     static class Navigator extends SwimmerPathNavigator {
         Navigator(ToadEntity turtle, World worldIn) {
             super(turtle, worldIn);
@@ -202,6 +225,7 @@ public class ToadEntity extends AnimalEntity implements IAnimatable {
             return true;
         }
 
+        @Nonnull
         protected PathFinder getPathFinder(int p_179679_1_) {
             this.nodeProcessor = new WalkAndSwimNodeProcessor();
             return new PathFinder(this.nodeProcessor, p_179679_1_);
@@ -210,20 +234,23 @@ public class ToadEntity extends AnimalEntity implements IAnimatable {
 
     // Called on right clicking the toad/entity
     // Mostly copied from AbstractFishEntity
-    public ActionResultType func_230254_b_(PlayerEntity heldItem, Hand hand) {
+    @Nonnull
+    public ActionResultType func_230254_b_(PlayerEntity heldItem, @Nonnull  Hand hand) {
         ItemStack itemstack = heldItem.getHeldItem(hand);
         if (itemstack.getItem() == Items.BUCKET && this.isAlive()) {
             this.playSound(SoundEvents.ITEM_BUCKET_FILL_FISH, 1.0F, 1.0F);
             itemstack.shrink(1);
-            ItemStack itemstack1 = new ItemStack(Registration.TOAD_BUCKET.get());
+            ItemStack toad_bucket = new ItemStack(Registration.TOAD_BUCKET.get());
+            toad_bucket.setTag(serializeNBT());
+
             if (!this.world.isRemote) {
-                CriteriaTriggers.FILLED_BUCKET.trigger((ServerPlayerEntity)heldItem, itemstack1);
+                CriteriaTriggers.FILLED_BUCKET.trigger((ServerPlayerEntity)heldItem, toad_bucket);
             }
 
             if (itemstack.isEmpty()) {
-                heldItem.setHeldItem(hand, itemstack1);
-            } else if (!heldItem.inventory.addItemStackToInventory(itemstack1)) {
-                heldItem.dropItem(itemstack1, false);
+                heldItem.setHeldItem(hand, toad_bucket);
+            } else if (!heldItem.inventory.addItemStackToInventory(toad_bucket)) {
+                heldItem.dropItem(toad_bucket, false);
             }
 
             this.remove();
@@ -254,7 +281,7 @@ public class ToadEntity extends AnimalEntity implements IAnimatable {
 
     @Nullable
     @Override
-    public AgeableEntity func_241840_a(ServerWorld p_241840_1_, AgeableEntity p_241840_2_) {
+    public AgeableEntity func_241840_a(@Nonnull  ServerWorld p_241840_1_, @Nonnull  AgeableEntity p_241840_2_) {
         return Registration.TOAD.get().create(p_241840_1_);
     }
 
@@ -263,7 +290,7 @@ public class ToadEntity extends AnimalEntity implements IAnimatable {
         return Registration.TOAD_AMBIENT.get();
     }
 
-    protected SoundEvent getHurtSound(DamageSource damageSourceIn) {
+    protected SoundEvent getHurtSound(@Nonnull DamageSource damageSourceIn) {
         return SoundEvents.ENTITY_COD_HURT;
     }
 

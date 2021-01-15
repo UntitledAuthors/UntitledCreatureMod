@@ -5,6 +5,7 @@
   "item.untitledcreaturemod.raw_toad_legs": "Raw Toad Legs",
   "item.untitledcreaturemod.cooked_toad_legs": "Cooked Toad Legs",
   "item.untitledcreaturemod.toad_bucket": "Bucket of Toad",
+  "item.untitledcreaturemod.toad_bucket.named": "Bucket of %s",
   "item.untitledcreaturemod.poisonous_secretions": "Poisonous Secretions",
 
   "entity.untitledcreaturemod.rock_antelope": "Rock Antelope",
