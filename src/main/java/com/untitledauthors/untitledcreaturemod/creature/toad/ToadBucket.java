@@ -56,9 +56,9 @@ public class ToadBucket extends Item {
         toad.setFromBucket(true);
         if (entityData != null) {
             toad.read(entityData);
-            toad.setPosition(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
-            worldIn.addEntity(toad);
         }
+        toad.setPosition(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
+        worldIn.addEntity(toad);
     }
 
     @Nonnull
