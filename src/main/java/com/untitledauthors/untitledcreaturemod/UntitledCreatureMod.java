@@ -3,6 +3,8 @@ package com.untitledauthors.untitledcreaturemod;
 import com.untitledauthors.untitledcreaturemod.setup.ClientSetup;
 import com.untitledauthors.untitledcreaturemod.setup.CommonSetup;
 import com.untitledauthors.untitledcreaturemod.setup.Registration;
+import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -32,6 +34,6 @@ public class UntitledCreatureMod {
     }
 
     private void clientSetup(final FMLClientSetupEvent event) {
-        ClientSetup.setupEntityRenderers();
+        ClientSetup.setup();
     }
 }
