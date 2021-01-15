@@ -1,12 +1,10 @@
 {
-  "entity.untitledcreaturemod.toad": "Toad",
   "itemGroup.untitledcreaturemod": "Untitled Creature Mod",
 
+  "entity.untitledcreaturemod.toad": "Toad",
   "item.untitledcreaturemod.raw_toad_legs": "Raw Toad Legs",
   "item.untitledcreaturemod.cooked_toad_legs": "Cooked Toad Legs",
   "item.untitledcreaturemod.toad_bucket": "Bucket of Toad",
-  "item.untitledcreaturemod.toad_egg": "Toad Spawn Egg",
-  "item.untitledcreaturemod.antelope_egg": "Antelope Spawn Egg",
   "item.untitledcreaturemod.poisonous_secretions": "Poisonous Secretions",
 
   "entity.untitledcreaturemod.rock_antelope": "Rock Antelope",
@@ -15,10 +13,11 @@
   "item.untitledcreaturemod.antelope_horn": "Antelope Horn",
   "item.untitledcreaturemod.stonehorn_dagger": "Stonehorn Dagger",
 
+  "item.untitledcreaturemod.toad_spawn_egg": "Toad Spawn Egg",
+  "item.untitledcreaturemod.antelope_spawn_egg": "Antelope Spawn Egg",
 
-
-  "advancement.untitledcreaturemod:toadCatched": "Tactical Toading",
-  "advancement.untitledcreaturemod:toadCatched.desc": "Catch a toad in a bucket. Or is it a frog?",
+  "advancement.untitledcreaturemod:toadCaught": "Tactical Toading",
+  "advancement.untitledcreaturemod:toadCaught.desc": "Catch a toad in a bucket. Or is it a frog?",
 
   "untitledcreaturemod.subtitle.toad_ambient": "Toad noises",
   "untitledcreaturemod.desc": "All the bois in one mod!"

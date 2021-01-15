@@ -34,7 +34,7 @@ public class Registration {
     // Creature Entities
     public static final RegistryObject<EntityType<ToadEntity>> TOAD = ENTITIES.register("toad",
             () -> EntityType.Builder.create(ToadEntity::new, EntityClassification.CREATURE)
-                    .size(.8f, .4f)
+                    .size(.8f, .5f)
                     .setShouldReceiveVelocityUpdates(true)
                     .build("toad"));
     public static final RegistryObject<EntityType<RockAntelopeEntity>> ROCK_ANTELOPE = ENTITIES.register("rock_antelope",
@@ -50,37 +50,40 @@ public class Registration {
                     .size(0.25F, 0.25F).build("poisonous_secretions_entity"));
 
     // Items
-    public static final RegistryObject<Item>ANTELOPE_EGG = ITEMS.register("antelope_egg",() -> new ModSpawnEggItem(ROCK_ANTELOPE, 0x65391C,0xA1501B, new Item.Properties().maxStackSize(1).group(CommonSetup.ITEM_GROUP)));
-    public static final RegistryObject<Item>TOAD_EGG = ITEMS.register("toad_egg",() -> new ModSpawnEggItem(TOAD, 0x363e0a,0xdfd66b, new Item.Properties().maxStackSize(1).group(CommonSetup.ITEM_GROUP)));
+    public static final RegistryObject<Item>ANTELOPE_EGG = ITEMS.register("antelope_spawn_egg",
+            () -> new ModSpawnEggItem(ROCK_ANTELOPE, 0x65391C,0xA1501B, new Item.Properties().maxStackSize(1).group(CommonSetup.ITEM_GROUP)));
+    public static final RegistryObject<Item>TOAD_EGG = ITEMS.register("toad_spawn_egg",
+            () -> new ModSpawnEggItem(TOAD, 0x363e0a,0xdfd66b, new Item.Properties().maxStackSize(1).group(CommonSetup.ITEM_GROUP)));
 
+    // Toad Items
     public static final RegistryObject<Item> RAW_TOAD_LEGS = ITEMS.register("raw_toad_legs",
-            () -> new Item(((new Item.Properties()).group(ItemGroup.FOOD)
+            () -> new Item(((new Item.Properties()).group(CommonSetup.ITEM_GROUP)
                     .food((new Food.Builder()).hunger(2).saturation(0.3F).meat().build()))));
     public static final RegistryObject<Item> COOKED_TOAD_LEGS = ITEMS.register("cooked_toad_legs",
-            () -> new Item(((new Item.Properties()).group(ItemGroup.FOOD)
+            () -> new Item(((new Item.Properties()).group(CommonSetup.ITEM_GROUP)
                     .food((new Food.Builder()).hunger(6).saturation(0.6F).meat().build()))));
-
-    public static final RegistryObject<Item> RAW_ANTELOPE_MEAT = ITEMS.register("raw_antelope_meat",
-            () -> new Item(((new Item.Properties()).group(ItemGroup.FOOD)
-                    .food((new Food.Builder()).hunger(4).saturation(0.6F).meat().build()))));
-
-    public static final RegistryObject<Item> COOKED_ANTELOPE_MEAT = ITEMS.register("cooked_antelope_meat",
-            () -> new Item(((new Item.Properties()).group(ItemGroup.FOOD)
-                    .food((new Food.Builder()).hunger(8).saturation(0.9F).meat().build()))));
-
-    public static final RegistryObject<Item> ANTELOPE_HORN = ITEMS.register("antelope_horn", () -> new Item(new Item.Properties().maxStackSize(64).group(CommonSetup.ITEM_GROUP)));
-
-    public static final RegistryObject<Item> STONEHORN_DAGGER = ITEMS.register("stonehorn_dagger", () -> new StonehornDaggerItem(CustomTierList.STONEHORN, 1, -2.1f, new Item.Properties().maxStackSize(1).group(ItemGroup.COMBAT)));
-
     public static final RegistryObject<Item> TOAD_BUCKET = ITEMS.register("toad_bucket",
             () -> new ToadBucket(TOAD, new Item.Properties().maxStackSize(1).group(CommonSetup.ITEM_GROUP)));
     public static final RegistryObject<Item> POISONOUS_SECRETIONS_ITEM = ITEMS.register("poisonous_secretions",
             () -> new PoisonousSecretionsItem(new Item.Properties().maxStackSize(16).group(CommonSetup.ITEM_GROUP)));
+
+    // Antelope Items
+    public static final RegistryObject<Item> RAW_ANTELOPE_MEAT = ITEMS.register("raw_antelope_meat",
+            () -> new Item(((new Item.Properties()).group(CommonSetup.ITEM_GROUP)
+                    .food((new Food.Builder()).hunger(4).saturation(0.6F).meat().build()))));
+    public static final RegistryObject<Item> COOKED_ANTELOPE_MEAT = ITEMS.register("cooked_antelope_meat",
+            () -> new Item(((new Item.Properties()).group(CommonSetup.ITEM_GROUP)
+                    .food((new Food.Builder()).hunger(8).saturation(0.9F).meat().build()))));
+    public static final RegistryObject<Item> ANTELOPE_HORN = ITEMS.register("antelope_horn",
+            () -> new Item(new Item.Properties().maxStackSize(64).group(CommonSetup.ITEM_GROUP)));
+    public static final RegistryObject<Item> STONEHORN_DAGGER = ITEMS.register("stonehorn_dagger",
+            () -> new StonehornDaggerItem(CustomTierList.STONEHORN, 1, -2.1f, new Item.Properties().maxStackSize(1).group(CommonSetup.ITEM_GROUP)));
+
     // Sounds
     public static final RegistryObject<SoundEvent> TOAD_AMBIENT = SOUNDS.register("toad_ambient",
             () -> new SoundEvent(new ResourceLocation(MODID, "toad_ambient")));
 
-    // Blocks
+    // Toad Blocks
     public static final RegistryObject<Block> POISONOUS_SECRETIONS_CARPET = BLOCKS.register("poisonous_secretions_carpet", () -> new PoisonousSecretionsCarpet(
             AbstractBlock.Properties.from(Blocks.SNOW).sound(SoundType.SLIME).notSolid().doesNotBlockMovement().harvestTool(ToolType.SHOVEL)));
 

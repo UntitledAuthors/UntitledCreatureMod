@@ -65,8 +65,8 @@ public class ToadEntity extends AnimalEntity implements IAnimatable {
 
     public static AttributeModifierMap.MutableAttribute getDefaultAttributes() {
         return MobEntity.func_233666_p_().createMutableAttribute(Attributes.MAX_HEALTH, 10.0D)
-                .createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.25F)
-                .createMutableAttribute(Attributes.ATTACK_DAMAGE, 1.0F);
+                .createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.25D)
+                .createMutableAttribute(Attributes.ATTACK_DAMAGE, 1.0D);
     }
 
     @Override
@@ -106,7 +106,6 @@ public class ToadEntity extends AnimalEntity implements IAnimatable {
     @Override
     public boolean attackEntityAsMob(Entity entityIn) {
         // Mostly copied from CaveSpider
-        // TODO: Balance
         if (super.attackEntityAsMob(entityIn)) {
             if (entityIn instanceof LivingEntity) {
                 int poisonDuration = 3;
@@ -149,7 +148,6 @@ public class ToadEntity extends AnimalEntity implements IAnimatable {
         if (world.isRemote) {
             return super.attackEntityFrom(source, amount);
         }
-        // TODO: Arrows?
         if (source instanceof EntityDamageSource) {
             EntityDamageSource entityDamageSource = (EntityDamageSource) source;
             Entity attacker = entityDamageSource.getTrueSource();
@@ -257,7 +255,6 @@ public class ToadEntity extends AnimalEntity implements IAnimatable {
     @Nullable
     @Override
     public AgeableEntity func_241840_a(ServerWorld p_241840_1_, AgeableEntity p_241840_2_) {
-        // TODO: Investigate what this is used for, breeding maybe?
         return Registration.TOAD.get().create(p_241840_1_);
     }
 

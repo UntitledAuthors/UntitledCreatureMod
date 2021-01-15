@@ -4,10 +4,10 @@
       "item": "untitledcreaturemod:toad_bucket"
     },
     "title": {
-      "translate": "advancement.untitledcreaturemod:toadCatched"
+      "translate": "advancement.untitledcreaturemod:toadCaught"
     },
     "description": {
-      "translate": "advancement.untitledcreaturemod:toadCatched.desc"
+      "translate": "advancement.untitledcreaturemod:toadCaught.desc"
     }
   },
   "parent": "untitledcreaturemod:root",
