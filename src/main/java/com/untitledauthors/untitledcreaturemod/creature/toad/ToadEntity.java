@@ -91,7 +91,7 @@ public class ToadEntity extends AnimalEntity implements IAnimatable {
     }
 
     public static AttributeModifierMap.MutableAttribute getDefaultAttributes() {
-        return MobEntity.func_233666_p_().createMutableAttribute(Attributes.MAX_HEALTH, 10.0D)
+        return MobEntity.func_233666_p_().createMutableAttribute(Attributes.MAX_HEALTH, 7.0D)
                 .createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.25D)
                 .createMutableAttribute(Attributes.ATTACK_DAMAGE, 1.0D)
                 .createMutableAttribute(net.minecraftforge.common.ForgeMod.SWIM_SPEED.get(), 2.0D);
