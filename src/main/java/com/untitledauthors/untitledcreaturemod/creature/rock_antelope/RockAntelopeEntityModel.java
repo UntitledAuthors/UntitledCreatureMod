@@ -33,6 +33,9 @@ public class RockAntelopeEntityModel extends AnimatedGeoModel<RockAntelopeEntity
         EntityModelData data = (EntityModelData) customPredicate.getExtraData().get(0);
 
         // Apply head look to model
+        if (entity.isEatingGrass()) {
+            return;
+        }
         IBone head = this.getAnimationProcessor().getBone("Neck");
         head.setRotationY((float) Math.toRadians(Utils.clamp(data.netHeadYaw, -45, 45)));
         head.setRotationX(-(float) Math.toRadians(data.headPitch));

@@ -16,6 +16,8 @@ import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
@@ -33,6 +35,12 @@ public class RockAntelopeEntity extends AnimalEntity implements IAnimatable {
     public static AnimationBuilder WALK_ANIM = new AnimationBuilder().addAnimation("walk");
     public static AnimationBuilder GRAZING_ANIM = new AnimationBuilder().addAnimation("grazing");
     public static Item BREEDING_ITEM = Items.WHEAT;
+    private EatGrassGoal eatGrassGoal;
+    private int eatGrassTimer;
+
+    public int getEatGrassTimer() {
+        return eatGrassTimer;
+    }
 
     public RockAntelopeEntity(EntityType<? extends AnimalEntity> type, World worldIn) {
         super(type, worldIn);
@@ -62,6 +70,10 @@ public class RockAntelopeEntity extends AnimalEntity implements IAnimatable {
         AnimationController controller = event.getController();
         // TODO: Come up with alternative moving predicate?
         //       The default one doesn't seen to work with slow movement speeds.
+        if (isEatingGrass()) {
+            controller.setAnimation(GRAZING_ANIM);
+            return PlayState.CONTINUE;
+        }
         boolean isMoving = !(limbSwingAmount > -0.10F) || !(limbSwingAmount < 0.10F);
         AnimationBuilder anim = isMoving ? WALK_ANIM : IDLE_ANIM;
         controller.setAnimation(anim);
@@ -70,14 +82,49 @@ public class RockAntelopeEntity extends AnimalEntity implements IAnimatable {
     }
 
     protected void registerGoals() {
+        this.eatGrassGoal = new EatGrassGoal(this);
         this.goalSelector.addGoal(0, new SwimGoal(this));
         this.goalSelector.addGoal(1, new PanicGoal(this, 2.0D));
         this.goalSelector.addGoal(2, new BreedGoal(this, 1.0D));
         this.goalSelector.addGoal(3, new TemptGoal(this, 1.25D, Ingredient.fromItems(Items.WHEAT), false));
         this.goalSelector.addGoal(4, new FollowParentGoal(this, 1.25D));
-        this.goalSelector.addGoal(5, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
-        this.goalSelector.addGoal(6, new LookAtGoal(this, PlayerEntity.class, 6.0F));
-        this.goalSelector.addGoal(7, new LookRandomlyGoal(this));
+        this.goalSelector.addGoal(5, eatGrassGoal);
+        this.goalSelector.addGoal(6, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
+        this.goalSelector.addGoal(7, new LookAtGoal(this, PlayerEntity.class, 6.0F));
+        this.goalSelector.addGoal(8, new LookRandomlyGoal(this));
+    }
+
+    protected void updateAITasks() {
+        this.eatGrassTimer = this.eatGrassGoal.getEatingGrassTimer();
+        super.updateAITasks();
+    }
+
+    public void livingTick() {
+        if (this.world.isRemote) {
+            this.eatGrassTimer = Math.max(-30, this.eatGrassTimer - 1);
+        }
+        super.livingTick();
+    }
+
+    public boolean isEatingGrass() {
+        // Block gets replaced at tick 4, eating animation is 2.5 seconds => 50 ticks
+        return this.eatGrassTimer < 20 && this.eatGrassTimer > -30;
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public void handleStatusUpdate(byte id) {
+        if (id == 10) {
+            this.eatGrassTimer = 40;
+        } else {
+            super.handleStatusUpdate(id);
+        }
+    }
+
+    @Override
+    public void eatGrassBonus() {
+        if (!world.isRemote) {
+            this.setHealth(this.getHealth() + 1.0f);
+        }
     }
 
     @Override
