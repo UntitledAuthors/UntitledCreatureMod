@@ -13,6 +13,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import software.bernie.geckolib3.core.IAnimatable;
@@ -46,6 +47,15 @@ public class RockAntelopeEntity extends AnimalEntity implements IAnimatable {
     @Override
     public void registerControllers(AnimationData data) {
         data.addAnimationController(new AnimationController(this, "controller", 5, this::predicate));
+    }
+
+    @Override
+    protected void damageEntity(DamageSource damageSrc, float damageAmount) {
+        if (damageSrc.getDamageType().equals("fall")) {;
+            // 0.75% fall damage reduction
+            damageAmount *= 0.25;
+        }
+        super.damageEntity(damageSrc, damageAmount);
     }
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
