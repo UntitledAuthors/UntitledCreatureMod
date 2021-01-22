@@ -36,11 +36,7 @@ public class RockAntelopeEntity extends AnimalEntity implements IAnimatable {
     public static AnimationBuilder GRAZING_ANIM = new AnimationBuilder().addAnimation("grazing");
     public static Item BREEDING_ITEM = Items.WHEAT;
     private EatGrassGoal eatGrassGoal;
-    private int eatGrassTimer;
-
-    public int getEatGrassTimer() {
-        return eatGrassTimer;
-    }
+    private int eatGrassTimer = -30;
 
     public RockAntelopeEntity(EntityType<? extends AnimalEntity> type, World worldIn) {
         super(type, worldIn);
