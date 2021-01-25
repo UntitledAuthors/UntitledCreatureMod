@@ -2,6 +2,7 @@ package com.untitledauthors.untitledcreaturemod.setup;
 
 import com.untitledauthors.untitledcreaturemod.creature.rock_antelope.RockAntelopeEntity;
 import com.untitledauthors.untitledcreaturemod.creature.toad.*;
+import com.untitledauthors.untitledcreaturemod.items.AntelopeWarHorn;
 import com.untitledauthors.untitledcreaturemod.items.ModSpawnEggItem;
 import com.untitledauthors.untitledcreaturemod.items.tools.CustomTierList;
 import com.untitledauthors.untitledcreaturemod.items.tools.StonehornDaggerItem;
@@ -62,6 +63,9 @@ public class Registration {
     public static final RegistryObject<Item> COOKED_TOAD_LEGS = ITEMS.register("cooked_toad_legs",
             () -> new Item(((new Item.Properties()).group(CommonSetup.ITEM_GROUP)
                     .food((new Food.Builder()).hunger(6).saturation(0.6F).meat().build()))));
+
+    public static final RegistryObject<Item> ANTELOPE_WAR_HORN = ITEMS.register("antelope_war_horn", () -> new AntelopeWarHorn(new Item.Properties().maxStackSize(1).group(CommonSetup.ITEM_GROUP)));
+
     public static final RegistryObject<Item> TOAD_BUCKET = ITEMS.register("toad_bucket",
             () -> new ToadBucket(TOAD, new Item.Properties().maxStackSize(1).group(CommonSetup.ITEM_GROUP)));
     public static final RegistryObject<Item> POISONOUS_SECRETIONS_ITEM = ITEMS.register("poisonous_secretions",

@@ -22,10 +22,10 @@ import java.util.function.Supplier;
 
 public enum CustomTierList implements IItemTier
 {
-
     STONEHORN(3.0f, 1.0f, 100, 1, 7, () -> {
         return Ingredient.fromItems(Registration.ANTELOPE_HORN.get());
     });
+
     private float attackDamage, efficiency;
     private int durability, harvestLevel, enchantability;
     final LazyValue<Ingredient> repairMaterial;

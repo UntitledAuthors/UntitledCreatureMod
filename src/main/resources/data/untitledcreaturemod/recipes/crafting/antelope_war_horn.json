@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    " N",
+    "HL"
+  ],
+  "key": {
+    "H": {
+      "item": "untitledcreaturemod:antelope_horn"
+    },
+    "N": {
+      "item": "minecraft:iron_nugget"
+    },
+    "L": {
+      "item": "minecraft:leather"
+    }
+  },
+  "result": {
+    "item": "untitledcreaturemod:antelope_war_horn"
+  }
+}
