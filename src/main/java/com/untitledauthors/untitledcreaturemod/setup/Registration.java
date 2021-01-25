@@ -44,6 +44,12 @@ public class Registration {
                     .setShouldReceiveVelocityUpdates(true)
                     .build("rock_antelope"));
 
+    public static final RegistryObject<EntityType<RockAntelopeEntity>> BLOPOLE = ENTITIES.register("blopole",
+            () -> EntityType.Builder.create(RockAntelopeEntity::new, EntityClassification.CREATURE)
+                    .size(.9f, 1.8f) //CHANGE SIZE
+                    .setShouldReceiveVelocityUpdates(true)
+                    .build("blopole"));
+
     // Misc Entities
     public static final RegistryObject<EntityType<PoisonousSecretionsEntity>> POISONOUS_SECRETIONS_PROJECTILE =
             ENTITIES.register("poisonous_secretions_projectile",
