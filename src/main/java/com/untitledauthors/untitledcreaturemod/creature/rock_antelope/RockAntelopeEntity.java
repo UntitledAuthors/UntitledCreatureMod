@@ -13,6 +13,9 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.network.datasync.DataParameter;
+import net.minecraft.network.datasync.DataSerializers;
+import net.minecraft.network.datasync.EntityDataManager;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
@@ -34,6 +37,10 @@ public class RockAntelopeEntity extends AnimalEntity implements IAnimatable {
     public static AnimationBuilder IDLE_ANIM = new AnimationBuilder().addAnimation("idle");
     public static AnimationBuilder WALK_ANIM = new AnimationBuilder().addAnimation("walk");
     public static AnimationBuilder GRAZING_ANIM = new AnimationBuilder().addAnimation("grazing");
+    public static AnimationBuilder JOUSTING_ANIM = new AnimationBuilder().addAnimation("joust");
+    public static DataParameter<Boolean> IS_LEADER = EntityDataManager.createKey(RockAntelopeEntity.class, DataSerializers.BOOLEAN);
+    public static DataParameter<Integer> JOUSTING_PARTNER_ID = EntityDataManager.createKey(RockAntelopeEntity.class, DataSerializers.VARINT);
+
     public static Item BREEDING_ITEM = Items.WHEAT;
     private EatGrassGoal eatGrassGoal;
     private int eatGrassTimer = -30;
@@ -64,12 +71,17 @@ public class RockAntelopeEntity extends AnimalEntity implements IAnimatable {
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         AnimationController controller = event.getController();
-        // TODO: Come up with alternative moving predicate?
-        //       The default one doesn't seen to work with slow movement speeds.
+        if (getJoustingPartner() != 0) {
+            controller.setAnimation(JOUSTING_ANIM);
+            return PlayState.CONTINUE;
+        }
+
         if (isEatingGrass()) {
             controller.setAnimation(GRAZING_ANIM);
             return PlayState.CONTINUE;
         }
+        // TODO: Come up with alternative moving predicate?
+        //       The default one doesn't seen to work with slow movement speeds.
         boolean isMoving = !(limbSwingAmount > -0.10F) || !(limbSwingAmount < 0.10F);
         AnimationBuilder anim = isMoving ? WALK_ANIM : IDLE_ANIM;
         controller.setAnimation(anim);
@@ -85,6 +97,10 @@ public class RockAntelopeEntity extends AnimalEntity implements IAnimatable {
         this.goalSelector.addGoal(3, new TemptGoal(this, 1.25D, Ingredient.fromItems(Items.WHEAT), false));
         this.goalSelector.addGoal(4, new FollowParentGoal(this, 1.25D));
         this.goalSelector.addGoal(5, eatGrassGoal);
+
+        this.goalSelector.addGoal(5, new JoustGoal(this, 1.0D));
+        this.goalSelector.addGoal(6, new StartJoustGoal(this, 1.0D));
+
         this.goalSelector.addGoal(6, new WaterAvoidingRandomWalkingGoal(this, 1.0D));
         this.goalSelector.addGoal(7, new LookAtGoal(this, PlayerEntity.class, 6.0F));
         this.goalSelector.addGoal(8, new LookRandomlyGoal(this));
@@ -117,6 +133,11 @@ public class RockAntelopeEntity extends AnimalEntity implements IAnimatable {
     }
 
     @Override
+    public boolean hasCustomName() {
+        return true;
+    }
+
+    @Override
     public void eatGrassBonus() {
         if (!world.isRemote) {
             this.setHealth(this.getHealth() + 1.0f);
@@ -138,5 +159,19 @@ public class RockAntelopeEntity extends AnimalEntity implements IAnimatable {
     public AgeableEntity func_241840_a(ServerWorld p_241840_1_, AgeableEntity p_241840_2_) {
         // TODO: Investigate what this is used for, breeding maybe?
         return Registration.ROCK_ANTELOPE.get().create(p_241840_1_);
+    }
+
+    public void setJoustingPartner(int joustingPartnerId) {
+        this.dataManager.set(JOUSTING_PARTNER_ID, joustingPartnerId);
+    }
+
+    public int getJoustingPartner() {
+        return this.dataManager.get(JOUSTING_PARTNER_ID);
+    }
+
+    protected void registerData() {
+        super.registerData();
+        this.dataManager.register(JOUSTING_PARTNER_ID, 0);
+        this.dataManager.register(IS_LEADER, false);
     }
 }

@@ -30,10 +30,17 @@ public class RockAntelopeEntityModel extends AnimatedGeoModel<RockAntelopeEntity
     @Override
     public void setLivingAnimations(RockAntelopeEntity entity, Integer uniqueID, @Nullable AnimationEvent customPredicate) {
         super.setLivingAnimations(entity, uniqueID, customPredicate);
+        if (entity.isChild()) {
+            IBone root = this.getAnimationProcessor().getBone("MainBody");
+            root.setScaleX(0.7f);
+            root.setScaleY(0.7f);
+            root.setScaleZ(0.7f);
+        }
+
         EntityModelData data = (EntityModelData) customPredicate.getExtraData().get(0);
 
         // Apply head look to model
-        if (entity.isEatingGrass()) {
+        if (entity.isEatingGrass() || entity.getJoustingPartner() != 0) {
             return;
         }
         IBone head = this.getAnimationProcessor().getBone("Neck");

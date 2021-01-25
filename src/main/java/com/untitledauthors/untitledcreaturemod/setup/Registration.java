@@ -40,7 +40,7 @@ public class Registration {
                     .build("toad"));
     public static final RegistryObject<EntityType<RockAntelopeEntity>> ROCK_ANTELOPE = ENTITIES.register("rock_antelope",
             () -> EntityType.Builder.create(RockAntelopeEntity::new, EntityClassification.CREATURE)
-                    .size(.9f, 1.8f)
+                    .size(1.2f, 1.8f)
                     .setShouldReceiveVelocityUpdates(true)
                     .build("rock_antelope"));
 
