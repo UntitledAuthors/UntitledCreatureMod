@@ -1,0 +1,69 @@
+{
+	"format_version": "1.12.0",
+	"minecraft:geometry": [
+		{
+			"description": {
+				"identifier": "geometry.unknown",
+				"texture_width": 96,
+				"texture_height": 48,
+				"visible_bounds_width": 5,
+				"visible_bounds_height": 2.5,
+				"visible_bounds_offset": [0, 0.75, 0]
+			},
+			"bones": [
+				{
+					"name": "root",
+					"pivot": [0, 0, 0]
+				},
+				{
+					"name": "body",
+					"parent": "root",
+					"pivot": [0, 7.5, 0],
+					"cubes": [
+						{"origin": [-5, 2, -7.5], "size": [10, 11, 15], "uv": [0, 0]}
+					]
+				},
+				{
+					"name": "tail",
+					"parent": "body",
+					"pivot": [0, 5.5, 7.5],
+					"cubes": [
+						{"origin": [-3, 2, 7.5], "size": [6, 7, 18], "uv": [33, 9]}
+					]
+				},
+				{
+					"name": "flegleft",
+					"parent": "body",
+					"pivot": [-3.5, 3, -3],
+					"cubes": [
+						{"origin": [-3.5, 0, -4.5], "size": [0, 3, 3], "uv": [36, 5]}
+					]
+				},
+				{
+					"name": "flegright",
+					"parent": "body",
+					"pivot": [3.5, 3, -3],
+					"cubes": [
+						{"origin": [3.5, 0, -4.5], "size": [0, 3, 3], "uv": [43, 5]}
+					]
+				},
+				{
+					"name": "blegleft",
+					"parent": "body",
+					"pivot": [-3.5, 3, 4.5],
+					"cubes": [
+						{"origin": [-3.5, 0, 3], "size": [0, 3, 3], "uv": [36, 5]}
+					]
+				},
+				{
+					"name": "blegright",
+					"parent": "body",
+					"pivot": [3.5, 3, 4.5],
+					"cubes": [
+						{"origin": [3.5, 0, 3], "size": [0, 3, 3], "uv": [43, 5]}
+					]
+				}
+			]
+		}
+	]
+}

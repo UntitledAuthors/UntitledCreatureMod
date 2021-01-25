@@ -26,7 +26,7 @@ import javax.annotation.Nullable;
 public class BlopoleEntity extends AnimalEntity implements IAnimatable
 {
     private final AnimationFactory factory = new AnimationFactory(this);
-    public static AnimationBuilder IDLE_ANIM = new AnimationBuilder().addAnimation("idle");
+    public static AnimationBuilder IDLE_ANIM = new AnimationBuilder().addAnimation("idle01");
     public static AnimationBuilder WALK_ANIM = new AnimationBuilder().addAnimation("walk");
 //    public static Item BREEDING_ITEM = Items.WHEAT; DECIDE IF CAN BE BRED
 

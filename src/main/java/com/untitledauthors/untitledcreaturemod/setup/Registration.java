@@ -1,5 +1,6 @@
 package com.untitledauthors.untitledcreaturemod.setup;
 
+import com.untitledauthors.untitledcreaturemod.creature.blopole.BlopoleEntity;
 import com.untitledauthors.untitledcreaturemod.creature.rock_antelope.RockAntelopeEntity;
 import com.untitledauthors.untitledcreaturemod.creature.toad.*;
 import com.untitledauthors.untitledcreaturemod.items.AntelopeWarHorn;
@@ -44,8 +45,8 @@ public class Registration {
                     .setShouldReceiveVelocityUpdates(true)
                     .build("rock_antelope"));
 
-    public static final RegistryObject<EntityType<RockAntelopeEntity>> BLOPOLE = ENTITIES.register("blopole",
-            () -> EntityType.Builder.create(RockAntelopeEntity::new, EntityClassification.CREATURE)
+    public static final RegistryObject<EntityType<BlopoleEntity>> BLOPOLE = ENTITIES.register("blopole",
+            () -> EntityType.Builder.create(BlopoleEntity::new, EntityClassification.CREATURE)
                     .size(.9f, 1.8f) //CHANGE SIZE
                     .setShouldReceiveVelocityUpdates(true)
                     .build("blopole"));
