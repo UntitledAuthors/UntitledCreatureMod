@@ -22,7 +22,6 @@ public class UntitledCreatureMod {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::clientSetup);
 
         MinecraftForge.EVENT_BUS.register(this);
-        // MinecraftForge.EVENT_BUS.addListener(DebugHUD::onDraw);
         Registration.init();
 
         GeckoLibMod.DISABLE_IN_DEV = true;

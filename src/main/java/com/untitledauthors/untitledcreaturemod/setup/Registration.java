@@ -41,7 +41,7 @@ public class Registration {
                     .build("toad"));
     public static final RegistryObject<EntityType<RockAntelopeEntity>> ROCK_ANTELOPE = ENTITIES.register("rock_antelope",
             () -> EntityType.Builder.create(RockAntelopeEntity::new, EntityClassification.CREATURE)
-                    .size(1.2f, 1.8f)
+                    .size(1.2f, 1.6f)
                     .setShouldReceiveVelocityUpdates(true)
                     .build("rock_antelope"));
 
@@ -91,8 +91,11 @@ public class Registration {
             () -> new StonehornDaggerItem(CustomTierList.STONEHORN, 1, -2.1f, new Item.Properties().maxStackSize(1).group(CommonSetup.ITEM_GROUP)));
 
     // Sounds
+    // TODO: Maybe move these into their own class
     public static final RegistryObject<SoundEvent> TOAD_AMBIENT = SOUNDS.register("toad_ambient",
             () -> new SoundEvent(new ResourceLocation(MODID, "toad_ambient")));
+    public static final RegistryObject<SoundEvent> WAR_HORN_SOUND = SOUNDS.register("war_horn",
+            () -> new SoundEvent(new ResourceLocation(MODID, "war_horn")));
 
     // Toad Blocks
     public static final RegistryObject<Block> POISONOUS_SECRETIONS_CARPET = BLOCKS.register("poisonous_secretions_carpet", () -> new PoisonousSecretionsCarpet(

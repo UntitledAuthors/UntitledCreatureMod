@@ -1,5 +1,6 @@
 package com.untitledauthors.untitledcreaturemod.items;
 
+import com.untitledauthors.untitledcreaturemod.setup.Registration;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -23,8 +24,7 @@ public class AntelopeWarHorn extends Item {
     @Override
     public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
         playerIn.getCooldownTracker().setCooldown(this, COOLDOWN_SEC * 20);
-        // TODO: Exchange sound event with our own, volume probably should be lowered then?
-        worldIn.playSound(null, playerIn.getPosition(), SoundEvents.EVENT_RAID_HORN, SoundCategory.NEUTRAL, 64.0f, 1.0f);
+        worldIn.playSound(null, playerIn.getPosition(), Registration.WAR_HORN_SOUND.get(), SoundCategory.NEUTRAL, 2.0f, 1.0f);
         playerIn.addPotionEffect(new EffectInstance(Effect.get(5), 200, 0));
         return super.onItemRightClick(worldIn, playerIn, handIn);
     }

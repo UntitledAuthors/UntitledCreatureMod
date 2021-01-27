@@ -6,5 +6,16 @@
       "untitledcreaturemod:entity/toad_ambient1",
       "untitledcreaturemod:entity/toad_ambient2"
     ]
+  },
+  "war_horn": {
+    "category": "neutral",
+    "subtitle": "untitledcreaturemod.subtitle.war_horn",
+    "sounds": [
+      "untitledcreaturemod:item/war_horn_1",
+      "untitledcreaturemod:item/war_horn_2",
+      "untitledcreaturemod:item/war_horn_3",
+      "untitledcreaturemod:item/war_horn_4",
+      "untitledcreaturemod:item/war_horn_5"
+    ]
   }
 }
