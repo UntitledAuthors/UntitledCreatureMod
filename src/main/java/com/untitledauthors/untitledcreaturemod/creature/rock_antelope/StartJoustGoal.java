@@ -53,7 +53,7 @@ public class StartJoustGoal extends Goal {
 
 
     public void tick() {
-        antelope.getLookController().setLookPositionWithEntity(targetJouster, 10.0F, (float) antelope.getVerticalFaceSpeed());
+        antelope.getLookController().setLookPositionWithEntity(targetJouster, 90.0F, (float) antelope.getVerticalFaceSpeed());
         antelope.getNavigator().tryMoveToEntityLiving(targetJouster, moveSpeed);
         if (antelope.getDistanceSq(this.targetJouster) < 15.0D) {
             // TODO: Set position to the optimal one for the animation?
@@ -63,7 +63,6 @@ public class StartJoustGoal extends Goal {
     }
 
     private void headbut() {
-        System.out.println("Start the Headbutt!\n");
         // This should trigger/start the JoustGoal
         this.antelope.setJoustingPartner(targetJouster.getEntityId());
         this.targetJouster.setJoustingPartner(antelope.getEntityId());
@@ -72,14 +71,18 @@ public class StartJoustGoal extends Goal {
     private static double JOUST_MAX_DISTANCE = 10.0D;
     private static final EntityPredicate nearbyPredicate = (new EntityPredicate()).setDistance(JOUST_MAX_DISTANCE).allowInvulnerable().allowFriendlyFire().setLineOfSiteRequired();
     @Nullable
-    private AnimalEntity findNearestHeadbutter() {
-        List<AnimalEntity> list = world.getTargettableEntitiesWithinAABB(RockAntelopeEntity.class,
+    private RockAntelopeEntity findNearestHeadbutter() {
+        List<RockAntelopeEntity> list = world.getTargettableEntitiesWithinAABB(RockAntelopeEntity.class,
                 nearbyPredicate, antelope, antelope.getBoundingBox().grow(JOUST_MAX_DISTANCE));
         double min_distance = Double.MAX_VALUE;
-        AnimalEntity foundPartner = null;
+        RockAntelopeEntity foundPartner = null;
 
-        for(AnimalEntity potentialPartner : list) {
+        for(RockAntelopeEntity potentialPartner : list) {
             if (antelope.getDistanceSq(potentialPartner) < min_distance) {
+                // TODO: Maybe only joust with partners that have enough horns
+                if (potentialPartner.isChild() || potentialPartner.getJoustingPartner() != 0) {
+                    continue;
+                }
                 foundPartner = potentialPartner;
                 min_distance = antelope.getDistanceSq(potentialPartner);
             }

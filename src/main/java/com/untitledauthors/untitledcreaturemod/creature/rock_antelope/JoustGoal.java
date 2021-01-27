@@ -47,7 +47,7 @@ public class JoustGoal extends Goal {
 
     @Override
     public void tick() {
-        antelope.getLookController().setLookPositionWithEntity(joustingPartner, 200.0F, (float) antelope.getVerticalFaceSpeed());
+        antelope.getLookController().setLookPositionWithEntity(joustingPartner, 300.0F, (float) antelope.getVerticalFaceSpeed());
         animationTimer++;
         if (animationTimer >= 50) {
             dropHorn();

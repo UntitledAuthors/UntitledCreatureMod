@@ -4,6 +4,7 @@ import com.untitledauthors.untitledcreaturemod.creature.blopole.BlopoleEntity;
 import com.untitledauthors.untitledcreaturemod.creature.rock_antelope.RockAntelopeEntity;
 import com.untitledauthors.untitledcreaturemod.creature.toad.*;
 import com.untitledauthors.untitledcreaturemod.items.AntelopeWarHorn;
+import com.untitledauthors.untitledcreaturemod.items.LeaderDebugItem;
 import com.untitledauthors.untitledcreaturemod.items.ModSpawnEggItem;
 import com.untitledauthors.untitledcreaturemod.items.tools.CustomTierList;
 import com.untitledauthors.untitledcreaturemod.items.tools.StonehornDaggerItem;
@@ -15,7 +16,6 @@ import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
 import net.minecraft.item.Food;
 import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraftforge.common.ToolType;
@@ -108,4 +108,7 @@ public class Registration {
         BLOCKS.register(bus);
         SOUNDS.register(bus);
     }
+
+    public static final RegistryObject<Item> DEBUG_ITEM = ITEMS.register("debug_item",
+            () -> new LeaderDebugItem(new Item.Properties().maxStackSize(1).group(CommonSetup.ITEM_GROUP)));
 }

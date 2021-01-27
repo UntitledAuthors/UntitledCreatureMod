@@ -13,6 +13,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
@@ -29,6 +30,7 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 public class RockAntelopeEntity extends AnimalEntity implements IAnimatable {
@@ -38,7 +40,9 @@ public class RockAntelopeEntity extends AnimalEntity implements IAnimatable {
     public static AnimationBuilder WALK_ANIM = new AnimationBuilder().addAnimation("walk");
     public static AnimationBuilder GRAZING_ANIM = new AnimationBuilder().addAnimation("grazing");
     public static AnimationBuilder JOUSTING_ANIM = new AnimationBuilder().addAnimation("joust");
+
     public static DataParameter<Boolean> IS_LEADER = EntityDataManager.createKey(RockAntelopeEntity.class, DataSerializers.BOOLEAN);
+    public static final String IS_LEADER_TAG = "IsLeader";
     public static DataParameter<Integer> JOUSTING_PARTNER_ID = EntityDataManager.createKey(RockAntelopeEntity.class, DataSerializers.VARINT);
 
     public static Item BREEDING_ITEM = Items.WHEAT;
@@ -62,7 +66,7 @@ public class RockAntelopeEntity extends AnimalEntity implements IAnimatable {
 
     @Override
     protected void damageEntity(DamageSource damageSrc, float damageAmount) {
-        if (damageSrc.getDamageType().equals("fall")) {;
+        if (damageSrc.getDamageType().equals("fall")) {
             // 0.75% fall damage reduction
             damageAmount *= 0.25;
         }
@@ -96,6 +100,7 @@ public class RockAntelopeEntity extends AnimalEntity implements IAnimatable {
         this.goalSelector.addGoal(2, new BreedGoal(this, 1.0D));
         this.goalSelector.addGoal(3, new TemptGoal(this, 1.25D, Ingredient.fromItems(Items.WHEAT), false));
         this.goalSelector.addGoal(4, new FollowParentGoal(this, 1.25D));
+        this.goalSelector.addGoal(5, new FollowLeaderGoal(this, 1.25D));
         this.goalSelector.addGoal(5, eatGrassGoal);
 
         this.goalSelector.addGoal(5, new JoustGoal(this, 1.0D));
@@ -156,8 +161,8 @@ public class RockAntelopeEntity extends AnimalEntity implements IAnimatable {
 
     @Nullable
     @Override
-    public AgeableEntity func_241840_a(ServerWorld p_241840_1_, AgeableEntity p_241840_2_) {
-        // TODO: Investigate what this is used for, breeding maybe?
+    // This returns a new baby entity for breeding
+    public AgeableEntity func_241840_a(@Nonnull ServerWorld p_241840_1_, @Nonnull AgeableEntity p_241840_2_) {
         return Registration.ROCK_ANTELOPE.get().create(p_241840_1_);
     }
 
@@ -169,9 +174,29 @@ public class RockAntelopeEntity extends AnimalEntity implements IAnimatable {
         return this.dataManager.get(JOUSTING_PARTNER_ID);
     }
 
+    public void setIsLeader(boolean value) {
+        this.dataManager.set(IS_LEADER, value);
+    }
+
+    public boolean isLeader() {
+        return this.dataManager.get(IS_LEADER);
+    }
+
     protected void registerData() {
         super.registerData();
         this.dataManager.register(JOUSTING_PARTNER_ID, 0);
         this.dataManager.register(IS_LEADER, false);
+    }
+
+    @Override
+    public void writeAdditional(@Nonnull CompoundNBT compound) {
+        super.writeAdditional(compound);
+        compound.putBoolean(IS_LEADER_TAG, isLeader());
+    }
+
+    @Override
+    public void readAdditional(@Nonnull CompoundNBT compound) {
+        super.writeAdditional(compound);
+        setIsLeader(compound.getBoolean(IS_LEADER_TAG));
     }
 }

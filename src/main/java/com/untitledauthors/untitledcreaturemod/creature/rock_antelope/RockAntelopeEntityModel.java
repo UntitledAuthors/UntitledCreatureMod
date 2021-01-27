@@ -17,9 +17,13 @@ public class RockAntelopeEntityModel extends AnimatedGeoModel<RockAntelopeEntity
         return new ResourceLocation(MODID, "geo/rock_antelope.geo.json");
     }
 
+    public static ResourceLocation NORMAL_TEXTURE = new ResourceLocation(MODID, "textures/entity/rock_antelope/rock_antelope.png");
+    public static ResourceLocation LEADER_TEXTURE = new ResourceLocation(MODID, "textures/entity/rock_antelope/rock_antelope_leader.png");
+    private ResourceLocation currentTexture = NORMAL_TEXTURE;
+
     @Override
     public ResourceLocation getTextureLocation(RockAntelopeEntity rockAntelopeEntity) {
-        return new ResourceLocation(MODID, "textures/entity/rock_antelope/rock_antelope.png");
+        return currentTexture;
     }
 
     @Override
@@ -36,6 +40,7 @@ public class RockAntelopeEntityModel extends AnimatedGeoModel<RockAntelopeEntity
             root.setScaleY(0.7f);
             root.setScaleZ(0.7f);
         }
+        currentTexture = entity.isLeader() ? LEADER_TEXTURE : NORMAL_TEXTURE;
 
         EntityModelData data = (EntityModelData) customPredicate.getExtraData().get(0);
 
