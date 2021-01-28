@@ -37,7 +37,7 @@ public class PoisonousSecretionsEntity extends ProjectileItemEntity {
         super(Registration.POISONOUS_SECRETIONS_PROJECTILE.get(), x, y, z, worldIn);
     }
 
-    public static final int PROJECTILE_DAMAGE = 2;
+    public static final int PROJECTILE_DAMAGE = 1;
     public static final int POISON_DURATION_S = 10;
 
     @Nonnull
