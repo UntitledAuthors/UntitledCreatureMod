@@ -62,6 +62,8 @@ public class Registration {
             () -> new ModSpawnEggItem(ROCK_ANTELOPE, 0x65391C,0xA1501B, new Item.Properties().maxStackSize(1).group(CommonSetup.ITEM_GROUP)));
     public static final RegistryObject<Item>TOAD_EGG = ITEMS.register("toad_spawn_egg",
             () -> new ModSpawnEggItem(TOAD, 0x363e0a,0xdfd66b, new Item.Properties().maxStackSize(1).group(CommonSetup.ITEM_GROUP)));
+    public static final RegistryObject<Item>BLOPOLE_EGG = ITEMS.register("blopole_spawn_egg",
+            () -> new ModSpawnEggItem(BLOPOLE, 0x595e55,0x2D332A, new Item.Properties().maxStackSize(1).group(CommonSetup.ITEM_GROUP)));
 
     // Toad Items
     public static final RegistryObject<Item> RAW_TOAD_LEGS = ITEMS.register("raw_toad_legs",
