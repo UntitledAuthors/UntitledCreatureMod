@@ -23,7 +23,7 @@ public class FollowLeaderGoal extends Goal {
 
     @Override
     public boolean shouldExecute() {
-        if (antelope.isLeader()) {
+        if (antelope.isLeader() || antelope.isChild()) {
             // Leaders shouldn't follow other leaders
             return false;
         }
