@@ -47,7 +47,7 @@ public class Registration {
 
     public static final RegistryObject<EntityType<BlopoleEntity>> BLOPOLE = ENTITIES.register("blopole",
             () -> EntityType.Builder.create(BlopoleEntity::new, EntityClassification.CREATURE)
-                    .size(.9f, 1.8f) //CHANGE SIZE
+                    .size(.9f, .8f)
                     .setShouldReceiveVelocityUpdates(true)
                     .build("blopole"));
 

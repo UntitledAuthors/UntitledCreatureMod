@@ -138,11 +138,6 @@ public class RockAntelopeEntity extends AnimalEntity implements IAnimatable {
     }
 
     @Override
-    public boolean hasCustomName() {
-        return true;
-    }
-
-    @Override
     public void eatGrassBonus() {
         if (!world.isRemote) {
             this.setHealth(this.getHealth() + 1.0f);
