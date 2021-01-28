@@ -16,9 +16,18 @@ import net.minecraft.world.World;
 
 import javax.annotation.Nonnull;
 
-public class LeaderDebugItem extends Item {
-    public LeaderDebugItem(Properties properties) {
+public class DebugItem extends Item {
+    public DebugItem(Properties properties) {
         super(properties);
+    }
+
+    private static StringTextComponent rockAntelopeInfo(RockAntelopeEntity target) {
+        return new StringTextComponent(String.format("ID: %d, leader: %s, child: %s",
+                target.getEntityId(), target.isLeader(), target.isChild()));
+    }
+
+    private static StringTextComponent genericEntityInfo(LivingEntity target) {
+        return new StringTextComponent(String.format("ID: %d", target.getEntityId()));
     }
 
     @Override
@@ -33,7 +42,12 @@ public class LeaderDebugItem extends Item {
             }
         }
         if (!world.isRemote) {
-            SChatPacket schatpacket = new SChatPacket(new StringTextComponent(String.format("ID: %d", target.getEntityId())), ChatType.GAME_INFO, Util.DUMMY_UUID);
+            StringTextComponent info = genericEntityInfo(target);
+            if (target instanceof RockAntelopeEntity) {
+                info = rockAntelopeInfo((RockAntelopeEntity) target);
+            }
+
+            SChatPacket schatpacket = new SChatPacket(info, ChatType.GAME_INFO, Util.DUMMY_UUID);
             ((ServerPlayerEntity)playerIn).connection.sendPacket(schatpacket);
             return ActionResultType.SUCCESS;
         }

@@ -9,8 +9,9 @@ import java.util.List;
 
 public class FollowLeaderGoal extends Goal {
     private final RockAntelopeEntity antelope;
+    private static final double LEADER_FOLLOW_MAX_DISTANCE_SQ = 400.0D; // = 20 Blocks since sqrt(400) = 20
+    private static final double LEADER_FOLLOW_MIN_DISTANCE_SQ = 64.0D; // = 8 Blocks
     private final double moveSpeed;
-    private static double LEADER_FOLLOW_DISTANCE = 50.0D;
 
     private RockAntelopeEntity leaderAntelope = null;
     private int delayCounter;
@@ -36,15 +37,18 @@ public class FollowLeaderGoal extends Goal {
             antelope.setIsLeader(true);
             return false;
         }
-        // Only follow them when the leader gets too far away
-        return antelope.getDistanceSq(leaderAntelope) > LEADER_FOLLOW_DISTANCE;
+
+       // // Only follow them when the leader gets too far away
+       System.out.printf("%02d: distance: %f, sq: %f\n%n", antelope.getEntityId(), antelope.getDistance(leaderAntelope), antelope.getDistanceSq(leaderAntelope));
+
+        return antelope.getDistanceSq(leaderAntelope) > LEADER_FOLLOW_MAX_DISTANCE_SQ;
     }
 
-    private static final EntityPredicate nearbyPredicate = (new EntityPredicate()).setDistance(LEADER_FOLLOW_DISTANCE).allowInvulnerable().allowFriendlyFire().setLineOfSiteRequired();
+    private static final EntityPredicate nearbyPredicate = (new EntityPredicate()).setDistance(LEADER_FOLLOW_MAX_DISTANCE_SQ).allowInvulnerable().allowFriendlyFire().setLineOfSiteRequired();
     @Nullable
     private RockAntelopeEntity findNearestLeader() {
         List<RockAntelopeEntity> list = antelope.world.getTargettableEntitiesWithinAABB(RockAntelopeEntity.class,
-                nearbyPredicate, antelope, antelope.getBoundingBox().grow(LEADER_FOLLOW_DISTANCE));
+                nearbyPredicate, antelope, antelope.getBoundingBox().grow(20));
         double min_distance = Double.MAX_VALUE;
         RockAntelopeEntity foundLeader = null;
 
@@ -59,25 +63,23 @@ public class FollowLeaderGoal extends Goal {
 
     @Override
     public boolean shouldContinueExecuting() {
-        return antelope.getDistanceSq(leaderAntelope) > LEADER_FOLLOW_DISTANCE;
+        return antelope.getDistanceSq(leaderAntelope) > LEADER_FOLLOW_MIN_DISTANCE_SQ;
     }
 
     @Override
     public void startExecuting() {
-        // Wait random amount of ticks between 10 and 20
-        this.delayCounter = 10 + antelope.getRNG().nextInt(10);
+        // Wait random amount of ticks between 5 and 10
+        this.delayCounter = 5 + antelope.getRNG().nextInt(5);
     }
 
     @Override
     public void resetTask() {
         // NOTE: No they probably should not forget their leader
-        // leaderAntelope = null;
     }
 
     public void tick() {
         if (--delayCounter <= 0) {
             delayCounter = 10;
-            // TODO: Maybe move nearby a leader?
             antelope.getNavigator().tryMoveToEntityLiving(leaderAntelope, moveSpeed);
         }
     }

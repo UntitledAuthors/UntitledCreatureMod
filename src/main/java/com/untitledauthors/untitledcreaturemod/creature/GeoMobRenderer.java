@@ -28,6 +28,14 @@ public class GeoMobRenderer<T extends MobEntity & IAnimatable> extends GeoEntity
         super(renderManager, modelProvider);
     }
 
+    @Override
+    public boolean canRenderName(T entity) {
+        if (entity.getAlwaysRenderNameTagForRender() && entity.hasCustomName()) {
+            return true;
+        }
+        return super.canRenderName(entity);
+    }
+
     public void render(T entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn) {
         super.render(entityIn, entityYaw, partialTicks, matrixStackIn, bufferIn, packedLightIn);
         Entity entity = entityIn.getLeashHolder();
