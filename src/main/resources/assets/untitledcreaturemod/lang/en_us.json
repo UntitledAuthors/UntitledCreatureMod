@@ -19,6 +19,7 @@
 
   "item.untitledcreaturemod.toad_spawn_egg": "Toad Spawn Egg",
   "item.untitledcreaturemod.antelope_spawn_egg": "Antelope Spawn Egg",
+  "item.untitledcreaturemod.blopole_spawn_egg": "Blopole Spawn Egg",
 
   "advancement.untitledcreaturemod:toadCaught": "Tactical Toading",
   "advancement.untitledcreaturemod:toadCaught.desc": "Catch a toad in a bucket. Or is it a frog?",
