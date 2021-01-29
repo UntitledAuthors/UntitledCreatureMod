@@ -45,7 +45,7 @@ public class RockAntelopeEntity extends AnimalEntity implements IAnimatable {
     public static final String IS_LEADER_TAG = "IsLeader";
     public static DataParameter<Integer> JOUSTING_PARTNER_ID = EntityDataManager.createKey(RockAntelopeEntity.class, DataSerializers.VARINT);
 
-    public static Item BREEDING_ITEM = Items.WHEAT;
+    public static Item BREEDING_ITEM = Items.ACACIA_LEAVES;
     private EatGrassGoal eatGrassGoal;
     private int eatGrassTimer = -30;
 
@@ -96,9 +96,10 @@ public class RockAntelopeEntity extends AnimalEntity implements IAnimatable {
     protected void registerGoals() {
         this.eatGrassGoal = new EatGrassGoal(this);
         this.goalSelector.addGoal(0, new SwimGoal(this));
-        this.goalSelector.addGoal(1, new PanicGoal(this, 2.0D));
+        // TODO: Leader should alert others to attack
+        this.goalSelector.addGoal(1, new PanicGoal(this, 1.5D));
         this.goalSelector.addGoal(2, new BreedGoal(this, 1.0D));
-        this.goalSelector.addGoal(3, new TemptGoal(this, 1.25D, Ingredient.fromItems(Items.WHEAT), false));
+        this.goalSelector.addGoal(3, new TemptGoal(this, 1.25D, Ingredient.fromItems(BREEDING_ITEM), false));
         this.goalSelector.addGoal(4, new FollowParentGoal(this, 1.25D));
         this.goalSelector.addGoal(5, new FollowLeaderGoal(this, 1.25D));
         this.goalSelector.addGoal(5, eatGrassGoal);

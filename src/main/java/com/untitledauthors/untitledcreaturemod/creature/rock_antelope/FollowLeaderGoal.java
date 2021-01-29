@@ -38,9 +38,6 @@ public class FollowLeaderGoal extends Goal {
             return false;
         }
 
-       // // Only follow them when the leader gets too far away
-       System.out.printf("%02d: distance: %f, sq: %f\n%n", antelope.getEntityId(), antelope.getDistance(leaderAntelope), antelope.getDistanceSq(leaderAntelope));
-
         return antelope.getDistanceSq(leaderAntelope) > LEADER_FOLLOW_MAX_DISTANCE_SQ;
     }
 
