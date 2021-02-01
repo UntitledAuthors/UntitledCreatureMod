@@ -24,6 +24,16 @@
 					]
 				},
 				{
+					"name": "hat",
+					"parent": "body",
+					"pivot": [0, 13, 0]
+				},
+				{
+					"name": "pot",
+					"parent": "hat",
+					"pivot": [0, 13, 0]
+				},
+				{
 					"name": "tail",
 					"parent": "body",
 					"pivot": [0, 5.5, 7.5],

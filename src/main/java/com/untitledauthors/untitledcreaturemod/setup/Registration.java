@@ -1,5 +1,6 @@
 package com.untitledauthors.untitledcreaturemod.setup;
 
+import com.untitledauthors.untitledcreaturemod.creature.CreatureBucket;
 import com.untitledauthors.untitledcreaturemod.creature.blopole.BlopoleEntity;
 import com.untitledauthors.untitledcreaturemod.creature.rock_antelope.RockAntelopeEntity;
 import com.untitledauthors.untitledcreaturemod.creature.toad.*;
@@ -76,7 +77,7 @@ public class Registration {
     public static final RegistryObject<Item> ANTELOPE_WAR_HORN = ITEMS.register("antelope_war_horn", () -> new AntelopeWarHorn(new Item.Properties().maxStackSize(1).group(CommonSetup.ITEM_GROUP)));
 
     public static final RegistryObject<Item> TOAD_BUCKET = ITEMS.register("toad_bucket",
-            () -> new ToadBucket(TOAD, new Item.Properties().maxStackSize(1).group(CommonSetup.ITEM_GROUP)));
+            () -> new CreatureBucket(TOAD, new Item.Properties().maxStackSize(1).group(CommonSetup.ITEM_GROUP)));
     public static final RegistryObject<Item> POISONOUS_SECRETIONS_ITEM = ITEMS.register("poisonous_secretions",
             () -> new PoisonousSecretionsItem(new Item.Properties().maxStackSize(16).group(CommonSetup.ITEM_GROUP)));
 
@@ -102,6 +103,10 @@ public class Registration {
     // Toad Blocks
     public static final RegistryObject<Block> POISONOUS_SECRETIONS_CARPET = BLOCKS.register("poisonous_secretions_carpet", () -> new PoisonousSecretionsCarpet(
             AbstractBlock.Properties.from(Blocks.SNOW).sound(SoundType.SLIME).notSolid().doesNotBlockMovement().harvestTool(ToolType.SHOVEL)));
+
+    // Blopole Items
+    public static final RegistryObject<Item> BLOPOLE_BUCKET = ITEMS.register("blopole_bucket",
+            () -> new CreatureBucket(BLOPOLE, new Item.Properties().maxStackSize(1).group(CommonSetup.ITEM_GROUP)));
 
     public static void init() {
         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();

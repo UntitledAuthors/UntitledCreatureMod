@@ -5,7 +5,6 @@
   "item.untitledcreaturemod.raw_toad_legs": "Raw Toad Legs",
   "item.untitledcreaturemod.cooked_toad_legs": "Cooked Toad Legs",
   "item.untitledcreaturemod.toad_bucket": "Bucket of Toad",
-  "item.untitledcreaturemod.toad_bucket.named": "Bucket of %s",
   "item.untitledcreaturemod.poisonous_secretions": "Poisonous Secretions",
 
   "entity.untitledcreaturemod.rock_antelope": "Rock Antelope",
@@ -16,10 +15,12 @@
   "item.untitledcreaturemod.stonehorn_dagger": "Stonehorn Dagger",
 
   "entity.untitledcreaturemod.blopole": "Blopole",
+  "item.untitledcreaturemod.blopole_bucket": "Bucket of Blopole",
 
   "item.untitledcreaturemod.toad_spawn_egg": "Toad Spawn Egg",
   "item.untitledcreaturemod.antelope_spawn_egg": "Rock Antelope Spawn Egg",
   "item.untitledcreaturemod.blopole_spawn_egg": "Blopole Spawn Egg",
+  "item.untitledcreaturemod.creature_bucket.named": "Bucket of %s",
 
   "advancement.untitledcreaturemod:toadCaught": "Tactical Toading",
   "advancement.untitledcreaturemod:toadCaught.desc": "Catch a toad in a bucket. Or is it a frog?",

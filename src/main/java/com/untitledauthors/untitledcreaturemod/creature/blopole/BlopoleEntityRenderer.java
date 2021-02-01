@@ -14,31 +14,39 @@ import net.minecraft.client.renderer.model.IBakedModel;
 import net.minecraft.client.renderer.texture.AtlasTexture;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import net.minecraft.util.math.MathHelper;
+import software.bernie.geckolib3.geo.render.built.GeoBone;
+
+import javax.annotation.Nullable;
 
 public class BlopoleEntityRenderer extends GeoMobRenderer<BlopoleEntity> {
+    private IRenderTypeBuffer rtb;
+    private ResourceLocation whTexture;
+
     public BlopoleEntityRenderer(EntityRendererManager renderManager) {
         super(renderManager, new BlopoleEntityModel());
         this.shadowSize = 0.5F;
     }
 
     @Override
-    public void renderLate(BlopoleEntity animatable, MatrixStack stack, float ticks, IRenderTypeBuffer renderTypeBuffer, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float partialTicks) {
-        // TODO: Make it render a blockstate owned by the blopole entity
-
+    public void renderEarly(BlopoleEntity animatable, MatrixStack stackIn, float ticks, @Nullable IRenderTypeBuffer renderTypeBuffer, @Nullable IVertexBuilder vertexBuilder, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float partialTicks) {
+        //store the Render Type Buffer and current texture, we'll need them later.
+        this.rtb = renderTypeBuffer;
+        this.whTexture = this.getTextureLocation(animatable);
+        this.entityBeingRendered = animatable;
     }
 
+    private BlopoleEntity entityBeingRendered;
+
     @Override
-    public void render(BlopoleEntity entity, float entityYaw, float partialTicks, MatrixStack stack, IRenderTypeBuffer bufferIn, int packedLightIn) {
-        super.render(entity, entityYaw, partialTicks, stack, bufferIn, packedLightIn);
-        if (entity.hasFlowerpot()) {
+    public void renderRecursively(GeoBone bone, MatrixStack stack, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
+        if (bone.getName().equals("pot") && entityBeingRendered.hasFlowerpot()) {
             Minecraft mc = Minecraft.getInstance();
             stack.push();
 
             BlockState state = Blocks.FLOWER_POT.getDefaultState();
-            if (!entity.getFlowerpotContents().isEmpty()) {
+            if (!entityBeingRendered.getFlowerpotContents().isEmpty()) {
                 // TODO: Maybe this can be cached somewhere?
-                Block pottedFlowerBlock = FlowerPotHelper.getFullPots().get(new ResourceLocation(entity.getFlowerpotContents())).get();
+                Block pottedFlowerBlock = FlowerPotHelper.getFullPots().get(new ResourceLocation(entityBeingRendered.getFlowerpotContents())).get();
                 if (pottedFlowerBlock != null) {
                     state = pottedFlowerBlock.getDefaultState();
                 }
@@ -47,12 +55,13 @@ public class BlopoleEntityRenderer extends GeoMobRenderer<BlopoleEntity> {
             IBakedModel flowerPotModel = Minecraft.getInstance().getBlockRendererDispatcher().getModelForState(state);
             mc.getTextureManager().bindTexture(AtlasTexture.LOCATION_BLOCKS_TEXTURE);
             RenderType type = RenderType.getCutoutMipped();
-            float rotationYaw = MathHelper.interpolateAngle(partialTicks, entity.prevRenderYawOffset, entity.renderYawOffset);
-            float ageInTicks = this.handleRotationFloat(entity, partialTicks);
-            this.applyRotations(entity, stack, ageInTicks, rotationYaw, partialTicks);
             stack.translate(-0.5f, 0.7f, -0.5f);
-            Minecraft.getInstance().getItemRenderer().renderModel(flowerPotModel, ItemStack.EMPTY, packedLightIn, getPackedOverlay(entity, 0), stack, bufferIn.getBuffer(type));
+            Minecraft.getInstance().getItemRenderer().renderModel(flowerPotModel, ItemStack.EMPTY, packedLightIn, getPackedOverlay(entityBeingRendered, 0), stack, rtb.getBuffer(type));
+
             stack.pop();
+            bufferIn = rtb.getBuffer(RenderType.getEntitySmoothCutout(whTexture));
         }
+
+        super.renderRecursively(bone, stack, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
     }
 }

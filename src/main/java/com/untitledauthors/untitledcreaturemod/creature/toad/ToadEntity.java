@@ -1,5 +1,6 @@
 package com.untitledauthors.untitledcreaturemod.creature.toad;
 
+import com.untitledauthors.untitledcreaturemod.creature.BucketCreature;
 import com.untitledauthors.untitledcreaturemod.creature.toad.ai.AttackOnceGoal;
 import com.untitledauthors.untitledcreaturemod.creature.toad.ai.HurtByTargetOnceGoal;
 import com.untitledauthors.untitledcreaturemod.creature.toad.ai.ToadBreatheAirGoal;
@@ -16,6 +17,7 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
@@ -39,9 +41,9 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class ToadEntity extends AnimalEntity implements IAnimatable {
-
+public class ToadEntity extends AnimalEntity implements IAnimatable, BucketCreature {
     private static final DataParameter<Boolean> FROM_BUCKET = EntityDataManager.createKey(ToadEntity.class, DataSerializers.BOOLEAN);
+    public static final String FROM_BUCKET_TAG = "fromBucket";
     private static final int FLEE_DURATION_S = 30;
     private final AnimationFactory factory = new AnimationFactory(this);
     public static AnimationBuilder IDLE_ANIM = new AnimationBuilder().addAnimation("idle");
@@ -59,26 +61,7 @@ public class ToadEntity extends AnimalEntity implements IAnimatable {
         this.setPathPriority(PathNodeType.WATER, 0.0F);
     }
 
-    protected void registerData() {
-        super.registerData();
-        this.dataManager.register(FROM_BUCKET, false);
-    }
 
-    public boolean isFromBucket() {
-        return this.dataManager.get(FROM_BUCKET);
-    }
-
-    public void setFromBucket(boolean isFromBucket) {
-        this.dataManager.set(FROM_BUCKET, isFromBucket);
-    }
-
-    public boolean preventDespawn() {
-        return super.preventDespawn() || this.isFromBucket();
-    }
-
-    public boolean canDespawn(double distanceToClosestPlayer) {
-        return !this.isFromBucket() && !this.hasCustomName();
-    }
 
     @Nonnull
     protected PathNavigator createNavigator(@Nonnull World worldIn) {
@@ -236,28 +219,30 @@ public class ToadEntity extends AnimalEntity implements IAnimatable {
     // Called on right clicking the toad/entity
     // Mostly copied from AbstractFishEntity
     @Nonnull
-    public ActionResultType func_230254_b_(PlayerEntity heldItem, @Nonnull  Hand hand) {
-        ItemStack itemstack = heldItem.getHeldItem(hand);
+    public ActionResultType func_230254_b_(PlayerEntity player, @Nonnull Hand hand) {
+        ItemStack itemstack = player.getHeldItem(hand);
         if (itemstack.getItem() == Items.BUCKET && this.isAlive()) {
             this.playSound(SoundEvents.ITEM_BUCKET_FILL_FISH, 1.0F, 1.0F);
             itemstack.shrink(1);
-            ItemStack toad_bucket = new ItemStack(Registration.TOAD_BUCKET.get());
-            toad_bucket.setTag(serializeNBT());
+            ItemStack creatureBucket = new ItemStack(Registration.TOAD_BUCKET.get());
+            CompoundNBT itemNBT = new CompoundNBT();
+            itemNBT.put("EntityTag", serializeNBT());
+            creatureBucket.setTag(itemNBT);
 
             if (!this.world.isRemote) {
-                CriteriaTriggers.FILLED_BUCKET.trigger((ServerPlayerEntity)heldItem, toad_bucket);
+                CriteriaTriggers.FILLED_BUCKET.trigger((ServerPlayerEntity)player, creatureBucket);
             }
 
             if (itemstack.isEmpty()) {
-                heldItem.setHeldItem(hand, toad_bucket);
-            } else if (!heldItem.inventory.addItemStackToInventory(toad_bucket)) {
-                heldItem.dropItem(toad_bucket, false);
+                player.setHeldItem(hand, creatureBucket);
+            } else if (!player.inventory.addItemStackToInventory(creatureBucket)) {
+                player.dropItem(creatureBucket, false);
             }
 
             this.remove();
             return ActionResultType.func_233537_a_(this.world.isRemote);
         } else {
-            return super.func_230254_b_(heldItem, hand);
+            return super.func_230254_b_(player, hand);
         }
     }
 
@@ -297,5 +282,38 @@ public class ToadEntity extends AnimalEntity implements IAnimatable {
 
     protected SoundEvent getDeathSound() {
         return SoundEvents.ENTITY_COD_DEATH;
+    }
+
+    protected void registerData() {
+        super.registerData();
+        this.dataManager.register(FROM_BUCKET, false);
+    }
+
+    public boolean isFromBucket() {
+        return this.dataManager.get(FROM_BUCKET);
+    }
+
+    public void setFromBucket(boolean isFromBucket) {
+        this.dataManager.set(FROM_BUCKET, isFromBucket);
+    }
+
+    public boolean preventDespawn() {
+        return super.preventDespawn() || this.isFromBucket();
+    }
+
+    public boolean canDespawn(double distanceToClosestPlayer) {
+        return !this.isFromBucket() && !this.hasCustomName();
+    }
+
+    @Override
+    public void writeAdditional(CompoundNBT compound) {
+        super.writeAdditional(compound);
+        compound.putBoolean(FROM_BUCKET_TAG, isFromBucket());
+    }
+
+    @Override
+    public void readAdditional(CompoundNBT compound) {
+        super.readAdditional(compound);
+        setFromBucket(compound.getBoolean(FROM_BUCKET_TAG));
     }
 }
