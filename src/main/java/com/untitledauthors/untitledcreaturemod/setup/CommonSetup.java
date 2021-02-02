@@ -64,13 +64,13 @@ public class CommonSetup {
         if (event.isCanceled()) {
             return;
         }
-        addSpawningSpawning(event, TOAD_BIOMES, Registration.TOAD.get(), 20, 3, 6);
-        addSpawningSpawning(event, ROCK_ANTELOPE_BIOMES, Registration.ROCK_ANTELOPE.get(), 20, 3, 8);
-        addSpawningSpawning(event, BLOPOLE_BIOMES, Registration.BLOPOLE.get(), 20, 2, 5);
+        setupSpawning(event, TOAD_BIOMES, Registration.TOAD.get(), 20, 3, 6);
+        setupSpawning(event, ROCK_ANTELOPE_BIOMES, Registration.ROCK_ANTELOPE.get(), 20, 3, 8);
+        setupSpawning(event, BLOPOLE_BIOMES, Registration.BLOPOLE.get(), 20, 2, 5);
     }
 
-    private static void addSpawningSpawning(BiomeLoadingEvent event, List<ResourceLocation> biomeList,
-                                            EntityType<? extends Entity> entityType, int weight, int minCount, int maxCount) {
+    private static void setupSpawning(BiomeLoadingEvent event, List<ResourceLocation> biomeList,
+                                      EntityType<? extends Entity> entityType, int weight, int minCount, int maxCount) {
         if (event.getName() == null)
             return;
         if (!biomeList.contains(event.getName()))

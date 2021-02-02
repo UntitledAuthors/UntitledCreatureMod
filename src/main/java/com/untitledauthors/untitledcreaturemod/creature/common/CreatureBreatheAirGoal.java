@@ -1,4 +1,4 @@
-package com.untitledauthors.untitledcreaturemod.creature.toad.ai;
+package com.untitledauthors.untitledcreaturemod.creature.common;
 
 
 import net.minecraft.entity.CreatureEntity;
@@ -7,11 +7,11 @@ import net.minecraft.util.math.vector.Vector3d;
 
 import java.util.EnumSet;
 
-public class ToadBreatheAirGoal extends Goal {
+public class CreatureBreatheAirGoal extends Goal {
     private final CreatureEntity creature;
     private final int maxAir;
 
-    public ToadBreatheAirGoal(CreatureEntity creature) {
+    public CreatureBreatheAirGoal(CreatureEntity creature) {
         this.creature = creature;
         this.maxAir = creature.getMaxAir();
         this.setMutexFlags(EnumSet.of(Flag.JUMP));

@@ -1,4 +1,4 @@
-package com.untitledauthors.untitledcreaturemod.creature;
+package com.untitledauthors.untitledcreaturemod.creature.common;
 
 public interface BucketCreature {
     boolean isFromBucket();

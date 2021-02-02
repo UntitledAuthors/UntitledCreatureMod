@@ -1,9 +1,11 @@
 package com.untitledauthors.untitledcreaturemod.creature.toad;
 
-import com.untitledauthors.untitledcreaturemod.creature.BucketCreature;
+import com.untitledauthors.untitledcreaturemod.creature.common.BucketCreature;
+import com.untitledauthors.untitledcreaturemod.creature.common.CreatureTemptGoal;
+import com.untitledauthors.untitledcreaturemod.creature.common.WalkAndSwimNavigator;
 import com.untitledauthors.untitledcreaturemod.creature.toad.ai.AttackOnceGoal;
 import com.untitledauthors.untitledcreaturemod.creature.toad.ai.HurtByTargetOnceGoal;
-import com.untitledauthors.untitledcreaturemod.creature.toad.ai.ToadBreatheAirGoal;
+import com.untitledauthors.untitledcreaturemod.creature.common.CreatureBreatheAirGoal;
 import com.untitledauthors.untitledcreaturemod.creature.toad.ai.ToadFleeGoal;
 import com.untitledauthors.untitledcreaturemod.setup.Registration;
 import net.minecraft.advancements.CriteriaTriggers;
@@ -61,11 +63,9 @@ public class ToadEntity extends AnimalEntity implements IAnimatable, BucketCreat
         this.setPathPriority(PathNodeType.WATER, 0.0F);
     }
 
-
-
     @Nonnull
-    protected PathNavigator createNavigator(@Nonnull World worldIn) {
-        return new ToadEntity.Navigator(this, worldIn);
+    protected PathNavigator createNavigator(@Nonnull World world) {
+        return new WalkAndSwimNavigator(this, world);
     }
 
     @Override
@@ -87,8 +87,6 @@ public class ToadEntity extends AnimalEntity implements IAnimatable, BucketCreat
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         AnimationController<ToadEntity> controller = event.getController();
-        // TODO: Come up with alternative moving predicate?
-        //       The default one doesn't seen to work with slow movement speeds.
         boolean isInWater = isInWater();
         boolean isMoving = isInWater ? !(limbSwingAmount > -0.02) || !(limbSwingAmount < 0.02) : !(limbSwingAmount > -0.10F) || !(limbSwingAmount < 0.10F);
         AnimationBuilder anim = isInWater ? IDLE_SWIM_ANIM : IDLE_ANIM;
@@ -101,11 +99,11 @@ public class ToadEntity extends AnimalEntity implements IAnimatable, BucketCreat
     }
 
     protected void registerGoals() {
-        this.goalSelector.addGoal(0, new ToadBreatheAirGoal(this));
+        this.goalSelector.addGoal(0, new CreatureBreatheAirGoal(this));
         this.goalSelector.addGoal(1, new AttackOnceGoal(this, 1.25D));
         this.goalSelector.addGoal(2, new ToadFleeGoal(this, 1.5D));
         this.goalSelector.addGoal(3, new BreedGoal(this, 1.0D));
-        this.goalSelector.addGoal(3, new ToadTemptGoal(this, 1.1D, BREEDING_ITEM));
+        this.goalSelector.addGoal(3, new CreatureTemptGoal(this, 1.1D, BREEDING_ITEM));
         this.goalSelector.addGoal(4, new FollowParentGoal(this, 1.25D));
         this.goalSelector.addGoal(5, new RandomWalkingGoal(this, 1.0D));
         this.goalSelector.addGoal(6, new LookAtGoal(this, PlayerEntity.class, 6.0F));
@@ -198,22 +196,6 @@ public class ToadEntity extends AnimalEntity implements IAnimatable, BucketCreat
     public void setFleeTarget(LivingEntity fleeTarget) {
         this.fleeTargetTimestamp = this.ticksExisted;
         this.fleeTarget = fleeTarget;
-    }
-
-    static class Navigator extends SwimmerPathNavigator {
-        Navigator(ToadEntity turtle, World worldIn) {
-            super(turtle, worldIn);
-        }
-
-        protected boolean canNavigate() {
-            return true;
-        }
-
-        @Nonnull
-        protected PathFinder getPathFinder(int p_179679_1_) {
-            this.nodeProcessor = new WalkAndSwimNodeProcessor();
-            return new PathFinder(this.nodeProcessor, p_179679_1_);
-        }
     }
 
     // Called on right clicking the toad/entity

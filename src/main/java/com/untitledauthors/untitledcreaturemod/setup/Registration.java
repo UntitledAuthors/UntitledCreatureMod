@@ -1,6 +1,6 @@
 package com.untitledauthors.untitledcreaturemod.setup;
 
-import com.untitledauthors.untitledcreaturemod.creature.CreatureBucket;
+import com.untitledauthors.untitledcreaturemod.creature.common.CreatureBucket;
 import com.untitledauthors.untitledcreaturemod.creature.blopole.BlopoleEntity;
 import com.untitledauthors.untitledcreaturemod.creature.rock_antelope.RockAntelopeEntity;
 import com.untitledauthors.untitledcreaturemod.creature.toad.*;

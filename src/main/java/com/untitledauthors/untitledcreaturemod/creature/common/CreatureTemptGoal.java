@@ -1,6 +1,7 @@
-package com.untitledauthors.untitledcreaturemod.creature.toad;
+package com.untitledauthors.untitledcreaturemod.creature.common;
 
 import com.google.common.collect.Sets;
+import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.EntityPredicate;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.player.PlayerEntity;
@@ -11,16 +12,16 @@ import java.util.EnumSet;
 import java.util.Set;
 
 // Mostly copied from TurtleEntity.PlayerTemptGoal
-public class ToadTemptGoal extends Goal {
+public class CreatureTemptGoal extends Goal {
     private static final EntityPredicate ENTITY_PREDICATE = (new EntityPredicate()).setDistance(10.0D).allowInvulnerable().allowFriendlyFire().setSkipAttackChecks().setLineOfSiteRequired();
-    private final ToadEntity turtle;
+    private final CreatureEntity creature;
     private final double speed;
     private PlayerEntity tempter;
     private int cooldown;
     private final Set<Item> temptItems;
 
-    ToadTemptGoal(ToadEntity toad, double speedIn, Item temptItem) {
-        this.turtle = toad;
+    public CreatureTemptGoal(CreatureEntity creature, double speedIn, Item temptItem) {
+        this.creature = creature;
         this.speed = speedIn;
         this.temptItems = Sets.newHashSet(temptItem);
         this.setMutexFlags(EnumSet.of(Goal.Flag.MOVE, Goal.Flag.LOOK));
@@ -31,7 +32,7 @@ public class ToadTemptGoal extends Goal {
             --this.cooldown;
             return false;
         } else {
-            this.tempter = this.turtle.world.getClosestPlayer(ENTITY_PREDICATE, this.turtle);
+            this.tempter = this.creature.world.getClosestPlayer(ENTITY_PREDICATE, this.creature);
             if (this.tempter == null) {
                 return false;
             } else {
@@ -50,16 +51,16 @@ public class ToadTemptGoal extends Goal {
 
     public void resetTask() {
         this.tempter = null;
-        this.turtle.getNavigator().clearPath();
+        this.creature.getNavigator().clearPath();
         this.cooldown = 100;
     }
 
     public void tick() {
-        this.turtle.getLookController().setLookPositionWithEntity(this.tempter, (float) (this.turtle.getHorizontalFaceSpeed() + 20), (float) this.turtle.getVerticalFaceSpeed());
-        if (this.turtle.getDistanceSq(this.tempter) < 6.25D) {
-            this.turtle.getNavigator().clearPath();
+        this.creature.getLookController().setLookPositionWithEntity(this.tempter, (float) (this.creature.getHorizontalFaceSpeed() + 20), (float) this.creature.getVerticalFaceSpeed());
+        if (this.creature.getDistanceSq(this.tempter) < 6.25D) {
+            this.creature.getNavigator().clearPath();
         } else {
-            this.turtle.getNavigator().tryMoveToEntityLiving(this.tempter, this.speed);
+            this.creature.getNavigator().tryMoveToEntityLiving(this.tempter, this.speed);
         }
 
     }

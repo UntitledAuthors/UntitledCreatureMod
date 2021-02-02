@@ -1,6 +1,5 @@
-package com.untitledauthors.untitledcreaturemod.creature;
+package com.untitledauthors.untitledcreaturemod.creature.common;
 
-import com.untitledauthors.untitledcreaturemod.creature.BucketCreature;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;

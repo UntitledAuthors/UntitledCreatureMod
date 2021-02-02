@@ -1,13 +1,14 @@
 package com.untitledauthors.untitledcreaturemod.creature.blopole;
 
-import com.untitledauthors.untitledcreaturemod.creature.BucketCreature;
+import com.untitledauthors.untitledcreaturemod.creature.common.BucketCreature;
+import com.untitledauthors.untitledcreaturemod.creature.common.CreatureBreatheAirGoal;
+import com.untitledauthors.untitledcreaturemod.creature.common.CreatureTemptGoal;
+import com.untitledauthors.untitledcreaturemod.creature.common.WalkAndSwimNavigator;
 import com.untitledauthors.untitledcreaturemod.setup.Registration;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.Block;
-import net.minecraft.client.audio.Sound;
 import net.minecraft.entity.AgeableEntity;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.MobEntity;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
@@ -18,11 +19,11 @@ import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.pathfinding.PathNavigator;
 import net.minecraft.util.*;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
@@ -46,6 +47,8 @@ public class BlopoleEntity extends TameableEntity implements IAnimatable, Bucket
     public static final AnimationBuilder IDLE_ANIM = new AnimationBuilder().addAnimation("idle01");
     public static final AnimationBuilder IDLE_SIDE_ANIM = new AnimationBuilder().addAnimation("idle02");
     public static final AnimationBuilder IDLE_FLIPPED_ANIM = new AnimationBuilder().addAnimation("idle03");
+    public static final AnimationBuilder IDLE_SWIM_ANIM = new AnimationBuilder().addAnimation("idle_swim");
+    public static final AnimationBuilder SWIM_ANIM = new AnimationBuilder().addAnimation("swim");
     public static final AnimationBuilder WALK_ANIM = new AnimationBuilder().addAnimation("walk");
     public static final Item BREEDING_ITEM = Items.SEA_PICKLE;
 
@@ -68,7 +71,18 @@ public class BlopoleEntity extends TameableEntity implements IAnimatable, Bucket
 
     public static AttributeModifierMap.MutableAttribute getDefaultAttributes() {
         return MobEntity.func_233666_p_().createMutableAttribute(Attributes.MAX_HEALTH, 7.0D)
-                .createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.15D);
+                .createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.15D)
+                .createMutableAttribute(net.minecraftforge.common.ForgeMod.SWIM_SPEED.get(), 2.0D);
+    }
+
+    @Nonnull
+    protected PathNavigator createNavigator(@Nonnull World world) {
+        return new WalkAndSwimNavigator(this, world);
+    }
+
+    @Override
+    public int getMaxAir() {
+        return 1200;
     }
 
     @Override
@@ -191,35 +205,40 @@ public class BlopoleEntity extends TameableEntity implements IAnimatable, Bucket
         data.addAnimationController(new AnimationController(this, "controller", 5, this::predicate));
     }
 
+    private AnimationBuilder chooseAnimation() {
+        boolean isInWater = isInWater();
+        boolean isMoving = isInWater ? !(limbSwingAmount > -0.02) || !(limbSwingAmount < 0.02) : !(limbSwingAmount > -0.10F) || !(limbSwingAmount < 0.10F);
+        if (isMoving) {
+            return isInWater ? SWIM_ANIM : WALK_ANIM;
+        } else {
+            if (isInWater) {
+                return IDLE_SWIM_ANIM;
+            } else {
+                switch (getChosenIdleAnim()) {
+                    case 0:
+                        return IDLE_ANIM;
+                    case 1:
+                        return IDLE_SIDE_ANIM;
+                    case 2:
+                        return IDLE_FLIPPED_ANIM;
+                }
+            }
+        }
+
+        return IDLE_ANIM;
+    }
+
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         AnimationController controller = event.getController();
-        // TODO: Come up with alternative moving predicate?
-        //       The default one doesn't seen to work with slow movement speeds.
-
-        boolean isMoving = !(limbSwingAmount > -0.05) || !(limbSwingAmount < 0.05);
-        AnimationBuilder idleAnimation = IDLE_ANIM;
-        switch (getChosenIdleAnim()) {
-            case 0:
-                idleAnimation = IDLE_ANIM;
-                break;
-            case 1:
-                idleAnimation = IDLE_SIDE_ANIM;
-                break;
-            case 2:
-                idleAnimation = IDLE_FLIPPED_ANIM;
-                break;
-        }
-        AnimationBuilder anim = isMoving ? WALK_ANIM : idleAnimation;
-        controller.setAnimation(anim);
-
+        controller.setAnimation(chooseAnimation());
         return PlayState.CONTINUE;
     }
 
     protected void registerGoals() {
-        this.goalSelector.addGoal(0, new SwimGoal(this));
+        this.goalSelector.addGoal(0, new CreatureBreatheAirGoal(this));
         this.goalSelector.addGoal(1, new PanicGoal(this, 1.5D));
         this.goalSelector.addGoal(2, new BreedGoal(this, 1.0D));
-        this.goalSelector.addGoal(3, new TemptGoal(this, 1.00, Ingredient.fromItems(BREEDING_ITEM), false));
+        this.goalSelector.addGoal(3, new CreatureTemptGoal(this, 1.00, BREEDING_ITEM));
         this.goalSelector.addGoal(4, new FollowParentGoal(this, 1.25D));
         this.goalSelector.addGoal(6, new RandomWalkingGoal(this, 1.0D)); // TODO: Lazy random walk?
         this.goalSelector.addGoal(7, new LookAtGoal(this, PlayerEntity.class, 6.0F));
