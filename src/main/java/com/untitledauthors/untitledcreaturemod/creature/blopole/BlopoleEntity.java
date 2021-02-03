@@ -45,8 +45,7 @@ import javax.annotation.Nullable;
 import java.util.Map;
 import java.util.function.Supplier;
 
-public class BlopoleEntity extends TameableEntity implements IAnimatable, BucketCreature
-{
+public class BlopoleEntity extends TameableEntity implements IAnimatable, BucketCreature {
     private final AnimationFactory factory = new AnimationFactory(this);
     public static final AnimationBuilder IDLE_ANIM = new AnimationBuilder().addAnimation("idle01");
     public static final AnimationBuilder IDLE_SIDE_ANIM = new AnimationBuilder().addAnimation("idle02");
@@ -102,7 +101,7 @@ public class BlopoleEntity extends TameableEntity implements IAnimatable, Bucket
                 // TODO: Maybe there is a way to make this client only?
                 StringTextComponent info = new StringTextComponent("The Blopole doesn't like the dry bucket.");
                 SChatPacket schatpacket = new SChatPacket(info, ChatType.GAME_INFO, Util.DUMMY_UUID);
-                ((ServerPlayerEntity)player).connection.sendPacket(schatpacket);
+                ((ServerPlayerEntity) player).connection.sendPacket(schatpacket);
             }
             return ActionResultType.FAIL;
         }
@@ -123,7 +122,7 @@ public class BlopoleEntity extends TameableEntity implements IAnimatable, Bucket
         }
 
         // TODO: Revise/refactor this
-        return super.func_230254_b_(player ,hand);
+        return super.func_230254_b_(player, hand);
     }
 
     private void handleTaming(PlayerEntity player, ItemStack heldItemStack) {
@@ -134,16 +133,16 @@ public class BlopoleEntity extends TameableEntity implements IAnimatable, Bucket
             if (!player.abilities.isCreativeMode) {
                 heldItemStack.shrink(1);
                 this.playSound(SoundEvents.ENTITY_GENERIC_EAT, 1.0f, 1.0f);
-                // ((ServerWorld) world).spawnParticle(ParticleTypes.ITEM_SLIME, this.getPosX(), this.getPosY(), this.getPosZ(), 10, ((double)this.rand.nextFloat() - 0.5D) * 0.08D, ((double)this.rand.nextFloat() - 0.5D) * 0.08D, ((double)this.rand.nextFloat() - 0.5D) * 0.08D, 0.5D);
+                ((ServerWorld) world).spawnParticle(ParticleTypes.ITEM_SLIME, this.getPosX(), this.getPosY(), this.getPosZ(), 10, ((double) this.rand.nextFloat() - 0.5D) * 0.08D, ((double) this.rand.nextFloat() - 0.5D) * 0.08D, ((double) this.rand.nextFloat() - 0.5D) * 0.08D, 1.0D);
             }
             if (this.rand.nextInt(2) == 0 && !net.minecraftforge.event.ForgeEventFactory.onAnimalTame(this, player)) {
                 this.setTamedBy(player);
                 this.navigator.clearPath();
                 this.func_233687_w_(true);
-                this.world.setEntityState(this, (byte)7);
+                this.world.setEntityState(this, (byte) 7);
                 this.playSound(SoundEvents.BLOCK_SLIME_BLOCK_PLACE, 1.0f, 1.0f);
             } else {
-                this.world.setEntityState(this, (byte)6);
+                this.world.setEntityState(this, (byte) 6);
             }
         }
     }
@@ -160,7 +159,7 @@ public class BlopoleEntity extends TameableEntity implements IAnimatable, Bucket
         creatureBucket.setTag(itemNBT);
 
         if (!this.world.isRemote) {
-            CriteriaTriggers.FILLED_BUCKET.trigger((ServerPlayerEntity)player, creatureBucket);
+            CriteriaTriggers.FILLED_BUCKET.trigger((ServerPlayerEntity) player, creatureBucket);
         }
 
         if (itemstack.isEmpty()) {
@@ -276,12 +275,12 @@ public class BlopoleEntity extends TameableEntity implements IAnimatable, Bucket
         if (!world.isRemote && this.isAlive()) {
             if (!this.isChild() && --timeUntilNextBurp <= 0) {
                 this.timeUntilNextBurp = this.rand.nextInt(6000) + 6000;
-                this.playSound(SoundEvents.ENTITY_PLAYER_BURP, 1.0F, rand.nextFloat()/2 + 1.0F);
+                this.playSound(SoundEvents.ENTITY_PLAYER_BURP, 1.0F, rand.nextFloat() / 2 + 1.0F);
                 entityDropItem(Items.CLAY_BALL);
             }
 
             // Passive healing every 5 seconds when in water
-            if (isInWater() && this.getHealth() < this.getMaxHealth() && ticksExisted % 5*20 == 0) {
+            if (isInWater() && this.getHealth() < this.getMaxHealth() && ticksExisted % 5 * 20 == 0) {
                 this.heal(1);
             }
         }
@@ -324,7 +323,7 @@ public class BlopoleEntity extends TameableEntity implements IAnimatable, Bucket
         this.dataManager.register(HAS_FLOWERPOT, false);
         this.dataManager.register(FLOWERPOT_CONTENTS, "");
         this.dataManager.register(FROM_BUCKET, false);
-        this.dataManager.register(CHOSEN_IDLE_ANIM, (byte)0);
+        this.dataManager.register(CHOSEN_IDLE_ANIM, (byte) 0);
     }
 
     @Override
