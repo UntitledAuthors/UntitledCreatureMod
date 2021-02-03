@@ -27,5 +27,9 @@
 
   "untitledcreaturemod.subtitle.toad_ambient": "Toad noises",
   "untitledcreaturemod.subtitle.war_horn": "Antelope War Horn blowing",
-  "untitledcreaturemod.desc": "All the bois in one mod!"
+  "untitledcreaturemod.subtitle.blopole_ambient": "Blopole noises",
+  "untitledcreaturemod.subtitle.blopole_burp": "Blopole burps clay",
+  "untitledcreaturemod.desc": "All the bois in one mod!",
+
+  "item.untitledcreaturemod.debug_item": "Untitled Debug Item"
 }

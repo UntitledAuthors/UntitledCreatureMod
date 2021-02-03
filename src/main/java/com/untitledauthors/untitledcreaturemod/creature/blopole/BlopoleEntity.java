@@ -23,8 +23,12 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.datasync.DataParameter;
 import net.minecraft.network.datasync.DataSerializers;
 import net.minecraft.network.datasync.EntityDataManager;
+import net.minecraft.network.play.server.SChatPacket;
+import net.minecraft.particles.ParticleTypes;
 import net.minecraft.pathfinding.PathNavigator;
 import net.minecraft.util.*;
+import net.minecraft.util.text.ChatType;
+import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -51,7 +55,7 @@ public class BlopoleEntity extends TameableEntity implements IAnimatable, Bucket
     public static final AnimationBuilder SWIM_ANIM = new AnimationBuilder().addAnimation("swim");
     public static final AnimationBuilder WALK_ANIM = new AnimationBuilder().addAnimation("walk");
     public static final Item BREEDING_ITEM = Items.SEA_PICKLE;
-    private int clayBurpTimer = 0;
+    private int timeUntilNextBurp = rand.nextInt(6000) + 6000;
 
     public static DataParameter<Byte> CHOSEN_IDLE_ANIM = EntityDataManager.createKey(BlopoleEntity.class,
             DataSerializers.BYTE);
@@ -64,6 +68,7 @@ public class BlopoleEntity extends TameableEntity implements IAnimatable, Bucket
     public static final String FLOWERPOT_CONTENTS_TAG = "flowerpotContents";
     private static final DataParameter<Boolean> FROM_BUCKET = EntityDataManager.createKey(BlopoleEntity.class, DataSerializers.BOOLEAN);
     public static final String FROM_BUCKET_TAG = "fromBucket";
+    private static final String TIME_UNTIL_BURP_TAG = "timeUntilNextBurp";
 
 
     public BlopoleEntity(EntityType<? extends TameableEntity> type, World worldIn) {
@@ -93,6 +98,15 @@ public class BlopoleEntity extends TameableEntity implements IAnimatable, Bucket
         ItemStack heldItemStack = player.getHeldItem(hand);
         Item heldItem = heldItemStack.getItem();
         if (heldItem == Items.BUCKET && this.isAlive()) {
+            if (!world.isRemote) {
+                // TODO: Maybe there is a way to make this client only?
+                StringTextComponent info = new StringTextComponent("The Blopole doesn't like the dry bucket.");
+                SChatPacket schatpacket = new SChatPacket(info, ChatType.GAME_INFO, Util.DUMMY_UUID);
+                ((ServerPlayerEntity)player).connection.sendPacket(schatpacket);
+            }
+            return ActionResultType.FAIL;
+        }
+        if (heldItem == Items.WATER_BUCKET && this.isAlive()) {
             return handleBucketing(player, hand);
         }
         if (isTamed()) {
@@ -100,7 +114,7 @@ public class BlopoleEntity extends TameableEntity implements IAnimatable, Bucket
             if (result != null) return result;
             // Sitting
             ActionResultType actionresulttype = super.func_230254_b_(player, hand);
-            if (!actionresulttype.isSuccessOrConsume() && !isChild() && !world.isRemote && hand == Hand.MAIN_HAND) {
+            if (!actionresulttype.isSuccessOrConsume() && !isChild() && isOwner(player) && !world.isRemote && hand == Hand.MAIN_HAND) {
                 this.func_233687_w_(!this.isSitting());
             }
             return actionresulttype;
@@ -119,14 +133,15 @@ public class BlopoleEntity extends TameableEntity implements IAnimatable, Bucket
         if (heldItemStack.getItem() == Items.SLIME_BALL) {
             if (!player.abilities.isCreativeMode) {
                 heldItemStack.shrink(1);
-                world.playSound(null, getPosition(), SoundEvents.ENTITY_GENERIC_EAT, SoundCategory.NEUTRAL, 1.0f, 1.0f);
+                this.playSound(SoundEvents.ENTITY_GENERIC_EAT, 1.0f, 1.0f);
+                // ((ServerWorld) world).spawnParticle(ParticleTypes.ITEM_SLIME, this.getPosX(), this.getPosY(), this.getPosZ(), 10, ((double)this.rand.nextFloat() - 0.5D) * 0.08D, ((double)this.rand.nextFloat() - 0.5D) * 0.08D, ((double)this.rand.nextFloat() - 0.5D) * 0.08D, 0.5D);
             }
             if (this.rand.nextInt(2) == 0 && !net.minecraftforge.event.ForgeEventFactory.onAnimalTame(this, player)) {
                 this.setTamedBy(player);
                 this.navigator.clearPath();
                 this.func_233687_w_(true);
                 this.world.setEntityState(this, (byte)7);
-                world.playSound(null, getPosition(), SoundEvents.BLOCK_SLIME_BLOCK_PLACE, SoundCategory.NEUTRAL, 1.0f, 1.0f);
+                this.playSound(SoundEvents.BLOCK_SLIME_BLOCK_PLACE, 1.0f, 1.0f);
             } else {
                 this.world.setEntityState(this, (byte)6);
             }
@@ -256,18 +271,13 @@ public class BlopoleEntity extends TameableEntity implements IAnimatable, Bucket
     }
 
     @Override
-    public void tick() {
-        super.tick();
-        if (!world.isRemote) {
-            // After 90s seconds there is a 50% chance of burping clay every 10 seconds
-            // After the burping, have to wait 90s again
-            clayBurpTimer++;
-            if (clayBurpTimer >= 20*90 && clayBurpTimer % 20*10 == 0) {
-                if (getRNG().nextInt(2) == 0) {
-                    playAmbientSound();
-                    entityDropItem(Items.CLAY_BALL);
-                    clayBurpTimer = 0;
-                }
+    public void livingTick() {
+        super.livingTick();
+        if (!world.isRemote && this.isAlive()) {
+            if (!this.isChild() && --timeUntilNextBurp <= 0) {
+                this.timeUntilNextBurp = this.rand.nextInt(6000) + 6000;
+                this.playSound(SoundEvents.ENTITY_PLAYER_BURP, 1.0F, rand.nextFloat()/2 + 1.0F);
+                entityDropItem(Items.CLAY_BALL);
             }
 
             // Passive healing every 5 seconds when in water
@@ -323,6 +333,7 @@ public class BlopoleEntity extends TameableEntity implements IAnimatable, Bucket
         setHasFlowerpot(compound.getBoolean(HAS_FLOWERPOT_TAG));
         setFlowerpotContents(compound.getString(FLOWERPOT_CONTENTS_TAG));
         setFromBucket(compound.getBoolean(FROM_BUCKET_TAG));
+        timeUntilNextBurp = compound.getInt(TIME_UNTIL_BURP_TAG);
     }
 
     @Override
@@ -331,6 +342,7 @@ public class BlopoleEntity extends TameableEntity implements IAnimatable, Bucket
         compound.putBoolean(HAS_FLOWERPOT_TAG, hasFlowerpot());
         compound.putString(FLOWERPOT_CONTENTS_TAG, getFlowerpotContents());
         compound.putBoolean(FROM_BUCKET_TAG, isFromBucket());
+        compound.putInt(TIME_UNTIL_BURP_TAG, timeUntilNextBurp);
     }
 
     public byte getChosenIdleAnim() {
@@ -359,11 +371,9 @@ public class BlopoleEntity extends TameableEntity implements IAnimatable, Bucket
         return !this.isFromBucket() && !this.hasCustomName() && !this.isTamed();
     }
 
+    @Nullable
     @Override
-    public void playAmbientSound() {
-        if (!this.isSilent()) {
-            this.world.playSound(null, this.getPosX(), this.getPosY(), this.getPosZ(), SoundEvents.ENTITY_PLAYER_BURP, this.getSoundCategory(), 1.0f,
-                    getRNG().nextFloat()/2 + 1.0f);
-        }
+    protected SoundEvent getAmbientSound() {
+        return Registration.BLOPOLE_AMBIENT.get();
     }
 }

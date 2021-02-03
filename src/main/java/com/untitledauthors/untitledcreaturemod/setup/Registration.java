@@ -17,6 +17,7 @@ import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
 import net.minecraft.item.Food;
 import net.minecraft.item.Item;
+import net.minecraft.item.Items;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraftforge.common.ToolType;
@@ -77,7 +78,7 @@ public class Registration {
     public static final RegistryObject<Item> ANTELOPE_WAR_HORN = ITEMS.register("antelope_war_horn", () -> new AntelopeWarHorn(new Item.Properties().maxStackSize(1).group(CommonSetup.ITEM_GROUP)));
 
     public static final RegistryObject<Item> TOAD_BUCKET = ITEMS.register("toad_bucket",
-            () -> new CreatureBucket(TOAD, new Item.Properties().maxStackSize(1).group(CommonSetup.ITEM_GROUP)));
+            () -> new CreatureBucket(TOAD, new Item.Properties().maxStackSize(1).group(CommonSetup.ITEM_GROUP), Items.BUCKET));
     public static final RegistryObject<Item> POISONOUS_SECRETIONS_ITEM = ITEMS.register("poisonous_secretions",
             () -> new PoisonousSecretionsItem(new Item.Properties().maxStackSize(16).group(CommonSetup.ITEM_GROUP)));
 
@@ -97,6 +98,8 @@ public class Registration {
     // TODO: Maybe move these into their own class
     public static final RegistryObject<SoundEvent> TOAD_AMBIENT = SOUNDS.register("toad_ambient",
             () -> new SoundEvent(new ResourceLocation(MODID, "toad_ambient")));
+    public static final RegistryObject<SoundEvent> BLOPOLE_AMBIENT = SOUNDS.register("blopole_ambient",
+            () -> new SoundEvent(new ResourceLocation(MODID, "blopole_ambient")));
     public static final RegistryObject<SoundEvent> WAR_HORN_SOUND = SOUNDS.register("war_horn",
             () -> new SoundEvent(new ResourceLocation(MODID, "war_horn")));
 
@@ -106,7 +109,7 @@ public class Registration {
 
     // Blopole Items
     public static final RegistryObject<Item> BLOPOLE_BUCKET = ITEMS.register("blopole_bucket",
-            () -> new CreatureBucket(BLOPOLE, new Item.Properties().maxStackSize(1).group(CommonSetup.ITEM_GROUP)));
+            () -> new CreatureBucket(BLOPOLE, new Item.Properties().maxStackSize(1).group(CommonSetup.ITEM_GROUP), Items.WATER_BUCKET));
 
     public static void init() {
         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();

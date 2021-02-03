@@ -64,4 +64,9 @@ public class BlopoleEntityRenderer extends GeoMobRenderer<BlopoleEntity> {
 
         super.renderRecursively(bone, stack, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
     }
+
+    @Override
+    public RenderType getRenderType(BlopoleEntity animatable, float partialTicks, MatrixStack stack, @Nullable IRenderTypeBuffer renderTypeBuffer, @Nullable IVertexBuilder vertexBuilder, int packedLightIn, ResourceLocation textureLocation) {
+        return RenderType.getEntityCutoutNoCull(textureLocation);
+    }
 }

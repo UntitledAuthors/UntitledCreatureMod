@@ -7,6 +7,23 @@
       "untitledcreaturemod:entity/toad_ambient2"
     ]
   },
+  "blopole_ambient": {
+    "category": "neutral",
+    "subtitle": "untitledcreaturemod.subtitle.blopole_ambient",
+    "sounds": [
+      "untitledcreaturemod:entity/blopole/blopole_ambient_01",
+      "untitledcreaturemod:entity/blopole/blopole_ambient_02",
+      "untitledcreaturemod:entity/blopole/blopole_ambient_03",
+      "untitledcreaturemod:entity/blopole/blopole_ambient_04"
+    ]
+  },
+  "blopole_burp": {
+    "category": "neutral",
+    "subtitle": "untitledcreaturemod.subtitle.blopole_burp",
+    "sounds": [
+      "minecraft:random/burp"
+    ]
+  },
   "war_horn": {
     "category": "neutral",
     "subtitle": "untitledcreaturemod.subtitle.war_horn",

@@ -24,10 +24,12 @@ import java.util.function.Supplier;
 // https://github.com/Vazkii/Quark/blob/4e0031f5e044d121a8a638e3a7f58fb36f3f4c5f/src/main/java/vazkii/quark/content/tools/item/SlimeInABucketItem.java
 public class CreatureBucket extends Item {
     private final Supplier<? extends EntityType<? extends AnimalEntity>> entityTypeSupplier;
+    private final Item bucketItem;
 
-    public CreatureBucket(Supplier<? extends EntityType<? extends AnimalEntity>> entityType, Properties builder) {
+    public CreatureBucket(Supplier<? extends EntityType<? extends AnimalEntity>> entityType, Properties builder, Item bucketItem) {
         super(builder);
         this.entityTypeSupplier = entityType;
+        this.bucketItem = bucketItem;
     }
 
     @Override
@@ -45,7 +47,7 @@ public class CreatureBucket extends Item {
             if (player != null) {
                 player.swingArm(hand);
                 if(!player.isCreative()) {
-                    player.setHeldItem(hand, new ItemStack(Items.BUCKET));
+                    player.setHeldItem(hand, new ItemStack(bucketItem));
                 }
             }
         }
