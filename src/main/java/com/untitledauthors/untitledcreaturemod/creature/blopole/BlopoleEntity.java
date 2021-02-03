@@ -51,6 +51,7 @@ public class BlopoleEntity extends TameableEntity implements IAnimatable, Bucket
     public static final AnimationBuilder SWIM_ANIM = new AnimationBuilder().addAnimation("swim");
     public static final AnimationBuilder WALK_ANIM = new AnimationBuilder().addAnimation("walk");
     public static final Item BREEDING_ITEM = Items.SEA_PICKLE;
+    private int clayBurpTimer = 0;
 
     public static DataParameter<Byte> CHOSEN_IDLE_ANIM = EntityDataManager.createKey(BlopoleEntity.class,
             DataSerializers.BYTE);
@@ -97,6 +98,12 @@ public class BlopoleEntity extends TameableEntity implements IAnimatable, Bucket
         if (isTamed()) {
             ActionResultType result = handleFlowerpotting(player, heldItemStack);
             if (result != null) return result;
+            // Sitting
+            ActionResultType actionresulttype = super.func_230254_b_(player, hand);
+            if (!actionresulttype.isSuccessOrConsume() && !isChild() && !world.isRemote && hand == Hand.MAIN_HAND) {
+                this.func_233687_w_(!this.isSitting());
+            }
+            return actionresulttype;
         } else {
             handleTaming(player, heldItemStack);
         }
@@ -196,8 +203,10 @@ public class BlopoleEntity extends TameableEntity implements IAnimatable, Bucket
             entityDropItem(new ItemStack(flowerBlock));
             setFlowerpotContents("");
         }
-        entityDropItem(Items.FLOWER_POT);
-        setHasFlowerpot(false);
+        if (hasFlowerpot()) {
+            entityDropItem(Items.FLOWER_POT);
+            setHasFlowerpot(false);
+        }
     }
 
     @Override
@@ -236,13 +245,36 @@ public class BlopoleEntity extends TameableEntity implements IAnimatable, Bucket
 
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new CreatureBreatheAirGoal(this));
-        this.goalSelector.addGoal(1, new PanicGoal(this, 1.5D));
-        this.goalSelector.addGoal(2, new BreedGoal(this, 1.0D));
-        this.goalSelector.addGoal(3, new CreatureTemptGoal(this, 1.00, BREEDING_ITEM));
-        this.goalSelector.addGoal(4, new FollowParentGoal(this, 1.25D));
-        this.goalSelector.addGoal(6, new RandomWalkingGoal(this, 1.0D)); // TODO: Lazy random walk?
-        this.goalSelector.addGoal(7, new LookAtGoal(this, PlayerEntity.class, 6.0F));
+        this.goalSelector.addGoal(0, new PanicGoal(this, 1.5D));
+        this.goalSelector.addGoal(1, new LookAtGoal(this, PlayerEntity.class, 8.0F));
+        this.goalSelector.addGoal(2, new SitGoal(this));
+        this.goalSelector.addGoal(3, new BreedGoal(this, 1.0D));
+        this.goalSelector.addGoal(4, new CreatureTemptGoal(this, 1.00, BREEDING_ITEM));
+        this.goalSelector.addGoal(5, new FollowParentGoal(this, 1.25D));
+        this.goalSelector.addGoal(7, new RandomWalkingGoal(this, 1.0D));
         this.goalSelector.addGoal(8, new BlopoleLookRandomlyGoal(this));
+    }
+
+    @Override
+    public void tick() {
+        super.tick();
+        if (!world.isRemote) {
+            // After 90s seconds there is a 50% chance of burping clay every 10 seconds
+            // After the burping, have to wait 90s again
+            clayBurpTimer++;
+            if (clayBurpTimer >= 20*90 && clayBurpTimer % 20*10 == 0) {
+                if (getRNG().nextInt(2) == 0) {
+                    playAmbientSound();
+                    entityDropItem(Items.CLAY_BALL);
+                    clayBurpTimer = 0;
+                }
+            }
+
+            // Passive healing every 5 seconds when in water
+            if (isInWater() && this.getHealth() < this.getMaxHealth() && ticksExisted % 5*20 == 0) {
+                this.heal(1);
+            }
+        }
     }
 
     @Override
@@ -330,7 +362,7 @@ public class BlopoleEntity extends TameableEntity implements IAnimatable, Bucket
     @Override
     public void playAmbientSound() {
         if (!this.isSilent()) {
-            this.world.playSound((PlayerEntity)null, this.getPosX(), this.getPosY(), this.getPosZ(), SoundEvents.ENTITY_PLAYER_BURP, this.getSoundCategory(), 1.0f,
+            this.world.playSound(null, this.getPosX(), this.getPosY(), this.getPosZ(), SoundEvents.ENTITY_PLAYER_BURP, this.getSoundCategory(), 1.0f,
                     getRNG().nextFloat()/2 + 1.0f);
         }
     }
