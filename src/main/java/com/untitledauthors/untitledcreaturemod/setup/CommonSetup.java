@@ -63,8 +63,8 @@ public class CommonSetup {
         // Setup spawning
         EntitySpawnPlacementRegistry.register(Registration.TOAD.get(), EntitySpawnPlacementRegistry.PlacementType.ON_GROUND,
                 Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, ToadEntity::canAnimalSpawn);
-        EntitySpawnPlacementRegistry.register(Registration.ROCK_ANTELOPE.get(), EntitySpawnPlacementRegistry.PlacementType.ON_GROUND,
-                Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, RockAntelopeEntity::canAnimalSpawn);
+        //EntitySpawnPlacementRegistry.register(Registration.ROCK_ANTELOPE.get(), EntitySpawnPlacementRegistry.PlacementType.ON_GROUND,
+        //        Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, RockAntelopeEntity::canAnimalSpawn);
         EntitySpawnPlacementRegistry.register(Registration.BLOPOLE.get(), EntitySpawnPlacementRegistry.PlacementType.NO_RESTRICTIONS,
                 Heightmap.Type.MOTION_BLOCKING, BlopoleEntity::canAnimalSpawn);
 
