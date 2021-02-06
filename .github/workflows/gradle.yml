@@ -11,6 +11,8 @@ on:
       - 'build.gradle'
   pull_request:
     branches: [ master ]
+  workflow_dispatch:
+      branches: [ master, beta ]
 
 jobs:
   build:
