@@ -65,7 +65,7 @@ public class CommonSetup {
             return;
         }
         setupSpawning(event, TOAD_BIOMES, Registration.TOAD.get(), 20, 3, 6);
-        setupSpawning(event, ROCK_ANTELOPE_BIOMES, Registration.ROCK_ANTELOPE.get(), 20, 3, 8);
+        //setupSpawning(event, ROCK_ANTELOPE_BIOMES, Registration.ROCK_ANTELOPE.get(), 20, 3, 8);
         setupSpawning(event, BLOPOLE_BIOMES, Registration.BLOPOLE.get(), 20, 2, 5);
     }
 
