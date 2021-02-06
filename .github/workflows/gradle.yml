@@ -5,12 +5,14 @@ name: Java CI with Gradle
 
 on:
   push:
-    branches: [ master ]
+    branches: [ master, beta ]
     paths:
       - 'src/**'
       - 'build.gradle'
   pull_request:
     branches: [ master ]
+  workflow_dispatch:
+      branches: [ master, beta ]
 
 jobs:
   build:
