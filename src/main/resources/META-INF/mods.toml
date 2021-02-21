@@ -57,6 +57,6 @@ This mod is full of new interesting creatures from froggo-bois to jelly-bois, al
 [[dependencies.untitledcreaturemod]]
     modId="geckolib3"
     mandatory=true
-    versionRange="[3.0.3,)"
+    versionRange="[3.0.14,)"
     ordering="NONE"
     side="BOTH"
