@@ -41,13 +41,13 @@ public class RockAntelopeEntity extends AnimalEntity implements IAnimatable {
     public static AnimationBuilder GRAZING_ANIM = new AnimationBuilder().addAnimation("grazing");
     public static AnimationBuilder JOUSTING_ANIM = new AnimationBuilder().addAnimation("joust");
 
-    public static DataParameter<Boolean> IS_LEADER = EntityDataManager.createKey(RockAntelopeEntity.class, DataSerializers.BOOLEAN);
-    public static final String IS_LEADER_TAG = "isLeader";
+    // This byte contains information about whether antelope is a leader and which horns are grown
+    public static DataParameter<Byte> STATE = EntityDataManager.createKey(RockAntelopeEntity.class, DataSerializers.BYTE);
+    public static final String STATE_TAG = "state";
+    public static final byte RIGHT_HORN_MASK = 0x01; // rightmost bit set, if right horn present
+    public static final byte LEFT_HORN_MASK = 0x02; // second bit set, if left horn present
+    public static final byte LEADER_MASK = 0x04; // third bit set if antelope is leader
 
-    public static DataParameter<Byte> NUMBER_OF_HORNS = EntityDataManager.createKey(RockAntelopeEntity.class, DataSerializers.BYTE);
-    public static final String NUMBER_OF_HORNS_TAG = "numberOfHorns";
-
-    // TODO: What happens on pausing? Maybe this need to be saved to nbt.
     public static DataParameter<Integer> JOUSTING_PARTNER_ID = EntityDataManager.createKey(RockAntelopeEntity.class, DataSerializers.VARINT);
 
     public static Item BREEDING_ITEM = Items.ACACIA_LEAVES;
@@ -78,6 +78,7 @@ public class RockAntelopeEntity extends AnimalEntity implements IAnimatable {
         super.damageEntity(damageSrc, damageAmount);
     }
 
+    @SuppressWarnings("rawtypes")
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         AnimationController controller = event.getController();
         if (getJoustingPartner() != 0) {
@@ -143,8 +144,18 @@ public class RockAntelopeEntity extends AnimalEntity implements IAnimatable {
 
     @Override
     public void eatGrassBonus() {
-        if (!world.isRemote) {
-            this.setHealth(this.getHealth() + 1.0f);
+        if (world.isRemote) {
+            return;
+        }
+        this.setHealth(this.getHealth() + 1.0f);
+
+        // Grow back single horn on eating grass
+        if (!getLeftHornPresent()) {
+            setLeftHornPresent(true);
+            return;
+        }
+        if (!getRightHornPresent()) {
+            setRightHornPresent(true);
         }
     }
 
@@ -173,43 +184,79 @@ public class RockAntelopeEntity extends AnimalEntity implements IAnimatable {
         this.dataManager.set(JOUSTING_PARTNER_ID, joustingPartnerId);
     }
 
+    public byte getState() {
+        return dataManager.get(STATE);
+    }
+
+    public void setState(byte state) {
+        dataManager.set(STATE, state);
+    }
+
     public boolean isLeader() {
-        return this.dataManager.get(IS_LEADER);
+        return (getState() & LEADER_MASK) > 0;
     }
 
     public void setIsLeader(boolean value) {
-        this.dataManager.set(IS_LEADER, value);
+        byte state = getState();
+        if (value) {
+            setState((byte) (state | LEADER_MASK));
+        } else {
+            setState((byte) (state & ~LEADER_MASK));
+        }
     }
 
-    public byte getNumberOfHorns() {
-        return this.dataManager.get(NUMBER_OF_HORNS);
-    }
-
-    public void setNumberOfHorns(byte numberOfHorns) {
-        this.dataManager.set(NUMBER_OF_HORNS, numberOfHorns);
+    public int getNumberOfHorns() {
+        byte state = dataManager.get(STATE);
+        boolean leftHornPresent = (state & LEFT_HORN_MASK) > 0;
+        boolean rightHornPresent = (state & RIGHT_HORN_MASK) > 0;
+        return (leftHornPresent ? 1 : 0) + (rightHornPresent ? 1 : 0);
     }
 
     public boolean canJoust() {
-        return !this.isChild() && this.getNumberOfHorns() >= 0;
+        return !this.isChild() && this.getNumberOfHorns() == 2;
+    }
+
+    public boolean getLeftHornPresent() {
+        return (getState() & LEFT_HORN_MASK) > 0;
+    }
+
+    public boolean getRightHornPresent() {
+        return (getState() & RIGHT_HORN_MASK) > 0;
+    }
+
+    public void setLeftHornPresent(boolean present) {
+        byte state = getState();
+        if (present) {
+            setState((byte) (state | LEFT_HORN_MASK));
+        } else {
+            setState((byte) (state & ~LEFT_HORN_MASK));
+        }
+    }
+
+    public void setRightHornPresent(boolean present) {
+        byte state = getState();
+        if (present) {
+            setState((byte) (state | RIGHT_HORN_MASK));
+        } else {
+            setState((byte) (state & ~RIGHT_HORN_MASK));
+        }
     }
 
     protected void registerData() {
         super.registerData();
         this.dataManager.register(JOUSTING_PARTNER_ID, 0);
-        this.dataManager.register(IS_LEADER, false);
-        this.dataManager.register(NUMBER_OF_HORNS, (byte)2);
+        this.dataManager.register(STATE, (byte)0x03); // 0x03 -> have both horns but not be leader
     }
 
     @Override
     public void writeAdditional(@Nonnull CompoundNBT compound) {
         super.writeAdditional(compound);
-        compound.putBoolean(IS_LEADER_TAG, isLeader());
-        compound.putByte(NUMBER_OF_HORNS_TAG, getNumberOfHorns());
+        compound.putByte(STATE_TAG, getState());
     }
 
     @Override
     public void readAdditional(@Nonnull CompoundNBT compound) {
         super.writeAdditional(compound);
-        setIsLeader(compound.getBoolean(IS_LEADER_TAG));
+        setState(compound.getByte(STATE_TAG));
     }
 }

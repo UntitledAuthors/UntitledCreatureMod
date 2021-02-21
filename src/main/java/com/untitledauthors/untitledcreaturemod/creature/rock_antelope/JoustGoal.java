@@ -16,6 +16,8 @@ public class JoustGoal extends Goal {
     private final RockAntelopeEntity antelope;
     private final double moveSpeed;
     private final World world;
+    // The position where the horn should drop in the animation
+    private static final int ANIMATION_DROP_POSITION = 50;
 
     // State that gets reset
     private int animationTimer = 0;
@@ -48,19 +50,30 @@ public class JoustGoal extends Goal {
         // TODO: Better alignment when jousting
         antelope.getLookController().setLookPositionWithEntity(joustingPartner, 300.0F, (float) antelope.getVerticalFaceSpeed());
         animationTimer++;
-        if (animationTimer >= 50) {
+        if (animationTimer >= ANIMATION_DROP_POSITION) {
             dropHorn();
             this.antelope.setJoustingPartner(0);
         }
     }
 
     private void dropHorn() {
-        // TODO: Drop location is sometimes wrong
+        // Leaders always win and keep their horns :)
+        if (antelope.isLeader()) {
+            return;
+        }
         if (antelope.getRNG().nextInt(2) == 0) {
             world.playSound(null, antelope.getPosX(), antelope.getPosY(), antelope.getPosZ(),
                     SoundEvents.ENTITY_ITEM_BREAK, SoundCategory.NEUTRAL, 2.0f, 1.0f);
+
+            // Break random horn
+            if (antelope.getRNG().nextBoolean()) {
+                antelope.setLeftHornPresent(false);
+            } else {
+                antelope.setRightHornPresent(false);
+            }
+
+            // TODO: Drop location is sometimes wrong
             System.out.println("Drop horn!");
-            antelope.setNumberOfHorns((byte)(antelope.getNumberOfHorns()-1));
             Vector3d lookVec = antelope.getLookVec();
             Vector3d spawnPos = antelope.getPositionVec().add(lookVec.mul(1.5f, 1.5f, 1.5f)).add(0, 1.2f, 0);
             ItemEntity hornEntity = new ItemEntity(world, spawnPos.getX(), spawnPos.getY(), spawnPos.getZ(),

@@ -44,9 +44,8 @@ public class RockAntelopeEntityModel extends AnimatedGeoModel<RockAntelopeEntity
             root.setScaleY(0.7f);
             root.setScaleZ(0.7f);
         } else {
-            // Read these as visible negated conditions
-            leftHorn.setHidden(!(entity.getNumberOfHorns() >= 1));
-            rightHorn.setHidden(!(entity.getNumberOfHorns() >= 2));
+            leftHorn.setHidden(!entity.getLeftHornPresent());
+            rightHorn.setHidden(!entity.getRightHornPresent());
         }
         if (entity.isLeader()) {
             leftHorn.setScaleX(LEADER_HORN_SCALE_FACTOR);
@@ -65,6 +64,6 @@ public class RockAntelopeEntityModel extends AnimatedGeoModel<RockAntelopeEntity
         EntityModelData data = (EntityModelData) customPredicate.getExtraData().get(0);
         IBone head = this.getAnimationProcessor().getBone("Neck");
         head.setRotationY((float) Math.toRadians(Utils.clamp(data.netHeadYaw, -45, 45)));
-        head.setRotationX(-(float) Math.toRadians(data.headPitch));
+        head.setRotationX((float) Math.toRadians(data.headPitch));
     }
 }
