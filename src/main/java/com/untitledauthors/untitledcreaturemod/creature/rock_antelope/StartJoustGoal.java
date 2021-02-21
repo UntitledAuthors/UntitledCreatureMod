@@ -1,9 +1,7 @@
 package com.untitledauthors.untitledcreaturemod.creature.rock_antelope;
 
 import net.minecraft.entity.EntityPredicate;
-import net.minecraft.entity.MoverType;
 import net.minecraft.entity.ai.goal.Goal;
-import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
@@ -26,15 +24,15 @@ public class StartJoustGoal extends Goal {
 
     // TODO: Lower to 1000 or something
     // 1 in CHANCE is the probability of an antelope wanting to headbutt another one
-    private static final int START_HEADBUTT_CHANCE = 100;
+    private static final int START_HEADBUTT_CHANCE = 500;
 
     @Override
     public boolean shouldExecute() {
-        if (antelope.isChild()) {
+        if (!antelope.canJoust()) {
             return false;
         }
-        if (antelope.getRNG().nextInt(500) == 0) {
-            this.targetJouster = (RockAntelopeEntity) findNearestHeadbutter();
+        if (antelope.getRNG().nextInt(START_HEADBUTT_CHANCE) == 0) {
+            this.targetJouster = findNearestHeadbutter();
             return this.targetJouster != null;
         }
         return false;
@@ -68,7 +66,7 @@ public class StartJoustGoal extends Goal {
         this.targetJouster.setJoustingPartner(antelope.getEntityId());
     }
 
-    private static double JOUST_MAX_DISTANCE = 10.0D;
+    private static final double JOUST_MAX_DISTANCE = 10.0D;
     private static final EntityPredicate nearbyPredicate = (new EntityPredicate()).setDistance(JOUST_MAX_DISTANCE).allowInvulnerable().allowFriendlyFire().setLineOfSiteRequired();
     @Nullable
     private RockAntelopeEntity findNearestHeadbutter() {
@@ -79,8 +77,9 @@ public class StartJoustGoal extends Goal {
 
         for(RockAntelopeEntity potentialPartner : list) {
             if (antelope.getDistanceSq(potentialPartner) < min_distance) {
-                // TODO: Maybe only joust with partners that have enough horns
-                if (potentialPartner.isChild() || potentialPartner.getJoustingPartner() != 0) {
+                // Don't joust with children, antelopes without enough horns, and already jousting antelopes
+                if (potentialPartner.isChild() || potentialPartner.getNumberOfHorns() < 2 ||
+                        potentialPartner.getJoustingPartner() != 0) {
                     continue;
                 }
                 foundPartner = potentialPartner;

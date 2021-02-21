@@ -42,7 +42,12 @@ public class RockAntelopeEntity extends AnimalEntity implements IAnimatable {
     public static AnimationBuilder JOUSTING_ANIM = new AnimationBuilder().addAnimation("joust");
 
     public static DataParameter<Boolean> IS_LEADER = EntityDataManager.createKey(RockAntelopeEntity.class, DataSerializers.BOOLEAN);
-    public static final String IS_LEADER_TAG = "IsLeader";
+    public static final String IS_LEADER_TAG = "isLeader";
+
+    public static DataParameter<Byte> NUMBER_OF_HORNS = EntityDataManager.createKey(RockAntelopeEntity.class, DataSerializers.BYTE);
+    public static final String NUMBER_OF_HORNS_TAG = "numberOfHorns";
+
+    // TODO: What happens on pausing? Maybe this need to be saved to nbt.
     public static DataParameter<Integer> JOUSTING_PARTNER_ID = EntityDataManager.createKey(RockAntelopeEntity.class, DataSerializers.VARINT);
 
     public static Item BREEDING_ITEM = Items.ACACIA_LEAVES;
@@ -84,8 +89,6 @@ public class RockAntelopeEntity extends AnimalEntity implements IAnimatable {
             controller.setAnimation(GRAZING_ANIM);
             return PlayState.CONTINUE;
         }
-        // TODO: Come up with alternative moving predicate?
-        //       The default one doesn't seen to work with slow movement speeds.
         boolean isMoving = !(limbSwingAmount > -0.10F) || !(limbSwingAmount < 0.10F);
         AnimationBuilder anim = isMoving ? WALK_ANIM : IDLE_ANIM;
         controller.setAnimation(anim);
@@ -162,32 +165,46 @@ public class RockAntelopeEntity extends AnimalEntity implements IAnimatable {
         return Registration.ROCK_ANTELOPE.get().create(p_241840_1_);
     }
 
-    public void setJoustingPartner(int joustingPartnerId) {
-        this.dataManager.set(JOUSTING_PARTNER_ID, joustingPartnerId);
-    }
-
     public int getJoustingPartner() {
         return this.dataManager.get(JOUSTING_PARTNER_ID);
     }
 
-    public void setIsLeader(boolean value) {
-        this.dataManager.set(IS_LEADER, value);
+    public void setJoustingPartner(int joustingPartnerId) {
+        this.dataManager.set(JOUSTING_PARTNER_ID, joustingPartnerId);
     }
 
     public boolean isLeader() {
         return this.dataManager.get(IS_LEADER);
     }
 
+    public void setIsLeader(boolean value) {
+        this.dataManager.set(IS_LEADER, value);
+    }
+
+    public byte getNumberOfHorns() {
+        return this.dataManager.get(NUMBER_OF_HORNS);
+    }
+
+    public void setNumberOfHorns(byte numberOfHorns) {
+        this.dataManager.set(NUMBER_OF_HORNS, numberOfHorns);
+    }
+
+    public boolean canJoust() {
+        return !this.isChild() && this.getNumberOfHorns() >= 0;
+    }
+
     protected void registerData() {
         super.registerData();
         this.dataManager.register(JOUSTING_PARTNER_ID, 0);
         this.dataManager.register(IS_LEADER, false);
+        this.dataManager.register(NUMBER_OF_HORNS, (byte)2);
     }
 
     @Override
     public void writeAdditional(@Nonnull CompoundNBT compound) {
         super.writeAdditional(compound);
         compound.putBoolean(IS_LEADER_TAG, isLeader());
+        compound.putByte(NUMBER_OF_HORNS_TAG, getNumberOfHorns());
     }
 
     @Override
