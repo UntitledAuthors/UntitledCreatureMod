@@ -65,6 +65,8 @@ public class BlopoleEntity extends TameableEntity implements IAnimatable, Bucket
     public static DataParameter<Byte> CHOSEN_IDLE_ANIM = EntityDataManager.createKey(BlopoleEntity.class,
             DataSerializers.BYTE);
 
+    public static DataParameter<Boolean> IS_BROWN_VARIANT = EntityDataManager.createKey(BlopoleEntity.class,
+            DataSerializers.BOOLEAN);
     public static DataParameter<Boolean> HAS_FLOWERPOT = EntityDataManager.createKey(BlopoleEntity.class,
             DataSerializers.BOOLEAN);
     public static final String HAS_FLOWERPOT_TAG = "hasFlowerpot";
@@ -335,6 +337,7 @@ public class BlopoleEntity extends TameableEntity implements IAnimatable, Bucket
         this.dataManager.register(FLOWERPOT_CONTENTS, "");
         this.dataManager.register(FROM_BUCKET, false);
         this.dataManager.register(CHOSEN_IDLE_ANIM, (byte) 0);
+        this.dataManager.register(IS_BROWN_VARIANT, getRNG().nextBoolean());
     }
 
     @Override
@@ -379,6 +382,14 @@ public class BlopoleEntity extends TameableEntity implements IAnimatable, Bucket
 
     public boolean canDespawn(double distanceToClosestPlayer) {
         return !this.isFromBucket() && !this.hasCustomName() && !this.isTamed();
+    }
+
+    public boolean isBrownVariant() {
+        return dataManager.get(IS_BROWN_VARIANT);
+    }
+
+    public void setIsBrownVariant(boolean isBrownVariant) {
+        dataManager.set(IS_BROWN_VARIANT, isBrownVariant);
     }
 
     @Nullable

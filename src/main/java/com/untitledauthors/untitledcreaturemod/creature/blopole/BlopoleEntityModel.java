@@ -11,6 +11,9 @@ import static com.untitledauthors.untitledcreaturemod.UntitledCreatureMod.MODID;
 
 public class BlopoleEntityModel extends AnimatedGeoModel<BlopoleEntity>
 {
+    public static ResourceLocation NORMAL_TEXTURE = new ResourceLocation(MODID, "textures/entity/blopole/blopole.png");
+    public static ResourceLocation BROWN_TEXTURE = new ResourceLocation(MODID, "textures/entity/blopole/blopole_brown.png");
+
     @Override
     public ResourceLocation getModelLocation(BlopoleEntity blopoleEntity) {
         return new ResourceLocation(MODID, "geo/blopole.geo.json");
@@ -18,7 +21,7 @@ public class BlopoleEntityModel extends AnimatedGeoModel<BlopoleEntity>
 
     @Override
     public ResourceLocation getTextureLocation(BlopoleEntity blopoleEntity) {
-        return new ResourceLocation(MODID, "textures/entity/blopole/blopole.png");
+        return blopoleEntity.isBrownVariant() ? BROWN_TEXTURE : NORMAL_TEXTURE;
     }
 
     @Override
