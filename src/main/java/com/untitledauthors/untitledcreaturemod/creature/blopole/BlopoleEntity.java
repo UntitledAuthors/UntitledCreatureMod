@@ -143,7 +143,7 @@ public class BlopoleEntity extends TameableEntity implements IAnimatable, Bucket
         if (heldItemStack.getItem() == Items.SLIME_BALL) {
             if (!player.abilities.isCreativeMode) {
                 heldItemStack.shrink(1);
-                this.playSound(SoundEvents.ENTITY_GENERIC_EAT, 1.0f, 1.0f);
+                this.playSound(SoundEvents.BLOCK_SLIME_BLOCK_PLACE, 1.0f, 1.0f);
                 ((ServerWorld) world).spawnParticle(ParticleTypes.ITEM_SLIME, this.getPosX(), this.getPosY(), this.getPosZ(), 10, ((double) this.rand.nextFloat() - 0.5D) * 0.08D, ((double) this.rand.nextFloat() - 0.5D) * 0.08D, ((double) this.rand.nextFloat() - 0.5D) * 0.08D, 1.0D);
             }
             if (this.rand.nextInt(2) == 0 && !net.minecraftforge.event.ForgeEventFactory.onAnimalTame(this, player)) {
