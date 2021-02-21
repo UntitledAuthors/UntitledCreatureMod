@@ -67,6 +67,7 @@ public class BlopoleEntity extends TameableEntity implements IAnimatable, Bucket
 
     public static DataParameter<Boolean> IS_BROWN_VARIANT = EntityDataManager.createKey(BlopoleEntity.class,
             DataSerializers.BOOLEAN);
+    public static final String IS_BROWN_VARIANT_TAG = "isBrown";
     public static DataParameter<Boolean> HAS_FLOWERPOT = EntityDataManager.createKey(BlopoleEntity.class,
             DataSerializers.BOOLEAN);
     public static final String HAS_FLOWERPOT_TAG = "hasFlowerpot";
@@ -347,6 +348,7 @@ public class BlopoleEntity extends TameableEntity implements IAnimatable, Bucket
         setFlowerpotContents(compound.getString(FLOWERPOT_CONTENTS_TAG));
         setFromBucket(compound.getBoolean(FROM_BUCKET_TAG));
         timeUntilNextBurp = compound.getInt(TIME_UNTIL_BURP_TAG);
+        setIsBrownVariant(compound.getBoolean(IS_BROWN_VARIANT_TAG));
     }
 
     @Override
@@ -356,6 +358,7 @@ public class BlopoleEntity extends TameableEntity implements IAnimatable, Bucket
         compound.putString(FLOWERPOT_CONTENTS_TAG, getFlowerpotContents());
         compound.putBoolean(FROM_BUCKET_TAG, isFromBucket());
         compound.putInt(TIME_UNTIL_BURP_TAG, timeUntilNextBurp);
+        compound.putBoolean(IS_BROWN_VARIANT_TAG, isBrownVariant());
     }
 
     public byte getChosenIdleAnim() {
