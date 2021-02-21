@@ -1,12 +1,8 @@
 package com.untitledauthors.untitledcreaturemod.creature.toad;
 
-import com.untitledauthors.untitledcreaturemod.creature.common.BucketCreature;
-import com.untitledauthors.untitledcreaturemod.creature.common.CreatureTemptGoal;
-import com.untitledauthors.untitledcreaturemod.creature.common.WalkAndSwimNavigator;
+import com.untitledauthors.untitledcreaturemod.creature.common.*;
 import com.untitledauthors.untitledcreaturemod.creature.toad.ai.AttackOnceGoal;
 import com.untitledauthors.untitledcreaturemod.creature.toad.ai.HurtByTargetOnceGoal;
-import com.untitledauthors.untitledcreaturemod.creature.common.CreatureBreatheAirGoal;
-import com.untitledauthors.untitledcreaturemod.creature.toad.ai.ToadFleeGoal;
 import com.untitledauthors.untitledcreaturemod.setup.Registration;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.entity.*;
@@ -43,7 +39,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 
-public class ToadEntity extends AnimalEntity implements IAnimatable, BucketCreature {
+public class ToadEntity extends AnimalEntity implements IAnimatable, BucketCreature, FleeingCreature {
     private static final DataParameter<Boolean> FROM_BUCKET = EntityDataManager.createKey(ToadEntity.class, DataSerializers.BOOLEAN);
     public static final String FROM_BUCKET_TAG = "fromBucket";
     private static final int FLEE_DURATION_S = 30;
@@ -101,7 +97,7 @@ public class ToadEntity extends AnimalEntity implements IAnimatable, BucketCreat
     protected void registerGoals() {
         this.goalSelector.addGoal(0, new CreatureBreatheAirGoal(this));
         this.goalSelector.addGoal(1, new AttackOnceGoal(this, 1.25D));
-        this.goalSelector.addGoal(2, new ToadFleeGoal(this, 1.5D));
+        this.goalSelector.addGoal(2, new CreatureFleeGoal<>(this, 1.5D));
         this.goalSelector.addGoal(3, new BreedGoal(this, 1.0D));
         this.goalSelector.addGoal(3, new CreatureTemptGoal(this, 1.1D, BREEDING_ITEM));
         this.goalSelector.addGoal(4, new FollowParentGoal(this, 1.25D));
@@ -112,18 +108,23 @@ public class ToadEntity extends AnimalEntity implements IAnimatable, BucketCreat
         this.targetSelector.addGoal(0, new HurtByTargetOnceGoal(this));
     }
 
+    /// Return poison duration in ticks, based on difficulty
+    private static int poisonDuration(Difficulty difficulty) {
+        switch (difficulty) {
+            case NORMAL:
+                return 7 * 20;
+            case HARD:
+                return 15 * 20;
+        }
+        return 3 * 20;
+    }
+
     @Override
     public boolean attackEntityAsMob(@Nonnull Entity entityIn) {
         // Mostly copied from CaveSpider
         if (super.attackEntityAsMob(entityIn)) {
             if (entityIn instanceof LivingEntity) {
-                int poisonDuration = 3;
-                if (this.world.getDifficulty() == Difficulty.NORMAL) {
-                    poisonDuration = 7;
-                } else if (this.world.getDifficulty() == Difficulty.HARD) {
-                    poisonDuration = 15;
-                }
-                ((LivingEntity)entityIn).addPotionEffect(new EffectInstance(Effects.POISON, poisonDuration * 20, 0));
+                ((LivingEntity)entityIn).addPotionEffect(new EffectInstance(Effects.POISON, poisonDuration(world.getDifficulty()), 0));
             }
             return true;
         } else {
@@ -160,6 +161,9 @@ public class ToadEntity extends AnimalEntity implements IAnimatable, BucketCreat
         if (source instanceof EntityDamageSource) {
             EntityDamageSource entityDamageSource = (EntityDamageSource) source;
             Entity attacker = entityDamageSource.getTrueSource();
+            if (attacker == null) {
+                return super.attackEntityFrom(source, amount);
+            }
 
             // TODO: Clean this up maybe
             boolean alert = true;
@@ -185,12 +189,15 @@ public class ToadEntity extends AnimalEntity implements IAnimatable, BucketCreat
                 this.setFleeTarget(null);
             }
         }
-        // this.setCustomName(new StringTextComponent(String.format("Air: %d", getAir())));
-        this.setCustomNameVisible(true);
     }
 
     public LivingEntity getFleeTarget() {
         return this.fleeTarget;
+    }
+
+    @Override
+    public boolean shouldFlee() {
+        return true;
     }
 
     public void setFleeTarget(LivingEntity fleeTarget) {

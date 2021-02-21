@@ -1,6 +1,6 @@
-package com.untitledauthors.untitledcreaturemod.creature.toad.ai;
+package com.untitledauthors.untitledcreaturemod.creature.common;
 
-import com.untitledauthors.untitledcreaturemod.creature.toad.ToadEntity;
+import net.minecraft.entity.CreatureEntity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.RandomPositionGenerator;
 import net.minecraft.entity.ai.goal.Goal;
@@ -10,30 +10,30 @@ import net.minecraft.util.math.vector.Vector3d;
 
 import java.util.EnumSet;
 
-public class ToadFleeGoal extends Goal {
-    private final ToadEntity toad;
+public class CreatureFleeGoal<T extends CreatureEntity & FleeingCreature> extends Goal {
+    private final T creature;
     private final PathNavigator navigator;
     private final double fleeSpeed;
     private LivingEntity avoidTarget;
     private Path path;
 
-    public ToadFleeGoal(ToadEntity toadEntity, double fleeSpeed) {
-        this.toad = toadEntity;
-        this.navigator = toadEntity.getNavigator();
+    public CreatureFleeGoal(T creature, double fleeSpeed) {
+        this.creature = creature;
+        this.navigator = creature.getNavigator();
         this.fleeSpeed = fleeSpeed;
         this.setMutexFlags(EnumSet.of(Flag.MOVE, Flag.JUMP));
     }
 
     @Override
     public boolean shouldExecute() {
-        this.avoidTarget = toad.getFleeTarget();
-        if (this.avoidTarget == null) {
+        this.avoidTarget = creature.getFleeTarget();
+        if (this.avoidTarget == null || !creature.shouldFlee() || !this.avoidTarget.isAlive()) {
             return false;
         }
-        Vector3d randomTarget = RandomPositionGenerator.findRandomTargetBlockAwayFrom(this.toad, 16, 7, this.avoidTarget.getPositionVec());
+        Vector3d randomTarget = RandomPositionGenerator.findRandomTargetBlockAwayFrom(this.creature, 16, 7, this.avoidTarget.getPositionVec());
         if (randomTarget == null) {
             return false;
-        } else if (this.avoidTarget.getDistanceSq(randomTarget.x, randomTarget.y, randomTarget.z) < this.avoidTarget.getDistanceSq(this.toad)) {
+        } else if (this.avoidTarget.getDistanceSq(randomTarget.x, randomTarget.y, randomTarget.z) < this.avoidTarget.getDistanceSq(this.creature)) {
             return false;
         } else {
             this.path = this.navigator.getPathToPos(randomTarget.x, randomTarget.y, randomTarget.z, 0);
@@ -54,9 +54,9 @@ public class ToadFleeGoal extends Goal {
     }
 
     public void tick() {
-        if (toad.getDistanceSq(this.avoidTarget) < 49.0D) {
-            if (toad.getRNG().nextFloat() < 0.2F) {
-                toad.getJumpController().setJumping();
+        if (creature.getDistanceSq(this.avoidTarget) < 49.0D) {
+            if (creature.getRNG().nextFloat() < 0.2F) {
+                creature.getJumpController().setJumping();
             }
         }
     }
