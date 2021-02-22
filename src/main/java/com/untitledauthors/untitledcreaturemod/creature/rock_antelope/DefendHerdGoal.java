@@ -14,9 +14,6 @@ public class DefendHerdGoal extends MeleeAttackGoal {
         if (!antelope.isLeader()) {
             return false;
         }
-        boolean startAttacking = super.shouldExecute();
-        // TODO: Check if this sets it to false too
-        antelope.setIsAttacking(startAttacking);
-        return startAttacking;
+        return super.shouldExecute();
     }
 }

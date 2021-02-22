@@ -36,8 +36,9 @@ public class JoustGoal extends Goal {
         if (joustingPartnerId == 0 || !antelope.canJoust() || !antelope.isAlive()) {
             return false;
         }
-        this.joustingPartner = this.world.getEntityByID(joustingPartnerId);
-        if (joustingPartner == null) {
+        joustingPartner = this.world.getEntityByID(joustingPartnerId);
+        if (joustingPartner == null || !joustingPartner.isAlive()) {
+            antelope.setJoustingPartner(0);
             return false;
         }
         return joustingPartner.isAlive();
@@ -45,6 +46,10 @@ public class JoustGoal extends Goal {
 
     @Override
     public boolean shouldContinueExecuting() {
+        if (!joustingPartner.isAlive()) {
+            joustingPartner = null;
+            antelope.setJoustingPartner(0);
+        }
         return animationTimer < 50 && antelope.isAlive() && joustingPartner.isAlive() && antelope.getAttackingEntity() == null;
     }
 

@@ -26,7 +26,6 @@ import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.event.world.NoteBlockEvent;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.core.PlayState;
 import software.bernie.geckolib3.core.builder.AnimationBuilder;
@@ -181,12 +180,12 @@ public class RockAntelopeEntity extends AnimalEntity implements IAnimatable, Dir
         this.eatGrassGoal = new EatGrassGoal(this);
         this.goalSelector.addGoal(0, new SwimGoal(this));
 
-        this.goalSelector.addGoal(1, new DefendHerdGoal(this, 1.25, false));
+        this.goalSelector.addGoal(1, new DefendHerdGoal(this, 1.35, false));
         this.goalSelector.addGoal(1, new CreatureFleeGoal<>(this, 1.5D));
         this.goalSelector.addGoal(2, new BreedGoal(this, 1.0D));
-        this.goalSelector.addGoal(3, new TemptGoal(this, 1.25D, Ingredient.fromItems(BREEDING_ITEM), false));
-        this.goalSelector.addGoal(4, new FollowParentGoal(this, 1.25D));
-        this.goalSelector.addGoal(5, new FollowLeaderGoal(this, 1.25D));
+        this.goalSelector.addGoal(3, new TemptGoal(this, 1.20D, Ingredient.fromItems(BREEDING_ITEM), false));
+        this.goalSelector.addGoal(4, new FollowParentGoal(this, 1.20D));
+        this.goalSelector.addGoal(5, new FollowLeaderGoal(this, 1.35D));
         this.goalSelector.addGoal(5, eatGrassGoal);
 
         this.goalSelector.addGoal(5, new JoustGoal(this, 1.0D));
@@ -265,11 +264,13 @@ public class RockAntelopeEntity extends AnimalEntity implements IAnimatable, Dir
             if (getAttackTarget() != null) {
                 if (!wasAttacking) {
                     System.out.println("Start attacking!");
+                    setIsAttacking(true);
                     wasAttacking = true;
                 }
             } else {
                 if (wasAttacking) {
                     System.out.println("Stop attacking");
+                    setIsAttacking(false);
                     wasAttacking = false;
                 }
             }
