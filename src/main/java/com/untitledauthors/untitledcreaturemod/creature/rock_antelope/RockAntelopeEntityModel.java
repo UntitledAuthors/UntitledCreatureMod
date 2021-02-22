@@ -60,10 +60,16 @@ public class RockAntelopeEntityModel extends AnimatedGeoModel<RockAntelopeEntity
         if (entity.isEatingGrass() || entity.getJoustingPartner() != 0) {
             return;
         }
-        // Apply head look to model
-        EntityModelData data = (EntityModelData) customPredicate.getExtraData().get(0);
         IBone head = this.getAnimationProcessor().getBone("Neck");
-        head.setRotationY((float) Math.toRadians(Utils.clamp(data.netHeadYaw, -45, 45)));
-        head.setRotationX((float) Math.toRadians(data.headPitch));
+        if (entity.isAttacking()) {
+            head.setRotationX(-(float)Math.toRadians(72.5));
+            head.setRotationY(0);
+            head.setPositionY(4);
+        } else {
+            // Apply head look to model
+            EntityModelData data = (EntityModelData) customPredicate.getExtraData().get(0);
+            head.setRotationY((float) Math.toRadians(Utils.clamp(data.netHeadYaw, -45, 45)));
+            head.setRotationX((float) Math.toRadians(data.headPitch));
+        }
     }
 }

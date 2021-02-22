@@ -45,12 +45,22 @@ public class JoustGoal extends Goal {
 
     @Override
     public boolean shouldContinueExecuting() {
-        return animationTimer < 50 && antelope.isAlive() && joustingPartner.isAlive();
+        return animationTimer < 50 && antelope.isAlive() && joustingPartner.isAlive() && antelope.getAttackingEntity() == null;
     }
 
     @Override
     public void tick() {
         // TODO: Better alignment when jousting
+        // boolean facingPartner = antelope.getLookVec();
+        // boolean facingPartner = false;
+
+        // if (!facingPartner) {
+        //     antelope.getLookController().setLookPositionWithEntity(joustingPartner, 300.0F, (float) antelope.getVerticalFaceSpeed());
+        //     System.out.println(antelope.getYaw(1.0f));
+        //     return;
+        // } else {
+        // }
+
         antelope.getLookController().setLookPositionWithEntity(joustingPartner, 300.0F, (float) antelope.getVerticalFaceSpeed());
         animationTimer++;
         if (animationTimer >= ANIMATION_DROP_POSITION) {

@@ -26,17 +26,38 @@ public class CreatureFleeGoal<T extends CreatureEntity & FleeingCreature> extend
 
     @Override
     public boolean shouldExecute() {
-        this.avoidTarget = creature.getFleeTarget();
+        this.avoidTarget = creature.getAttackingEntity();
         if (this.avoidTarget == null || !creature.shouldFlee() || !this.avoidTarget.isAlive()) {
             return false;
         }
-        Vector3d randomTarget = RandomPositionGenerator.findRandomTargetBlockAwayFrom(this.creature, 16, 7, this.avoidTarget.getPositionVec());
-        if (randomTarget == null) {
+        Vector3d target = null;
+        if (creature instanceof DirectedFleeingCreature) {
+            DirectedFleeingCreature herdCreature = (DirectedFleeingCreature)creature;
+            target = herdCreature.getCommonFleeTarget();
+            if (target != null && target.squareDistanceTo(creature.getPositionVec()) <= 20) {
+                Vector3d commonFleeTarget = null;
+                for (int i = 0; i < 20; i++) {
+                    commonFleeTarget = RandomPositionGenerator.findRandomTargetBlockAwayFrom(creature, 32, 7, avoidTarget.getPositionVec());
+                    if (commonFleeTarget != null) {
+                        break;
+                    }
+                }
+                herdCreature.setCommonFleeTarget(commonFleeTarget);
+                herdCreature.alertOthersToFlee(avoidTarget, commonFleeTarget);
+            }
+        }
+
+        if (target == null) {
+            target = RandomPositionGenerator.findRandomTargetBlockAwayFrom(this.creature, 16, 7, this.avoidTarget.getPositionVec());
+        }
+
+        // TODO: Understand this again
+        if (target == null) {
             return false;
-        } else if (this.avoidTarget.getDistanceSq(randomTarget.x, randomTarget.y, randomTarget.z) < this.avoidTarget.getDistanceSq(this.creature)) {
+        } else if (this.avoidTarget.getDistanceSq(target.x, target.y, target.z) < this.avoidTarget.getDistanceSq(this.creature)) {
             return false;
         } else {
-            this.path = this.navigator.getPathToPos(randomTarget.x, randomTarget.y, randomTarget.z, 0);
+            this.path = this.navigator.getPathToPos(target.x, target.y, target.z, 0);
             return this.path != null;
         }
     }
@@ -54,7 +75,7 @@ public class CreatureFleeGoal<T extends CreatureEntity & FleeingCreature> extend
     }
 
     public void tick() {
-        if (creature.getDistanceSq(this.avoidTarget) < 49.0D) {
+        if (creature.shouldJumpWhileFleeing() && creature.getDistanceSq(this.avoidTarget) < 49.0D) {
             if (creature.getRNG().nextFloat() < 0.2F) {
                 creature.getJumpController().setJumping();
             }

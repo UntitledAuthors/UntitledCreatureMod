@@ -191,7 +191,7 @@ public class ToadEntity extends AnimalEntity implements IAnimatable, BucketCreat
         }
     }
 
-    public LivingEntity getFleeTarget() {
+    public LivingEntity getAttackingEntity() {
         return this.fleeTarget;
     }
 
@@ -304,5 +304,10 @@ public class ToadEntity extends AnimalEntity implements IAnimatable, BucketCreat
     public void readAdditional(CompoundNBT compound) {
         super.readAdditional(compound);
         setFromBucket(compound.getBoolean(FROM_BUCKET_TAG));
+    }
+
+    @Override
+    public boolean shouldJumpWhileFleeing() {
+        return true;
     }
 }

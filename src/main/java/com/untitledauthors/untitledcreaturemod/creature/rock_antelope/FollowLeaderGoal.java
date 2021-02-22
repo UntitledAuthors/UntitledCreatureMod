@@ -28,6 +28,10 @@ public class FollowLeaderGoal extends Goal {
             // Leaders shouldn't follow other leaders
             return false;
         }
+        // Once the leader is dead, forget about it
+        if (leaderAntelope != null && !leaderAntelope.isAlive()) {
+            leaderAntelope = null;
+        }
         // Look for a leader antelope around
         if (leaderAntelope == null) {
             leaderAntelope = findNearestLeader();
@@ -50,6 +54,10 @@ public class FollowLeaderGoal extends Goal {
         RockAntelopeEntity foundLeader = null;
 
         for(RockAntelopeEntity potentialLeader : list) {
+            if (!potentialLeader.isLeader()) {
+                continue;
+            }
+
             if (antelope.getDistanceSq(potentialLeader) < min_distance) {
                 foundLeader = potentialLeader;
                 min_distance = antelope.getDistanceSq(potentialLeader);
