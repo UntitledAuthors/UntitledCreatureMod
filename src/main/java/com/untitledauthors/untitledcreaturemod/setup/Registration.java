@@ -6,6 +6,7 @@ import com.untitledauthors.untitledcreaturemod.creature.rock_antelope.RockAntelo
 import com.untitledauthors.untitledcreaturemod.creature.toad.*;
 import com.untitledauthors.untitledcreaturemod.items.AntelopeWarHorn;
 import com.untitledauthors.untitledcreaturemod.items.DebugItem;
+import com.untitledauthors.untitledcreaturemod.items.LifeVestItem;
 import com.untitledauthors.untitledcreaturemod.items.ModSpawnEggItem;
 import com.untitledauthors.untitledcreaturemod.items.tools.CustomTierList;
 import com.untitledauthors.untitledcreaturemod.items.tools.StonehornDaggerItem;
@@ -15,6 +16,7 @@ import net.minecraft.block.Blocks;
 import net.minecraft.block.SoundType;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
+import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.*;
 import net.minecraft.tileentity.BannerPattern;
 import net.minecraft.util.ResourceLocation;
@@ -111,6 +113,10 @@ public class Registration {
     // Blopole Items
     public static final RegistryObject<Item> BLOPOLE_BUCKET = ITEMS.register("blopole_bucket",
             () -> new CreatureBucket(BLOPOLE, new Item.Properties().maxStackSize(1).group(CommonSetup.ITEM_GROUP), Items.WATER_BUCKET));
+
+    // Hercules Frog Items
+    public static final RegistryObject<Item> LIFE_VEST = ITEMS.register("life_vest",
+            () -> new LifeVestItem((new Item.Properties()).group(CommonSetup.ITEM_GROUP)));
 
     public static void init() {
         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();

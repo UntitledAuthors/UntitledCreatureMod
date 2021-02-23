@@ -15,6 +15,8 @@
   "item.untitledcreaturemod.stonehorn_dagger": "Stonehorn Dagger",
   "item.untitledcreaturemod.antelope_banner_pattern": "Banner Pattern",
   "item.untitledcreaturemod.antelope_banner_pattern.desc": "Rock Antelope Head",
+  "item.untitledcreaturemod.life_vest": "Life Vest",
+  "item.untitledcreaturemod.life_vest.desc": "Wear this while underwater to move up!",
 
   "entity.untitledcreaturemod.blopole": "Blopole",
   "item.untitledcreaturemod.blopole_bucket": "Bucket of Blopole",
