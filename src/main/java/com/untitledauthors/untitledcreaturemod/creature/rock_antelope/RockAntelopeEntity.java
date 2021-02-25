@@ -73,7 +73,7 @@ public class RockAntelopeEntity extends AnimalEntity implements IAnimatable, Dir
     }
 
     public static AttributeModifierMap.MutableAttribute getDefaultAttributes() {
-        return MobEntity.func_233666_p_().createMutableAttribute(Attributes.MAX_HEALTH, 5.0D)
+        return MobEntity.func_233666_p_().createMutableAttribute(Attributes.MAX_HEALTH, 7.0D)
                 .createMutableAttribute(Attributes.MOVEMENT_SPEED, 0.3F)
                 .createMutableAttribute(Attributes.ATTACK_DAMAGE, 3.0F)
                 .createMutableAttribute(Attributes.ATTACK_SPEED, 6.0F)
