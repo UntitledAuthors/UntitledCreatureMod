@@ -59,8 +59,7 @@ public class CreatureBucket extends Item {
     private void placeCreature(ServerWorld worldIn, BlockPos pos, CompoundNBT entityData) {
         // Remove uuid when there already is a creature with same uuid.
         // This makes it possible to use the bucket in creative, cloning every tag except the uuid.
-        boolean hasUuid = entityData.getCompound("EntityTag").hasUniqueId("UUID");
-        if (hasUuid) {
+        if (entityData != null && entityData.contains("EntityTag") && entityData.getCompound("EntityTag").hasUniqueId("UUID")) {
             UUID uuid = entityData.getCompound("EntityTag").getUniqueId("UUID");
             if (worldIn.getEntityByUuid(uuid) != null) {
                 entityData.getCompound("EntityTag").remove("UUID");
