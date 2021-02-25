@@ -8,7 +8,7 @@ import com.untitledauthors.untitledcreaturemod.items.AntelopeWarHorn;
 import com.untitledauthors.untitledcreaturemod.items.DebugItem;
 import com.untitledauthors.untitledcreaturemod.items.LifeVestItem;
 import com.untitledauthors.untitledcreaturemod.items.ModSpawnEggItem;
-import com.untitledauthors.untitledcreaturemod.items.tools.CustomTierList;
+import com.untitledauthors.untitledcreaturemod.items.tools.ModItemTiers;
 import com.untitledauthors.untitledcreaturemod.items.tools.StonehornDaggerItem;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
@@ -16,7 +16,6 @@ import net.minecraft.block.Blocks;
 import net.minecraft.block.SoundType;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
-import net.minecraft.inventory.EquipmentSlotType;
 import net.minecraft.item.*;
 import net.minecraft.tileentity.BannerPattern;
 import net.minecraft.util.ResourceLocation;
@@ -93,7 +92,7 @@ public class Registration {
     public static final RegistryObject<Item> ANTELOPE_HORN = ITEMS.register("antelope_horn",
             () -> new Item(new Item.Properties().maxStackSize(64).group(CommonSetup.ITEM_GROUP)));
     public static final RegistryObject<Item> STONEHORN_DAGGER = ITEMS.register("stonehorn_dagger",
-            () -> new StonehornDaggerItem(CustomTierList.STONEHORN, 1, -2.1f, new Item.Properties().maxStackSize(1).group(CommonSetup.ITEM_GROUP)));
+            () -> new StonehornDaggerItem(ModItemTiers.STONEHORN, 1, -2.1f, new Item.Properties().maxStackSize(1).group(CommonSetup.ITEM_GROUP)));
     public static final RegistryObject<Item> HORN_PATTERN_ITEM = ITEMS.register("antelope_banner_pattern",
             () -> new BannerPatternItem(registerPattern("rock_antelope"), new Item.Properties().maxStackSize(1).group(CommonSetup.ITEM_GROUP)));
 

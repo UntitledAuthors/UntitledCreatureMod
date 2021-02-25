@@ -1,7 +1,5 @@
 package com.untitledauthors.untitledcreaturemod.items.tools;
 
-
-
 //   Vanilla Material Reference:
 
 //HARVEST LEVEL | MAX USES | ATTACK DAMAGE | EFFICIENCY | ENCHANTABILITY
@@ -11,34 +9,32 @@ package com.untitledauthors.untitledcreaturemod.items.tools;
 //    IRON(2, 250, 6.0F, 2.0F, 14)
 //    DIAMOND(3, 1561, 8.0F, 3.0F, 10)
 
-
 import com.untitledauthors.untitledcreaturemod.setup.Registration;
 import net.minecraft.item.IItemTier;
 import net.minecraft.item.crafting.Ingredient;
-import net.minecraftforge.common.util.NonNullSupplier;
 import net.minecraft.util.LazyValue;
 
 import java.util.function.Supplier;
 
-public enum CustomTierList implements IItemTier
+public enum ModItemTiers implements IItemTier
 {
-    STONEHORN(3.0f, 1.0f, 100, 1, 7, () -> {
+    STONEHORN(1.5f, 1.0f, 100, 1, 7, () -> {
         return Ingredient.fromItems(Registration.ANTELOPE_HORN.get());
     });
 
-    private float attackDamage, efficiency;
-    private int durability, harvestLevel, enchantability;
+    private final float attackDamage;
+    private final float efficiency;
+    private final int durability;
+    private final int harvestLevel;
+    private final int enchantability;
     final LazyValue<Ingredient> repairMaterial;
 
-
-
-    private CustomTierList(float attackDamage, float efficiency, int durability, int harvestLevel, int enchantability, Supplier<Ingredient> repairMaterial)
+    ModItemTiers(float attackDamage, float efficiency, int durability, int harvestLevel, int enchantability, Supplier<Ingredient> repairMaterial)
     {
         this.attackDamage = attackDamage;
         this.efficiency = efficiency;
         this.durability = durability;
         this.harvestLevel = harvestLevel;
-        this.durability = durability;
         this.enchantability = enchantability;
         this.repairMaterial = new LazyValue<>(repairMaterial);
     }
