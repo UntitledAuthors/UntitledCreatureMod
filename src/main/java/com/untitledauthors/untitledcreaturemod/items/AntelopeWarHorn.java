@@ -19,7 +19,7 @@ public class AntelopeWarHorn extends Item {
     }
 
     // 20 Ticks = 1 second, cooldown duration and effect duration are in ticks
-    public static int COOLDOWN_SEC = 15;
+    public static int COOLDOWN_SEC = 20;
 
     @Override
     public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
