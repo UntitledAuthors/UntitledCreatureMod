@@ -13,6 +13,10 @@
   "item.untitledcreaturemod.antelope_horn": "Rock Antelope Horn",
   "item.untitledcreaturemod.antelope_war_horn": "War Horn",
   "item.untitledcreaturemod.stonehorn_dagger": "Stonehorn Dagger",
+  "item.untitledcreaturemod.antelope_banner_pattern": "Banner Pattern",
+  "item.untitledcreaturemod.antelope_banner_pattern.desc": "Rock Antelope Head",
+  "item.untitledcreaturemod.life_vest": "Life Vest",
+  "item.untitledcreaturemod.life_vest.desc": "Wear this while underwater to move up!",
 
   "entity.untitledcreaturemod.blopole": "Blopole",
   "item.untitledcreaturemod.blopole_bucket": "Bucket of Blopole",
@@ -27,5 +31,9 @@
 
   "untitledcreaturemod.subtitle.toad_ambient": "Toad noises",
   "untitledcreaturemod.subtitle.war_horn": "Antelope War Horn blowing",
-  "untitledcreaturemod.desc": "All the bois in one mod!"
+  "untitledcreaturemod.subtitle.blopole_ambient": "Blopole noises",
+  "untitledcreaturemod.subtitle.blopole_burp": "Blopole burps clay",
+  "untitledcreaturemod.desc": "All the bois in one mod!",
+
+  "item.untitledcreaturemod.debug_item": "Untitled Debug Item"
 }

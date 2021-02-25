@@ -6,6 +6,7 @@ import com.untitledauthors.untitledcreaturemod.creature.rock_antelope.RockAntelo
 import com.untitledauthors.untitledcreaturemod.creature.toad.*;
 import com.untitledauthors.untitledcreaturemod.items.AntelopeWarHorn;
 import com.untitledauthors.untitledcreaturemod.items.DebugItem;
+import com.untitledauthors.untitledcreaturemod.items.LifeVestItem;
 import com.untitledauthors.untitledcreaturemod.items.ModSpawnEggItem;
 import com.untitledauthors.untitledcreaturemod.items.tools.CustomTierList;
 import com.untitledauthors.untitledcreaturemod.items.tools.StonehornDaggerItem;
@@ -15,8 +16,9 @@ import net.minecraft.block.Blocks;
 import net.minecraft.block.SoundType;
 import net.minecraft.entity.EntityClassification;
 import net.minecraft.entity.EntityType;
-import net.minecraft.item.Food;
-import net.minecraft.item.Item;
+import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.item.*;
+import net.minecraft.tileentity.BannerPattern;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvent;
 import net.minecraftforge.common.ToolType;
@@ -77,7 +79,7 @@ public class Registration {
     public static final RegistryObject<Item> ANTELOPE_WAR_HORN = ITEMS.register("antelope_war_horn", () -> new AntelopeWarHorn(new Item.Properties().maxStackSize(1).group(CommonSetup.ITEM_GROUP)));
 
     public static final RegistryObject<Item> TOAD_BUCKET = ITEMS.register("toad_bucket",
-            () -> new CreatureBucket(TOAD, new Item.Properties().maxStackSize(1).group(CommonSetup.ITEM_GROUP)));
+            () -> new CreatureBucket(TOAD, new Item.Properties().maxStackSize(1).group(CommonSetup.ITEM_GROUP), Items.BUCKET));
     public static final RegistryObject<Item> POISONOUS_SECRETIONS_ITEM = ITEMS.register("poisonous_secretions",
             () -> new PoisonousSecretionsItem(new Item.Properties().maxStackSize(16).group(CommonSetup.ITEM_GROUP)));
 
@@ -92,11 +94,15 @@ public class Registration {
             () -> new Item(new Item.Properties().maxStackSize(64).group(CommonSetup.ITEM_GROUP)));
     public static final RegistryObject<Item> STONEHORN_DAGGER = ITEMS.register("stonehorn_dagger",
             () -> new StonehornDaggerItem(CustomTierList.STONEHORN, 1, -2.1f, new Item.Properties().maxStackSize(1).group(CommonSetup.ITEM_GROUP)));
+    public static final RegistryObject<Item> HORN_PATTERN_ITEM = ITEMS.register("antelope_banner_pattern",
+            () -> new BannerPatternItem(registerPattern("rock_antelope"), new Item.Properties().maxStackSize(1).group(CommonSetup.ITEM_GROUP)));
 
     // Sounds
     // TODO: Maybe move these into their own class
     public static final RegistryObject<SoundEvent> TOAD_AMBIENT = SOUNDS.register("toad_ambient",
             () -> new SoundEvent(new ResourceLocation(MODID, "toad_ambient")));
+    public static final RegistryObject<SoundEvent> BLOPOLE_AMBIENT = SOUNDS.register("blopole_ambient",
+            () -> new SoundEvent(new ResourceLocation(MODID, "blopole_ambient")));
     public static final RegistryObject<SoundEvent> WAR_HORN_SOUND = SOUNDS.register("war_horn",
             () -> new SoundEvent(new ResourceLocation(MODID, "war_horn")));
 
@@ -106,7 +112,11 @@ public class Registration {
 
     // Blopole Items
     public static final RegistryObject<Item> BLOPOLE_BUCKET = ITEMS.register("blopole_bucket",
-            () -> new CreatureBucket(BLOPOLE, new Item.Properties().maxStackSize(1).group(CommonSetup.ITEM_GROUP)));
+            () -> new CreatureBucket(BLOPOLE, new Item.Properties().maxStackSize(1).group(CommonSetup.ITEM_GROUP), Items.WATER_BUCKET));
+
+    // Hercules Frog Items
+    public static final RegistryObject<Item> LIFE_VEST = ITEMS.register("life_vest",
+            () -> new LifeVestItem((new Item.Properties()).group(CommonSetup.ITEM_GROUP)));
 
     public static void init() {
         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
@@ -114,6 +124,10 @@ public class Registration {
         ITEMS.register(bus);
         BLOCKS.register(bus);
         SOUNDS.register(bus);
+    }
+
+    private static BannerPattern registerPattern(String name) {
+        return BannerPattern.create(name.toUpperCase(), name, name, true);
     }
 
     public static final RegistryObject<Item> DEBUG_ITEM = ITEMS.register("debug_item",

@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:paper"
+    },
+    {
+      "item": "untitledcreaturemod:antelope_horn"
+    }
+  ],
+  "result": {
+    "item": "untitledcreaturemod:antelope_banner_pattern"
+  }
+}

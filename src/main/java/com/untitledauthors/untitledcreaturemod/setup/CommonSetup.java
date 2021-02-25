@@ -43,19 +43,30 @@ public class CommonSetup {
 
     private static final List<ResourceLocation> BLOPOLE_BIOMES = new ArrayList<>(Arrays.asList(
             new ResourceLocation("minecraft:river"),
-            new ResourceLocation("minecraft:jungle")
-            // TODO: Add more jungle variants?
+            new ResourceLocation("minecraft:jungle"),
+            new ResourceLocation("minecraft:jungle_hills"),
+            new ResourceLocation("minecraft:modified_jungle"),
+            new ResourceLocation("minecraft:jungle_edge"),
+            new ResourceLocation("minecraft:modified_jungle_edge"),
+            new ResourceLocation("minecraft:bamboo_jungle"),
+            new ResourceLocation("minecraft:bamboo_jungle_hills")
     ));
 
     // TODO: Move the setup into modules, similar to Quark or Charm, so user can configure spawning etc.
     public static void setupCreatures() {
-        EntityType<ToadEntity> toad = Registration.TOAD.get();
-        GlobalEntityTypeAttributes.put(toad, ToadEntity.getDefaultAttributes().create());
-        EntitySpawnPlacementRegistry.register(toad, EntitySpawnPlacementRegistry.PlacementType.ON_GROUND,
-                Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, ToadEntity::canAnimalSpawn);
 
+        // Register attributes
+        GlobalEntityTypeAttributes.put(Registration.TOAD.get(), ToadEntity.getDefaultAttributes().create());
         GlobalEntityTypeAttributes.put(Registration.ROCK_ANTELOPE.get(), RockAntelopeEntity.getDefaultAttributes().create());
         GlobalEntityTypeAttributes.put(Registration.BLOPOLE.get(), BlopoleEntity.getDefaultAttributes().create());
+
+        // Setup spawning
+        EntitySpawnPlacementRegistry.register(Registration.TOAD.get(), EntitySpawnPlacementRegistry.PlacementType.ON_GROUND,
+                Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, ToadEntity::canAnimalSpawn);
+        EntitySpawnPlacementRegistry.register(Registration.ROCK_ANTELOPE.get(), EntitySpawnPlacementRegistry.PlacementType.ON_GROUND,
+                Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, RockAntelopeEntity::canAnimalSpawn);
+        EntitySpawnPlacementRegistry.register(Registration.BLOPOLE.get(), EntitySpawnPlacementRegistry.PlacementType.NO_RESTRICTIONS,
+                Heightmap.Type.MOTION_BLOCKING, BlopoleEntity::canAnimalSpawn);
 
         MinecraftForge.EVENT_BUS.addListener(CommonSetup::onBiomeLoading);
     }
@@ -66,7 +77,7 @@ public class CommonSetup {
         }
         setupSpawning(event, TOAD_BIOMES, Registration.TOAD.get(), 20, 3, 6);
         setupSpawning(event, ROCK_ANTELOPE_BIOMES, Registration.ROCK_ANTELOPE.get(), 20, 3, 8);
-        setupSpawning(event, BLOPOLE_BIOMES, Registration.BLOPOLE.get(), 20, 2, 5);
+        setupSpawning(event, BLOPOLE_BIOMES, Registration.BLOPOLE.get(), 100, 2, 5);
     }
 
     private static void setupSpawning(BiomeLoadingEvent event, List<ResourceLocation> biomeList,

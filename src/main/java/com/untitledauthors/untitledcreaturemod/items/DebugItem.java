@@ -9,6 +9,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.network.play.server.SChatPacket;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Hand;
+import net.minecraft.util.SoundEvents;
 import net.minecraft.util.Util;
 import net.minecraft.util.text.ChatType;
 import net.minecraft.util.text.StringTextComponent;
@@ -37,7 +38,10 @@ public class DebugItem extends Item {
         World world = target.world;
         if (playerIn.isSneaking() && !world.isRemote) {
             if (target instanceof RockAntelopeEntity) {
-                ((RockAntelopeEntity) target).setIsLeader(true);
+                RockAntelopeEntity antelope = (RockAntelopeEntity) target;
+                antelope.setRightHornPresent(true);
+                antelope.setLeftHornPresent(true);
+                // ((RockAntelopeEntity) target).setIsLeader(true);
                 return ActionResultType.SUCCESS;
             }
         }
