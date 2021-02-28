@@ -1,6 +1,7 @@
 package com.untitledauthors.untitledcreaturemod.setup;
 
 import com.untitledauthors.untitledcreaturemod.creature.blopole.BlopoleEntity;
+import com.untitledauthors.untitledcreaturemod.creature.hercules_frog.HerculesFrogEntity;
 import com.untitledauthors.untitledcreaturemod.creature.rock_antelope.RockAntelopeEntity;
 import com.untitledauthors.untitledcreaturemod.creature.toad.ToadEntity;
 import net.minecraft.entity.Entity;
@@ -22,7 +23,6 @@ import java.util.List;
 
 
 public class CommonSetup {
-
     public static final ItemGroup ITEM_GROUP = new ItemGroup("untitledcreaturemod") {
         @Override
         public ItemStack createIcon() {
@@ -54,11 +54,11 @@ public class CommonSetup {
 
     // TODO: Move the setup into modules, similar to Quark or Charm, so user can configure spawning etc.
     public static void setupCreatures() {
-
         // Register attributes
         GlobalEntityTypeAttributes.put(Registration.TOAD.get(), ToadEntity.getDefaultAttributes().create());
         GlobalEntityTypeAttributes.put(Registration.ROCK_ANTELOPE.get(), RockAntelopeEntity.getDefaultAttributes().create());
         GlobalEntityTypeAttributes.put(Registration.BLOPOLE.get(), BlopoleEntity.getDefaultAttributes().create());
+        GlobalEntityTypeAttributes.put(Registration.HERCULES_FROG.get(), HerculesFrogEntity.getDefaultAttributes().create());
 
         // Setup spawning
         EntitySpawnPlacementRegistry.register(Registration.TOAD.get(), EntitySpawnPlacementRegistry.PlacementType.ON_GROUND,
@@ -89,5 +89,4 @@ public class CommonSetup {
         List<MobSpawnInfo.Spawners> spawner = event.getSpawns().getSpawner(EntityClassification.CREATURE);
         spawner.add(new MobSpawnInfo.Spawners(entityType, weight, minCount, maxCount));
     }
-
 }

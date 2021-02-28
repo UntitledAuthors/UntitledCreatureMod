@@ -2,6 +2,7 @@ package com.untitledauthors.untitledcreaturemod.setup;
 
 import com.untitledauthors.untitledcreaturemod.creature.common.CreatureBucket;
 import com.untitledauthors.untitledcreaturemod.creature.blopole.BlopoleEntity;
+import com.untitledauthors.untitledcreaturemod.creature.hercules_frog.HerculesFrogEntity;
 import com.untitledauthors.untitledcreaturemod.creature.rock_antelope.RockAntelopeEntity;
 import com.untitledauthors.untitledcreaturemod.creature.toad.*;
 import com.untitledauthors.untitledcreaturemod.items.AntelopeWarHorn;
@@ -46,12 +47,16 @@ public class Registration {
                     .size(1.2f, 1.6f)
                     .setShouldReceiveVelocityUpdates(true)
                     .build("rock_antelope"));
-
     public static final RegistryObject<EntityType<BlopoleEntity>> BLOPOLE = ENTITIES.register("blopole",
             () -> EntityType.Builder.create(BlopoleEntity::new, EntityClassification.CREATURE)
                     .size(.9f, .8f)
                     .setShouldReceiveVelocityUpdates(true)
                     .build("blopole"));
+    public static final RegistryObject<EntityType<HerculesFrogEntity>> HERCULES_FROG = ENTITIES.register("hercules_frog",
+            () -> EntityType.Builder.create(HerculesFrogEntity::new, EntityClassification.CREATURE)
+                    .size(2.5f, 2.5f)
+                    .setShouldReceiveVelocityUpdates(true)
+                    .build("hercules_frog"));
 
     // Misc Entities
     public static final RegistryObject<EntityType<PoisonousSecretionsEntity>> POISONOUS_SECRETIONS_PROJECTILE =
@@ -66,6 +71,8 @@ public class Registration {
             () -> new ModSpawnEggItem(TOAD, 0x363e0a,0xdfd66b, new Item.Properties().group(CommonSetup.ITEM_GROUP)));
     public static final RegistryObject<Item>BLOPOLE_EGG = ITEMS.register("blopole_spawn_egg",
             () -> new ModSpawnEggItem(BLOPOLE, 0x595e55,0x2D332A, new Item.Properties().group(CommonSetup.ITEM_GROUP)));
+    public static final RegistryObject<Item>HERCULES_FROG_EGG = ITEMS.register("hercules_frog_spawn_egg",
+            () -> new ModSpawnEggItem(HERCULES_FROG, 0xdfaf4f,0x432011, new Item.Properties().group(CommonSetup.ITEM_GROUP)));
 
     // Toad Items
     public static final RegistryObject<Item> RAW_TOAD_LEGS = ITEMS.register("raw_toad_legs",
