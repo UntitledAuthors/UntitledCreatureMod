@@ -8,6 +8,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererManager;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.MobEntity;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.vector.Matrix4f;
@@ -16,6 +17,8 @@ import net.minecraft.world.LightType;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
 import software.bernie.geckolib3.renderers.geo.GeoEntityRenderer;
+
+import javax.annotation.Nullable;
 
 
 /**
@@ -34,6 +37,12 @@ public class GeoMobRenderer<T extends MobEntity & IAnimatable> extends GeoEntity
             return true;
         }
         return super.canRenderName(entity);
+    }
+
+    @Override
+    @Nullable
+    public ResourceLocation getEntityTexture(T entity) {
+        return null;
     }
 
     public void render(T entityIn, float entityYaw, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn) {
