@@ -132,7 +132,6 @@ public class HerculesFrogEntity extends CreatureEntity implements IAnimatable {
         return false;
     }
 
-
     /// Return nausea duration in ticks, based on difficulty
     private static int effectDuration(Difficulty difficulty) {
         switch (difficulty) {

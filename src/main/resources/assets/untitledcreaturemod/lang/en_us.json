@@ -21,10 +21,15 @@
   "entity.untitledcreaturemod.blopole": "Blopole",
   "item.untitledcreaturemod.blopole_bucket": "Bucket of Blopole",
 
+  "entity.untitledcreaturemod.hercules_frog": "Hercules Frog",
+
+  "entity.untitledcreaturemod.pelican": "Pelican",
+
   "item.untitledcreaturemod.toad_spawn_egg": "Toad Spawn Egg",
   "item.untitledcreaturemod.antelope_spawn_egg": "Rock Antelope Spawn Egg",
   "item.untitledcreaturemod.blopole_spawn_egg": "Blopole Spawn Egg",
   "item.untitledcreaturemod.hercules_frog_spawn_egg": "Hercules Frog Spawn Egg",
+  "item.untitledcreaturemod.pelican_spawn_egg": "Pelican Spawn Egg",
   "item.untitledcreaturemod.creature_bucket.named": "Bucket of %s",
 
   "advancement.untitledcreaturemod:toadCaught": "Tactical Toading",

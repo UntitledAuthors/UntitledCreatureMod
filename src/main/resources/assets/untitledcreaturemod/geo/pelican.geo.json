@@ -1,0 +1,125 @@
+{
+	"format_version": "1.12.0",
+	"minecraft:geometry": [
+		{
+			"description": {
+				"identifier": "geometry.Pelican",
+				"texture_width": 64,
+				"texture_height": 64,
+				"visible_bounds_width": 4,
+				"visible_bounds_height": 2.5,
+				"visible_bounds_offset": [0, 0.75, 0]
+			},
+			"bones": [
+				{
+					"name": "Root",
+					"pivot": [0, 9, 0],
+					"cubes": [
+						{"origin": [-4, 5, -6], "size": [8, 8, 12], "uv": [0, 44]}
+					]
+				},
+				{
+					"name": "neck",
+					"parent": "Root",
+					"pivot": [0, 9, -6],
+					"cubes": [
+						{"origin": [-2.5, 7, -10], "size": [5, 8, 5], "uv": [22, 22]}
+					]
+				},
+				{
+					"name": "head",
+					"parent": "neck",
+					"pivot": [0, 13, -5],
+					"cubes": [
+						{"origin": [-2, 13, -7], "size": [4, 9, 4], "uv": [46, 33]}
+					]
+				},
+				{
+					"name": "billTop",
+					"parent": "head",
+					"pivot": [0, 20.5, -7],
+					"cubes": [
+						{"origin": [-1, 20, -19], "size": [2, 1, 14], "uv": [23, 2]}
+					]
+				},
+				{
+					"name": "billBottomEmpty",
+					"parent": "head",
+					"pivot": [0, 18.5, -6.5],
+					"cubes": [
+						{"origin": [-1.5, 17, -19.5], "size": [3, 3, 15], "uv": [1, 3]}
+					]
+				},
+				{
+					"name": "billBottomFull",
+					"parent": "head",
+					"pivot": [0, 17, -6.5],
+					"cubes": [
+						{"origin": [-1.5, 14, -19.5], "size": [3, 6, 15], "uv": [0, 22]}
+					]
+				},
+				{
+					"name": "tuft",
+					"parent": "head",
+					"pivot": [0, 21, -5],
+					"rotation": [8.96, 0, 0],
+					"cubes": [
+						{"origin": [-1.5, 21, -5], "size": [3, 1, 4], "uv": [41, 59]}
+					]
+				},
+				{
+					"name": "wingRight",
+					"parent": "Root",
+					"pivot": [3.5, 10.5, -4],
+					"rotation": [0, 0, -9],
+					"cubes": [
+						{"origin": [3.5, 6.5, -4], "size": [1, 8, 14], "uv": [29, 33], "mirror": true},
+						{"origin": [3.5, 6.5, 10], "size": [1, 8, 4], "uv": [46, 19]}
+					]
+				},
+				{
+					"name": "wingLeft",
+					"parent": "Root",
+					"pivot": [-3.5, 10.5, -4],
+					"rotation": [0, 0, 9],
+					"cubes": [
+						{"origin": [-4.5, 6.5, -4], "size": [1, 8, 14], "uv": [29, 33]},
+						{"origin": [-4.5, 6.5, 10], "size": [1, 8, 4], "uv": [46, 19], "mirror": true}
+					]
+				},
+				{
+					"name": "legLeft",
+					"parent": "Root",
+					"pivot": [-1, 5, 1],
+					"cubes": [
+						{"origin": [-2, 0, 0], "size": [2, 6, 2], "uv": [44, 5]}
+					]
+				},
+				{
+					"name": "footLeft",
+					"parent": "legLeft",
+					"pivot": [-1, 0, 2],
+					"cubes": [
+						{"origin": [-4, 0, -2], "size": [4, 0, 4], "uv": [22, 8]}
+					]
+				},
+				{
+					"name": "legRight",
+					"parent": "Root",
+					"pivot": [1, 5, 1],
+					"cubes": [
+						{"origin": [0, 0, 0], "size": [2, 6, 2], "uv": [44, 5], "mirror": true}
+					]
+				},
+				{
+					"name": "footRight",
+					"parent": "legRight",
+					"pivot": [1, 0, 2],
+					"cubes": [
+						{"origin": [0, 0, -2], "size": [4, 0, 4], "uv": [22, 8], "mirror": true}
+					]
+				}
+			]
+		}
+	]
+}

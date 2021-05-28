@@ -3,6 +3,7 @@ package com.untitledauthors.untitledcreaturemod.setup;
 import com.untitledauthors.untitledcreaturemod.creature.common.CreatureBucket;
 import com.untitledauthors.untitledcreaturemod.creature.blopole.BlopoleEntity;
 import com.untitledauthors.untitledcreaturemod.creature.hercules_frog.HerculesFrogEntity;
+import com.untitledauthors.untitledcreaturemod.creature.pelican.PelicanEntity;
 import com.untitledauthors.untitledcreaturemod.creature.rock_antelope.RockAntelopeEntity;
 import com.untitledauthors.untitledcreaturemod.creature.toad.*;
 import com.untitledauthors.untitledcreaturemod.items.AntelopeWarHorn;
@@ -57,6 +58,11 @@ public class Registration {
                     .size(2.5f, 2.5f)
                     .setShouldReceiveVelocityUpdates(true)
                     .build("hercules_frog"));
+    public static final RegistryObject<EntityType<PelicanEntity>> PELICAN = ENTITIES.register("pelican",
+            () -> EntityType.Builder.create(PelicanEntity::new, EntityClassification.CREATURE)
+                    .size(1.0f, 1.5f)
+                    .setShouldReceiveVelocityUpdates(true)
+                    .build("pelican"));
 
     // Misc Entities
     public static final RegistryObject<EntityType<PoisonousSecretionsEntity>> POISONOUS_SECRETIONS_PROJECTILE =
@@ -73,6 +79,8 @@ public class Registration {
             () -> new ModSpawnEggItem(BLOPOLE, 0x595e55,0x2D332A, new Item.Properties().group(CommonSetup.ITEM_GROUP)));
     public static final RegistryObject<Item>HERCULES_FROG_EGG = ITEMS.register("hercules_frog_spawn_egg",
             () -> new ModSpawnEggItem(HERCULES_FROG, 0xdfaf4f,0x432011, new Item.Properties().group(CommonSetup.ITEM_GROUP)));
+    public static final RegistryObject<Item>PELICAN_EGG = ITEMS.register("pelican_spawn_egg",
+            () -> new ModSpawnEggItem(PELICAN, 0xfff8f3,0xfad575, new Item.Properties().group(CommonSetup.ITEM_GROUP)));
 
     // Toad Items
     public static final RegistryObject<Item> RAW_TOAD_LEGS = ITEMS.register("raw_toad_legs",

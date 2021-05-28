@@ -2,6 +2,7 @@ package com.untitledauthors.untitledcreaturemod.setup;
 
 import com.untitledauthors.untitledcreaturemod.creature.blopole.BlopoleEntityRenderer;
 import com.untitledauthors.untitledcreaturemod.creature.hercules_frog.HerculesFrogEntityRenderer;
+import com.untitledauthors.untitledcreaturemod.creature.pelican.PelicanEntityRenderer;
 import com.untitledauthors.untitledcreaturemod.creature.rock_antelope.RockAntelopeEntityRenderer;
 import com.untitledauthors.untitledcreaturemod.creature.toad.ToadEntityRenderer;
 import net.minecraft.client.Minecraft;
@@ -17,6 +18,7 @@ public class ClientSetup {
         RenderingRegistry.registerEntityRenderingHandler(Registration.ROCK_ANTELOPE.get(), RockAntelopeEntityRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(Registration.BLOPOLE.get(), BlopoleEntityRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(Registration.HERCULES_FROG.get(), HerculesFrogEntityRenderer::new);
+        RenderingRegistry.registerEntityRenderingHandler(Registration.PELICAN.get(), PelicanEntityRenderer::new);
         RenderingRegistry.registerEntityRenderingHandler(Registration.POISONOUS_SECRETIONS_PROJECTILE.get(),
                 erm -> new SpriteRenderer<>(erm, Minecraft.getInstance().getItemRenderer()));
 

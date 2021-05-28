@@ -2,6 +2,7 @@ package com.untitledauthors.untitledcreaturemod.setup;
 
 import com.untitledauthors.untitledcreaturemod.creature.blopole.BlopoleEntity;
 import com.untitledauthors.untitledcreaturemod.creature.hercules_frog.HerculesFrogEntity;
+import com.untitledauthors.untitledcreaturemod.creature.pelican.PelicanEntity;
 import com.untitledauthors.untitledcreaturemod.creature.rock_antelope.RockAntelopeEntity;
 import com.untitledauthors.untitledcreaturemod.creature.toad.ToadEntity;
 import net.minecraft.entity.Entity;
@@ -30,6 +31,7 @@ public class CommonSetup {
         }
     };
 
+    // List of biome ids: https://minecraft.fandom.com/wiki/Biome/ID
     private static final List<ResourceLocation> TOAD_BIOMES = new ArrayList<>(Arrays.asList(
             new ResourceLocation("minecraft:swamp"),
             new ResourceLocation("minecraft:swamp_hills")
@@ -52,6 +54,11 @@ public class CommonSetup {
             new ResourceLocation("minecraft:bamboo_jungle_hills")
     ));
 
+    private static final List<ResourceLocation> PELICAN_BIOMES = new ArrayList<>(Arrays.asList(
+            new ResourceLocation("minecraft:beach"),
+            new ResourceLocation("minecraft:stone_shore")
+    ));
+
     // TODO: Move the setup into modules, similar to Quark or Charm, so user can configure spawning etc.
     public static void setupCreatures() {
         // Register attributes
@@ -59,6 +66,7 @@ public class CommonSetup {
         GlobalEntityTypeAttributes.put(Registration.ROCK_ANTELOPE.get(), RockAntelopeEntity.getDefaultAttributes().create());
         GlobalEntityTypeAttributes.put(Registration.BLOPOLE.get(), BlopoleEntity.getDefaultAttributes().create());
         GlobalEntityTypeAttributes.put(Registration.HERCULES_FROG.get(), HerculesFrogEntity.getDefaultAttributes().create());
+        GlobalEntityTypeAttributes.put(Registration.PELICAN.get(), PelicanEntity.getDefaultAttributes().create());
 
         // Setup spawning
         EntitySpawnPlacementRegistry.register(Registration.TOAD.get(), EntitySpawnPlacementRegistry.PlacementType.ON_GROUND,
@@ -67,6 +75,8 @@ public class CommonSetup {
                 Heightmap.Type.MOTION_BLOCKING_NO_LEAVES, RockAntelopeEntity::canAnimalSpawn);
         EntitySpawnPlacementRegistry.register(Registration.BLOPOLE.get(), EntitySpawnPlacementRegistry.PlacementType.NO_RESTRICTIONS,
                 Heightmap.Type.MOTION_BLOCKING, BlopoleEntity::canAnimalSpawn);
+        EntitySpawnPlacementRegistry.register(Registration.PELICAN.get(), EntitySpawnPlacementRegistry.PlacementType.NO_RESTRICTIONS,
+                Heightmap.Type.MOTION_BLOCKING, PelicanEntity::canSpawn);
 
         MinecraftForge.EVENT_BUS.addListener(CommonSetup::onBiomeLoading);
     }
@@ -77,7 +87,9 @@ public class CommonSetup {
         }
         setupSpawning(event, TOAD_BIOMES, Registration.TOAD.get(), 20, 3, 6);
         setupSpawning(event, ROCK_ANTELOPE_BIOMES, Registration.ROCK_ANTELOPE.get(), 20, 3, 8);
-        setupSpawning(event, BLOPOLE_BIOMES, Registration.BLOPOLE.get(), 100, 2, 5);
+        setupSpawning(event, BLOPOLE_BIOMES, Registration.BLOPOLE.get(), 20, 2, 5);
+
+        setupSpawning(event, PELICAN_BIOMES, Registration.PELICAN.get(), 30, 1, 2);
     }
 
     private static void setupSpawning(BiomeLoadingEvent event, List<ResourceLocation> biomeList,

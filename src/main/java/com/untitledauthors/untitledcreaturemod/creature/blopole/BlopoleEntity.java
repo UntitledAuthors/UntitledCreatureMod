@@ -7,6 +7,7 @@ import com.untitledauthors.untitledcreaturemod.creature.common.WalkAndSwimNaviga
 import com.untitledauthors.untitledcreaturemod.setup.Registration;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.Block;
+import net.minecraft.block.Blocks;
 import net.minecraft.entity.AgeableEntity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.MobEntity;
@@ -89,8 +90,7 @@ public class BlopoleEntity extends TameableEntity implements IAnimatable, Bucket
     }
 
     public static boolean canAnimalSpawn(EntityType<? extends AnimalEntity> animal, IWorld worldIn, SpawnReason reason, BlockPos pos, Random random) {
-        return true;
-        //return (worldIn.getBlockState(pos.down()).isSolid() || worldIn.getBlockState(pos).isIn(Blocks.WATER));
+        return (worldIn.getBlockState(pos.down()).isSolid() || worldIn.getBlockState(pos).isIn(Blocks.WATER));
     }
 
     @Nonnull
