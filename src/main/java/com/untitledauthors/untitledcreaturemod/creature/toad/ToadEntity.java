@@ -290,10 +290,6 @@ public class ToadEntity extends AnimalEntity implements IAnimatable, BucketCreat
         return super.preventDespawn() || this.isFromBucket();
     }
 
-    public boolean canDespawn(double distanceToClosestPlayer) {
-        return !this.isFromBucket() && !this.hasCustomName();
-    }
-
     @Override
     public void writeAdditional(CompoundNBT compound) {
         super.writeAdditional(compound);

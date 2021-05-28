@@ -7,7 +7,6 @@ import com.untitledauthors.untitledcreaturemod.creature.common.WalkAndSwimNaviga
 import com.untitledauthors.untitledcreaturemod.setup.Registration;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.block.Block;
-import net.minecraft.block.Blocks;
 import net.minecraft.entity.AgeableEntity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.MobEntity;
@@ -381,10 +380,6 @@ public class BlopoleEntity extends TameableEntity implements IAnimatable, Bucket
 
     public boolean preventDespawn() {
         return super.preventDespawn() || this.isFromBucket() || this.isTamed();
-    }
-
-    public boolean canDespawn(double distanceToClosestPlayer) {
-        return !this.isFromBucket() && !this.hasCustomName() && !this.isTamed();
     }
 
     public boolean isBrownVariant() {
