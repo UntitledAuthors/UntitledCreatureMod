@@ -95,7 +95,7 @@ minecraft {
 repositories {
     maven {
         name 'geckolib'
-        url 'https://repo.repsy.io/mvn/gandiber/geckolib'
+        url 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/'
     }
     maven {
         name 'prog'
