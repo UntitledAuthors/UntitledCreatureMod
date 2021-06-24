@@ -19,6 +19,7 @@
       "net.untitledcreaturemod.fabric.UntitledCreatureModFabric"
     ],
     "client": [
+      "net.untitledcreaturemod.fabric.UntitledCreatureModFabricClient"
     ]
   },
   "depends": {

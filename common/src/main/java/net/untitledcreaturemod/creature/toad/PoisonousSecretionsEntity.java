@@ -7,8 +7,10 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.thrown.ThrownItemEntity;
 import net.minecraft.item.Item;
+import net.minecraft.network.Packet;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.hit.BlockHitResult;
@@ -16,22 +18,25 @@ import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
+import net.untitledcreaturemod.architectury.networking.NetworkManager;
 
-// TODO: Port
+
 public class PoisonousSecretionsEntity extends ThrownItemEntity {
     public static final int PROJECTILE_DAMAGE = 1;
     public static final int POISON_DURATION_S = 10;
 
-    public PoisonousSecretionsEntity(EntityType<? extends ThrownItemEntity> entityType, World world) {
+    public PoisonousSecretionsEntity(EntityType<? extends PoisonousSecretionsEntity> entityType,
+                                     World world) {
         super(entityType, world);
     }
 
-    public PoisonousSecretionsEntity(EntityType<? extends ThrownItemEntity> entityType, double d, double e, double f, World world) {
-        super(entityType, d, e, f, world);
+    public PoisonousSecretionsEntity(World worldIn, PlayerEntity playerIn) {
+        super(Toad.POISONOUS_SECRETIONS_PROJECTILE.get(), playerIn, worldIn);
     }
 
-    public PoisonousSecretionsEntity(EntityType<? extends ThrownItemEntity> entityType, LivingEntity livingEntity, World world) {
-        super(entityType, livingEntity, world);
+    @Override
+    public Packet<?> createSpawnPacket() {
+        return NetworkManager.createAddEntityPacket(this);
     }
 
     @Override
@@ -61,8 +66,7 @@ public class PoisonousSecretionsEntity extends ThrownItemEntity {
                 if (!world.getBlockState(placePos).isOpaque() && world.getBlockState(placePos.down()).isOpaque()) {
                     world.playSound(null, placePos, SoundEvents.BLOCK_SLIME_BLOCK_PLACE, SoundCategory.BLOCKS, 0.8f, 1.2f);
 
-                    // TODO: Add Carpet Block
-                    //world.setBlockState(placePos, Registration.POISONOUS_SECRETIONS_CARPET.get().getDefaultState());
+                    world.setBlockState(placePos, Toad.POISONOUS_SECRETIONS_CARPET.get().getDefaultState());
                 }
             }
         }
