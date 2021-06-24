@@ -1,0 +1,18 @@
+{
+  "required": true,
+  "package": "net.untitledcreaturemod.architectury.mixin.forge",
+  "plugin": "net.untitledcreaturemod.architectury.plugin.forge.ArchitecturyMixinPlugin",
+  "compatibilityLevel": "JAVA_8",
+  "minVersion": "0.8",
+  "client": [
+  ],
+  "mixins": [
+    "BiomeGenerationSettingsBuilderAccessor",
+    "MixinItemExtension",
+    "MixinRegistryEntry",
+    "MobSpawnSettingsBuilderAccessor"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

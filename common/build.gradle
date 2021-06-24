@@ -1,3 +1,7 @@
+loom {
+    accessWidener = file("src/main/resources/common.accessWidener")
+}
+
 dependencies {
     compileOnly "com.google.code.findbugs:jsr305:3.+"
     // We depend on fabric loader here to use the fabric @Environment annotations and get the mixin dependencies
