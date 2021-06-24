@@ -5,14 +5,17 @@ name: Java CI with Gradle
 
 on:
   push:
-    branches: [ master, beta ]
+    branches: [ master, architectury ]
     paths:
-      - 'src/**'
-      - 'build.gradle'
+      - 'common/**'
+      - 'fabric/**'
+      - 'forge/**'
+      - '*.gradle'
+      - 'gradle.properties'
   pull_request:
     branches: [ master ]
   workflow_dispatch:
-      branches: [ master, beta ]
+      branches: [ master, architectury ]
 
 jobs:
   build:
@@ -25,11 +28,13 @@ jobs:
         java-version: 1.8
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
-    - name: Assemble with Gradle
-      run: ./gradlew --info assemble
+    - name: Build with Gradle
+      run: ./gradlew --info build
     - name: Upload Mod
       uses: actions/upload-artifact@v2
       if: ${{ always() }}
       with:
-        name: modjar
-        path: build/libs/*.jar
+        name: modjars
+        path: |
+          forge/build/libs/*-forge.jar
+          fabric/build/libs/*-fabric.jar
