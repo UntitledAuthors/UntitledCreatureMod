@@ -1,0 +1,96 @@
+plugins {
+    id "com.github.johnrengelman.shadow" version "5.0.0"
+    id "com.matthewprenger.cursegradle"
+}
+
+configurations {
+    shadowCommon // Don't use shadow from the shadow plugin because we don't want IDEA to index this.
+}
+
+architectury {
+    platformSetupLoomIde()
+    fabric()
+}
+
+dependencies {
+    modImplementation "net.fabricmc:fabric-loader:${rootProject.fabric_loader_version}"
+    modApi "net.fabricmc.fabric-api:fabric-api:${rootProject.fabric_api_version}"
+
+    modImplementation "software.bernie.geckolib:geckolib-fabric-1.16.5:${rootProject.geckolib_version_fabric}:dev"
+    modImplementation 'me.shedaniel:RoughlyEnoughItems:5.9.172'
+    modCompileOnly "me.shedaniel:RoughlyEnoughItems-api:5.9.172"
+
+    implementation(project(path: ":common")) {
+        transitive = false
+    }
+    developmentFabric(project(path: ":common")) {
+        transitive = false
+    }
+    shadowCommon(project(path: ":common", configuration: "transformProductionFabric")) {
+        transitive = false
+    }
+}
+
+processResources {
+    inputs.property "version", project.version
+
+    filesMatching("fabric.mod.json") {
+        expand "version": project.version
+    }
+}
+
+shadowJar {
+    configurations = [project.configurations.shadowCommon]
+    classifier "dev-shadow"
+}
+
+remapJar {
+    input.set shadowJar.archiveFile
+    dependsOn shadowJar
+    classifier "fabric"
+}
+
+jar {
+    classifier "dev"
+}
+
+java {
+    withSourcesJar()
+}
+
+sourcesJar {
+    def commonSources = project(":common").remapSourcesJar
+    dependsOn commonSources
+    from zipTree(commonSources.output)
+}
+
+if (System.getenv("CURSEFORGE_KEY") != null || project.hasProperty('curseforgeKey')) {
+    curseforge {
+        apiKey = System.getenv("CURSEFORGE_KEY") ?: project.findProperty("curseforgeKey")
+        project {
+            id = "440320"
+            releaseType = "beta"
+            changelogType = 'text'
+            changelog = file('../CHANGELOG.txt')
+            addGameVersion("1.16.5")
+            addGameVersion("Fabric")
+            addGameVersion("Java 8")
+
+            relations {
+                requiredDependency 'fabric-api'
+                requiredDependency 'geckolib-fabric'
+            }
+
+            mainArtifact(remapJar) {
+                displayName = "Untitled Creature Mod - ${rootProject.mod_version} (Fabric)"
+            }
+            afterEvaluate {
+                uploadTask.dependsOn("build")
+            }
+        }
+        options {
+            //debug = true
+            forgeGradleIntegration = false
+        }
+    }
+} // if

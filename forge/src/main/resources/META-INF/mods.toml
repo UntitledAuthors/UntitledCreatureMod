@@ -1,0 +1,37 @@
+modLoader = "javafml"
+loaderVersion = "[35,)"
+issueTrackerURL = ""
+license = "MIT"
+
+[[mods]]
+modId = "untitledcreaturemod"
+version = "${version}"
+displayName = "Untitled Creature Mod"
+authors = "Untitled Authors"
+logoFile = "logo.png"
+credits = "Thanks to geckolib and architectury!"
+description = '''
+Untitled Creatures for forge and fabric! Powered by geckolib and architectury.
+'''
+
+[[dependencies.untitledcreaturemod]]
+modId = "forge"
+mandatory = true
+versionRange = "[36,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.untitledcreaturemod]]
+modId = "minecraft"
+mandatory = true
+versionRange = "[1.16.5,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.untitledcreaturemod]]
+modId="geckolib3"
+mandatory=true
+versionRange="[3.0.35,)"
+ordering="NONE"
+side="BOTH"
+

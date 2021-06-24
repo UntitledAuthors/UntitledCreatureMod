@@ -1,0 +1,61 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Minecraft Client (:fabric)",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/run",
+      "console": "internalConsole",
+      "stopOnEntry": false,
+      "mainClass": "me.shedaniel.architectury.transformer.TransformerRuntime",
+      "vmArgs": "-Dfabric.dli.config\u003d/home/paspartout/dev/pro/mcmods/UntitledCreatureMod_Architectury/fabric/.gradle/loom-cache/launch.cfg -Dfabric.dli.env\u003dclient -Dfabric.dli.main\u003dnet.fabricmc.loader.launch.knot.KnotClient -Darchitectury.main.class\u003d/home/paspartout/dev/pro/mcmods/UntitledCreatureMod_Architectury/fabric/.gradle/architectury/.main_class -Darchitectury.runtime.transformer\u003d/home/paspartout/dev/pro/mcmods/UntitledCreatureMod_Architectury/fabric/.gradle/architectury/.transforms -Darchitectury.properties\u003d/home/paspartout/dev/pro/mcmods/UntitledCreatureMod_Architectury/fabric/.gradle/architectury/.properties -Djdk.attach.allowAttachSelf\u003dtrue -javaagent:/home/paspartout/dev/pro/mcmods/UntitledCreatureMod_Architectury/.gradle/architectury/architectury-transformer-agent.jar",
+      "args": "",
+      "env": {},
+      "projectName": ":fabric"
+    },
+    {
+      "type": "java",
+      "name": "Minecraft Server (:fabric)",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/run",
+      "console": "internalConsole",
+      "stopOnEntry": false,
+      "mainClass": "me.shedaniel.architectury.transformer.TransformerRuntime",
+      "vmArgs": "-Dfabric.dli.config\u003d/home/paspartout/dev/pro/mcmods/UntitledCreatureMod_Architectury/fabric/.gradle/loom-cache/launch.cfg -Dfabric.dli.env\u003dserver -Dfabric.dli.main\u003dnet.fabricmc.loader.launch.knot.KnotServer -Darchitectury.main.class\u003d/home/paspartout/dev/pro/mcmods/UntitledCreatureMod_Architectury/fabric/.gradle/architectury/.main_class -Darchitectury.runtime.transformer\u003d/home/paspartout/dev/pro/mcmods/UntitledCreatureMod_Architectury/fabric/.gradle/architectury/.transforms -Darchitectury.properties\u003d/home/paspartout/dev/pro/mcmods/UntitledCreatureMod_Architectury/fabric/.gradle/architectury/.properties -Djdk.attach.allowAttachSelf\u003dtrue -javaagent:/home/paspartout/dev/pro/mcmods/UntitledCreatureMod_Architectury/.gradle/architectury/architectury-transformer-agent.jar",
+      "args": "nogui",
+      "env": {},
+      "projectName": ":fabric"
+    },
+    {
+      "type": "java",
+      "name": "Minecraft Client (:forge)",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/run",
+      "console": "internalConsole",
+      "stopOnEntry": false,
+      "mainClass": "me.shedaniel.architectury.transformer.TransformerRuntime",
+      "vmArgs": "-Dfabric.dli.config\u003d/home/paspartout/dev/pro/mcmods/UntitledCreatureMod_Architectury/forge/.gradle/loom-cache/launch.cfg -Dfabric.dli.env\u003dclient -Dfabric.dli.main\u003dnet.minecraftforge.userdev.LaunchTesting -Darchitectury.main.class\u003d/home/paspartout/dev/pro/mcmods/UntitledCreatureMod_Architectury/forge/.gradle/architectury/.main_class -Darchitectury.runtime.transformer\u003d/home/paspartout/dev/pro/mcmods/UntitledCreatureMod_Architectury/forge/.gradle/architectury/.transforms -Darchitectury.properties\u003d/home/paspartout/dev/pro/mcmods/UntitledCreatureMod_Architectury/forge/.gradle/architectury/.properties -Djdk.attach.allowAttachSelf\u003dtrue -javaagent:/home/paspartout/dev/pro/mcmods/UntitledCreatureMod_Architectury/.gradle/architectury/architectury-transformer-agent.jar",
+      "args": "",
+      "env": {
+        "MOD_CLASSES": "main_31daf2b%%/home/paspartout/dev/pro/mcmods/UntitledCreatureMod_Architectury/forge/build/resources/main:main_31daf2b%%/home/paspartout/dev/pro/mcmods/UntitledCreatureMod_Architectury/forge/build/classes/java/main"
+      },
+      "projectName": ":forge"
+    },
+    {
+      "type": "java",
+      "name": "Minecraft Server (:forge)",
+      "request": "launch",
+      "cwd": "${workspaceFolder}/run",
+      "console": "internalConsole",
+      "stopOnEntry": false,
+      "mainClass": "me.shedaniel.architectury.transformer.TransformerRuntime",
+      "vmArgs": "-Dfabric.dli.config\u003d/home/paspartout/dev/pro/mcmods/UntitledCreatureMod_Architectury/forge/.gradle/loom-cache/launch.cfg -Dfabric.dli.env\u003dserver -Dfabric.dli.main\u003dnet.minecraftforge.userdev.LaunchTesting -Darchitectury.main.class\u003d/home/paspartout/dev/pro/mcmods/UntitledCreatureMod_Architectury/forge/.gradle/architectury/.main_class -Darchitectury.runtime.transformer\u003d/home/paspartout/dev/pro/mcmods/UntitledCreatureMod_Architectury/forge/.gradle/architectury/.transforms -Darchitectury.properties\u003d/home/paspartout/dev/pro/mcmods/UntitledCreatureMod_Architectury/forge/.gradle/architectury/.properties -Djdk.attach.allowAttachSelf\u003dtrue -javaagent:/home/paspartout/dev/pro/mcmods/UntitledCreatureMod_Architectury/.gradle/architectury/architectury-transformer-agent.jar",
+      "args": "nogui",
+      "env": {
+        "MOD_CLASSES": "main_18cdb83%%/home/paspartout/dev/pro/mcmods/UntitledCreatureMod_Architectury/forge/build/resources/main:main_18cdb83%%/home/paspartout/dev/pro/mcmods/UntitledCreatureMod_Architectury/forge/build/classes/java/main"
+      },
+      "projectName": ":forge"
+    }
+  ]
+}

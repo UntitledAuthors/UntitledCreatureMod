@@ -1,0 +1,98 @@
+plugins {
+    id "com.github.johnrengelman.shadow" version "5.0.0"
+    id "com.matthewprenger.cursegradle"
+}
+
+configurations {
+    shadowCommon // Don't use shadow from the shadow plugin because we don't want IDEA to index this.
+}
+
+architectury {
+    platformSetupLoomIde()
+    forge()
+}
+
+loom {
+    // useFabricMixin = true
+    // mixinConfig "untitledcreaturemod.mixins.json"
+}
+
+dependencies {
+    forge "net.minecraftforge:forge:${rootProject.minecraft_version}-${rootProject.forge_version}"
+    modImplementation "software.bernie.geckolib:geckolib-forge-1.16.5:${rootProject.geckolib_version_forge}"
+
+    implementation(project(path: ":common")) {
+        transitive = false
+    }
+    developmentForge(project(path: ":common")) {
+        transitive = false
+    }
+    shadowCommon(project(path: ":common", configuration: "transformProductionForge")) {
+        transitive = false
+    }
+}
+
+processResources {
+    inputs.property "version", project.version
+
+    filesMatching("META-INF/mods.toml") {
+        expand "version": project.version
+    }
+}
+
+shadowJar {
+    exclude "fabric.mod.json"
+
+    configurations = [project.configurations.shadowCommon]
+    classifier "dev-shadow"
+}
+
+remapJar {
+    dependsOn(shadowJar)
+    input.set(shadowJar.archivePath)
+    classifier "forge"
+}
+
+jar {
+    classifier "dev"
+}
+
+java {
+    withSourcesJar()
+}
+
+sourcesJar {
+    def commonSources = project(":common").remapSourcesJar
+    dependsOn commonSources
+    from zipTree(commonSources.output)
+}
+
+if (System.getenv("CURSEFORGE_KEY") != null || project.hasProperty('curseforgeKey')) {
+    curseforge {
+        apiKey = System.getenv("CURSEFORGE_KEY") ?: project.findProperty("curseforgeKey")
+        project {
+            id = "440320"
+            releaseType = "beta"
+            changelogType = 'text'
+            changelog = file('../CHANGELOG.txt')
+            addGameVersion("1.16.5")
+            addGameVersion("Java 8")
+            addGameVersion("Forge")
+
+            relations {
+                requiredDependency 'geckolib'
+            }
+
+            mainArtifact(remapJar) {
+                displayName = "Untitled Creature Mod - ${rootProject.mod_version} (Forge)"
+            }
+            afterEvaluate {
+                uploadTask.dependsOn("build")
+            }
+        }
+        options {
+            //debug = true
+            forgeGradleIntegration = false
+        }
+    }
+} // if
