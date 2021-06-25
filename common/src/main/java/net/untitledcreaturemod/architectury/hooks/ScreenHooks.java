@@ -24,7 +24,7 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.widget.AbstractButtonWidget;
+import net.minecraft.client.gui.widget.ButtonWidget;
 import java.util.List;
 
 @Environment(EnvType.CLIENT)
@@ -33,12 +33,12 @@ public final class ScreenHooks {
     }
     
     @ExpectPlatform
-    public static List<AbstractButtonWidget> getButtons(Screen screen) {
+    public static List<ButtonWidget> getButtons(Screen screen) {
         throw new AssertionError();
     }
     
     @ExpectPlatform
-    public static <T extends AbstractButtonWidget> T addButton(Screen screen, T widget) {
+    public static <T extends ButtonWidget> T addButton(Screen screen, T widget) {
         throw new AssertionError();
     }
     

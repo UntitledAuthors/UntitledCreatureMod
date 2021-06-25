@@ -20,7 +20,7 @@
 package net.untitledcreaturemod.architectury.registry;
 
 import me.shedaniel.architectury.annotations.ExpectPlatform;
-import net.minecraft.resource.ResourceReloadListener;
+import net.minecraft.resource.ResourceReload;
 import net.minecraft.resource.ResourceType;
 
 public final class ReloadListeners {
@@ -28,7 +28,7 @@ public final class ReloadListeners {
     }
     
     @ExpectPlatform
-    public static void registerReloadListener(ResourceType type, ResourceReloadListener listener) {
+    public static void registerReloadListener(ResourceType type, ResourceReload listener) {
         throw new AssertionError();
     }
 }

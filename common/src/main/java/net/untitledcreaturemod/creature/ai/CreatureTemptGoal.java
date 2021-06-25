@@ -14,7 +14,7 @@ import java.util.Set;
 
 // Mostly copied from TurtleEntity.ApproachFoodHoldingPlayerGoal
 public class CreatureTemptGoal extends Goal {
-    private static final TargetPredicate CLOSE_ENTITY_PREDICATE = (new TargetPredicate()).setBaseMaxDistance(10.0D).includeTeammates().includeInvulnerable();
+    private static final TargetPredicate CLOSE_ENTITY_PREDICATE = TargetPredicate.DEFAULT.setBaseMaxDistance(10.0D);
     private final PathAwareEntity creature;
     private final double speed;
     private PlayerEntity targetPlayer;

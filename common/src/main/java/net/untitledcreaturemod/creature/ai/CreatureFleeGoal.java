@@ -1,7 +1,8 @@
 package net.untitledcreaturemod.creature.ai;
 
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.ai.TargetFinder;
+import net.minecraft.entity.ai.AboveGroundTargeting;
+import net.minecraft.entity.ai.NoPenaltyTargeting;
 import net.minecraft.entity.ai.goal.Goal;
 import net.minecraft.entity.ai.pathing.EntityNavigation;
 import net.minecraft.entity.ai.pathing.Path;
@@ -38,7 +39,7 @@ public class CreatureFleeGoal<T extends PathAwareEntity & FleeingCreature> exten
             if (target != null && target.squaredDistanceTo(creature.getPos()) <= 20) {
                 Vec3d commonFleeTarget = null;
                 for (int i = 0; i < 20; i++) {
-                    commonFleeTarget = TargetFinder.findTargetAwayFrom(creature, 32, 7, avoidTarget.getPos());
+                    commonFleeTarget = NoPenaltyTargeting.find(creature, 32, 7, avoidTarget.getPos());
                     if (commonFleeTarget != null) {
                         break;
                     }
@@ -49,7 +50,7 @@ public class CreatureFleeGoal<T extends PathAwareEntity & FleeingCreature> exten
         }
 
         if (target == null) {
-            target = TargetFinder.findTargetAwayFrom(this.creature, 16, 7, avoidTarget.getPos());
+            target = NoPenaltyTargeting.find(this.creature, 16, 7, avoidTarget.getPos());
         }
 
         if (target == null) {

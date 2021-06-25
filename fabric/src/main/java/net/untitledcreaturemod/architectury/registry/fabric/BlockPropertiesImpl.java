@@ -24,18 +24,18 @@ import net.fabricmc.fabric.impl.object.builder.FabricBlockInternals;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Material;
-import net.minecraft.block.MaterialColor;
+import net.minecraft.block.MapColor;
 import net.untitledcreaturemod.architectury.registry.BlockProperties;
 import net.untitledcreaturemod.architectury.registry.ToolType;
 
 import java.util.function.Function;
 
 public class BlockPropertiesImpl {
-    public static BlockProperties of(Material material, MaterialColor color) {
+    public static BlockProperties of(Material material, MapColor color) {
         return new Impl(material, (state) -> color);
     }
     
-    public static BlockProperties of(Material material, Function<BlockState, MaterialColor> color) {
+    public static BlockProperties of(Material material, Function<BlockState, MapColor> color) {
         return new Impl(material, color);
     }
 
@@ -69,7 +69,7 @@ public class BlockPropertiesImpl {
     // }
     
     private static final class Impl extends BlockProperties {
-        public Impl(Material material, Function<BlockState, MaterialColor> function) {
+        public Impl(Material material, Function<BlockState, MapColor> function) {
             super(material, function);
         }
         

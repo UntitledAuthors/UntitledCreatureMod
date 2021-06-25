@@ -16,7 +16,7 @@
 
 package net.untitledcreaturemod.architectury.utils;
 
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 
 public final class NbtType {
     public static final int END = 0;

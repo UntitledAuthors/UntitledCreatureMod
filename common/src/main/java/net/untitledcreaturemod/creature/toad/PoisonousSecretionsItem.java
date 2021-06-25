@@ -18,12 +18,12 @@ public class PoisonousSecretionsItem extends Item {
     public TypedActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
         ItemStack itemstack = player.getStackInHand(hand);
         world.playSound(null, player.getX(), player.getY(), player.getZ(),
-                SoundEvents.ENTITY_SNOWBALL_THROW, SoundCategory.NEUTRAL, 0.5F, 0.4F / (RANDOM.nextFloat() * 0.4F + 0.8F));
+                SoundEvents.ENTITY_SNOWBALL_THROW, SoundCategory.NEUTRAL, 0.5F, 0.4F / (player.getRandom().nextFloat() * 0.4F + 0.8F));
         if (!world.isClient) {
             PoisonousSecretionsEntity projectile = new PoisonousSecretionsEntity(world, player);
             projectile.setItem(itemstack);
             // Shoot projectile
-            projectile.setProperties(player, player.pitch, player.yaw, 0.0F, 1.5F, 1.0F);
+            projectile.setProperties(player, player.getPitch(), player.getYaw(), 0.0F, 1.5F, 1.0F);
             world.spawnEntity(projectile);
         }
         player.incrementStat(Stats.USED.getOrCreateStat(this));

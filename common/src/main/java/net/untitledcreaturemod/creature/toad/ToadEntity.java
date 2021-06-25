@@ -19,7 +19,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvent;
@@ -151,8 +151,8 @@ public class ToadEntity extends AnimalEntity implements IAnimatable, FleeingCrea
 
     protected void alertOthersToFlee(LivingEntity attacker) {
         double alertRadius = getAttributeValue(EntityAttributes.GENERIC_FOLLOW_RANGE);
-        Box alertBox = Box.method_29968(getPos()).expand(alertRadius, 10.0D, alertRadius);
-        List<ToadEntity> list = world.getEntitiesIncludingUngeneratedChunks(ToadEntity.class, alertBox);
+        Box alertBox = Box.from(getPos()).expand(alertRadius, 10.0D, alertRadius);
+        List<ToadEntity> list = world.getEntitiesByClass(ToadEntity.class, alertBox, (e) -> true);
         for (ToadEntity buddy : list) {
             buddy.setFleeTarget(attacker);
         }
@@ -179,18 +179,18 @@ public class ToadEntity extends AnimalEntity implements IAnimatable, FleeingCrea
         ItemStack stackInHand = player.getStackInHand(hand);
         if (stackInHand.getItem() == Items.BUCKET && this.isAlive()) {
 
-            CompoundTag toadData = new CompoundTag();
-            if (saveSelfToTag(toadData)) {
+            NbtCompound toadData = new NbtCompound();
+            if (saveSelfNbt(toadData)) {
                 stackInHand.decrement(1);
 
                 ItemStack toadBucket = new ItemStack(Toad.TOAD_BUCKET.get());
-                CompoundTag bucketData = new CompoundTag();
+                NbtCompound bucketData = new NbtCompound();
                 bucketData.put("EntityTag", toadData);
                 toadBucket.setTag(bucketData);
 
                 if (stackInHand.isEmpty()) {
                     player.setStackInHand(hand, toadBucket);
-                } else if (!player.inventory.insertStack(toadBucket)) {
+                } else if (!player.getInventory().insertStack(toadBucket)) {
                     player.dropItem(toadBucket, false);
                 }
                 this.playSound(SoundEvents.ITEM_BUCKET_FILL_FISH, 1.0F, 1.0F);
@@ -201,7 +201,7 @@ public class ToadEntity extends AnimalEntity implements IAnimatable, FleeingCrea
                 LOGGER.error("Could not save toad data to bucket!");
             }
 
-            this.remove();
+            this.kill();
             return ActionResult.success(this.world.isClient);
         } else {
             return super.interactMob(player, hand);
@@ -280,15 +280,15 @@ public class ToadEntity extends AnimalEntity implements IAnimatable, FleeingCrea
         return super.cannotDespawn() || isFromBucket;
     }
 
+
     @Override
-    public void writeCustomDataToTag(CompoundTag tag) {
-        super.writeCustomDataToTag(tag);
-        tag.putBoolean(IS_FROM_BUCKET_TAG, isFromBucket);
+    public void writeCustomDataToNbt(NbtCompound nbt) {
+        super.writeCustomDataToNbt(nbt);
+        nbt.putBoolean(IS_FROM_BUCKET_TAG, isFromBucket);
     }
 
     @Override
-    public void readCustomDataFromTag(CompoundTag tag) {
-        super.readCustomDataFromTag(tag);
-        setFromBucket(tag.getBoolean(IS_FROM_BUCKET_TAG));
+    public void readCustomDataFromNbt(NbtCompound nbt) {
+        setFromBucket(nbt.getBoolean(IS_FROM_BUCKET_TAG));
     }
 }

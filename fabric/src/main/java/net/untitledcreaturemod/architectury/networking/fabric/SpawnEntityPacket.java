@@ -52,13 +52,13 @@ public class SpawnEntityPacket {
         PacketByteBuf buffer = PacketByteBufs.create();
         buffer.writeVarInt(Registry.ENTITY_TYPE.getRawId(entity.getType()));
         buffer.writeUuid(entity.getUuid());
-        buffer.writeVarInt(entity.getEntityId());
+        buffer.writeVarInt(entity.getId());
         Vec3d position = entity.getPos();
         buffer.writeDouble(position.x);
         buffer.writeDouble(position.y);
         buffer.writeDouble(position.z);
-        buffer.writeFloat(entity.pitch);
-        buffer.writeFloat(entity.yaw);
+        buffer.writeFloat(entity.getPitch());
+        buffer.writeFloat(entity.getYaw());
         buffer.writeFloat(entity.getHeadYaw());
         Vec3d deltaMovement = entity.getVelocity();
         buffer.writeDouble(deltaMovement.x);
@@ -94,7 +94,7 @@ public class SpawnEntityPacket {
                 throw new IllegalStateException("Created entity is null!");
             }
             entity.setUuid(uuid);
-            entity.setEntityId(id);
+            entity.setId(id);
             entity.setPos(x, y, z);
             entity.updatePositionAndAngles(x, y, z, xRot, yRot);
             entity.setHeadYaw(yHeadRot);

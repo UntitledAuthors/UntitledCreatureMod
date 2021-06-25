@@ -23,12 +23,12 @@ import me.shedaniel.architectury.annotations.ExpectPlatform;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Material;
-import net.minecraft.block.MaterialColor;
+import net.minecraft.block.MapColor;
 import net.minecraft.util.DyeColor;
 import java.util.function.Function;
 
 public abstract class BlockProperties extends AbstractBlock.Settings implements BlockPropertiesExtension {
-    public BlockProperties(Material material, Function<BlockState, MaterialColor> function) {
+    public BlockProperties(Material material, Function<BlockState, MapColor> function) {
         super(material, function);
     }
     
@@ -37,16 +37,16 @@ public abstract class BlockProperties extends AbstractBlock.Settings implements 
     }
     
     public static BlockProperties of(Material material, DyeColor color) {
-        return of(material, color.getMaterialColor());
+        return of(material, color.getMapColor());
     }
     
     @ExpectPlatform
-    public static BlockProperties of(Material material, MaterialColor color) {
+    public static BlockProperties of(Material material, MapColor color) {
         throw new AssertionError();
     }
     
     @ExpectPlatform
-    public static BlockProperties of(Material material, Function<BlockState, MaterialColor> color) {
+    public static BlockProperties of(Material material, Function<BlockState, MapColor> color) {
         throw new AssertionError();
     }
     

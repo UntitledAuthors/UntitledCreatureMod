@@ -70,7 +70,7 @@ public class PoisonousSecretionsEntity extends ThrownItemEntity {
                 }
             }
         }
-        this.remove();
+        this.kill();
 
     }
 }

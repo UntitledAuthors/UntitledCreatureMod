@@ -20,7 +20,7 @@
 package net.untitledcreaturemod.architectury.registry.fabric;
 
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
-import net.minecraft.client.options.KeyBinding;
+import net.minecraft.client.option.KeyBinding;
 
 public class KeyBindingsImpl {
     public static void registerKeyBinding(KeyBinding binding) {

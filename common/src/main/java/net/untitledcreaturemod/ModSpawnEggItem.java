@@ -2,7 +2,7 @@ package net.untitledcreaturemod;
 
 import net.minecraft.entity.EntityType;
 import net.minecraft.item.SpawnEggItem;
-import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.NbtCompound;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -23,7 +23,7 @@ public class ModSpawnEggItem extends SpawnEggItem {
     }
 
     @Override
-    public EntityType<?> getEntityType(@Nullable CompoundTag arg) {
+    public EntityType<?> getEntityType(@Nullable NbtCompound arg) {
         return entityTypeSupplier.get();
     }
 }
