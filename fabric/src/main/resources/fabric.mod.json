@@ -31,5 +31,6 @@
   "mixins": [
     "untitledcreaturemod.mixins.json",
     "untitledcreaturemod_fabric.mixins.json"
-  ]
+  ],
+  "accessWidener": "architectury.accessWidener"
 }

@@ -17,6 +17,7 @@ public class ModSpawnEggItem extends SpawnEggItem {
     private final Supplier<EntityType<?>> entityTypeSupplier;
 
     public ModSpawnEggItem(Supplier<EntityType<?>> entityTypeSupplier, int primaryColor, int secondaryColor, Settings settings) {
+        // TODO: They should be added on fabric, but how to do it in common? Mixin in forge?
         super(null, primaryColor, secondaryColor, settings);
         this.entityTypeSupplier = entityTypeSupplier;
         UNADDED_EGGS.add(this);
