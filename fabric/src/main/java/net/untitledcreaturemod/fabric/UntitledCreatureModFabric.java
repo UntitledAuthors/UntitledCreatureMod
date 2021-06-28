@@ -8,5 +8,6 @@ public class UntitledCreatureModFabric implements ModInitializer {
     @Override
     public void onInitialize() {
         UntitledCreatureMod.init();
+        ModSpawnEggItem.addModdedEggs();
     }
 }
