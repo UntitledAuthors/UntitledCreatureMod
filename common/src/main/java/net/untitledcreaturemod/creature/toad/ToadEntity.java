@@ -139,10 +139,12 @@ public class ToadEntity extends AnimalEntity implements IAnimatable, FleeingCrea
                 return super.damage(source, amount);
             }
 
-            boolean attackerIsPlayer = attacker instanceof PlayerEntity && !((PlayerEntity) attacker).isCreative();
-            if (attackerIsPlayer) {
-                ((LivingEntity)attacker).addStatusEffect(new StatusEffectInstance(StatusEffects.POISON, poisonDuration(world.getDifficulty()), 0));
-                alertOthersToFlee((LivingEntity)attacker);
+            if (attacker instanceof PlayerEntity) {
+                PlayerEntity player = (PlayerEntity) attacker;
+                if (!player.isCreative() && player.getMainHandStack().isEmpty()) {
+                    ((LivingEntity)attacker).addStatusEffect(new StatusEffectInstance(StatusEffects.POISON, poisonDuration(world.getDifficulty()), 0));
+                    alertOthersToFlee((LivingEntity)attacker);
+                }
             }
         }
 
