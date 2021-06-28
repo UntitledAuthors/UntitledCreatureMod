@@ -14,7 +14,9 @@ import net.untitledcreaturemod.UntitledCreatureMod;
 import net.untitledcreaturemod.architectury.platform.forge.EventBuses;
 import net.untitledcreaturemod.architectury.registry.RenderTypes;
 import net.untitledcreaturemod.architectury.registry.entity.EntityRenderers;
+import net.untitledcreaturemod.creature.pelican.Pelican;
 import net.untitledcreaturemod.creature.toad.Toad;
+import net.untitledcreaturemod.forge.renderers.PelicanEntityRenderer;
 import net.untitledcreaturemod.forge.renderers.ToadEntityRenderer;
 
 @Mod(UntitledCreatureMod.MOD_ID)
@@ -30,6 +32,7 @@ public class UntitledCreatureModForge {
         // NOTE: Ugh, since Forge and Fabric Geckolib is not using the same renderer package we need to do this
         EntityRenderers.register(Toad.TOAD.get(), ToadEntityRenderer::new);
         EntityRenderers.register(Toad.POISONOUS_SECRETIONS_PROJECTILE.get(), (dispatcher) -> new FlyingItemEntityRenderer<>(dispatcher, MinecraftClient.getInstance().getItemRenderer()));
+        EntityRenderers.register(Pelican.PELICAN.get(), PelicanEntityRenderer::new);
         RenderTypes.register(RenderLayer.getCutout(), Toad.POISONOUS_SECRETIONS_CARPET.get());
     }
 

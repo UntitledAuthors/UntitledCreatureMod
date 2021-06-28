@@ -13,6 +13,8 @@ import net.untitledcreaturemod.architectury.registry.BiomeModifications;
 import net.untitledcreaturemod.architectury.registry.CreativeTabs;
 import net.untitledcreaturemod.architectury.registry.DeferredRegister;
 import net.untitledcreaturemod.architectury.registry.entity.EntityAttributes;
+import net.untitledcreaturemod.creature.pelican.Pelican;
+import net.untitledcreaturemod.creature.pelican.PelicanEntity;
 import net.untitledcreaturemod.creature.toad.Toad;
 import net.untitledcreaturemod.creature.toad.ToadEntity;
 
@@ -42,5 +44,6 @@ public class UntitledCreatureMod {
         BiomeModifications.addProperties((bc) -> Toad.SPAWN_BIOMES.contains(bc.getKey()),
                 (bc, mod) -> mod.getSpawnProperties().addSpawn(SpawnGroup.CREATURE, Toad.SPAWN_ENTRY.get()));
         EntityAttributes.register(Toad.TOAD::get, ToadEntity::getDefaultAttributes);
+        EntityAttributes.register(Pelican.PELICAN::get, PelicanEntity::getDefaultAttributes);
     }
 }
